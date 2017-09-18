@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="622.0" stroke="#32000f" strokeType="INSIDE" strokeWidth="6.0" width="1366.0" />
@@ -16,7 +15,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="    Inventory    ">
             <items>
-              <MenuItem mnemonicParsing="false" text="View Inventory" />
+              <MenuItem fx:id="viewInventory" mnemonicParsing="false" onAction="#handleLandingPage" text="View Inventory" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="   Orders   ">
@@ -32,6 +31,11 @@
             <Menu mnemonicParsing="false" text="    Reports    ">
               <items>
                 <MenuItem mnemonicParsing="false" text="Generate Report" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="   Users   ">
+              <items>
+                <MenuItem fx:id="viewUsers" mnemonicParsing="false" onAction="#handleLandingPage" text="View Users" />
               </items>
             </Menu>
         </menus>

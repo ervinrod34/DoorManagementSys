@@ -1,4 +1,4 @@
-package gateways;
+package inventory;
 
 public class InventoryGateway {
 
