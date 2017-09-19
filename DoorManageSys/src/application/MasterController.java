@@ -16,6 +16,7 @@ import landing.*;
 import java.io.IOException;
 import java.util.List;
 
+import inventory.InventoryGateway;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
@@ -38,6 +39,8 @@ public class MasterController {
 	 */
 	private UsersGateway usersGateway;
 	
+	private InventoryGateway inventoryGateway;
+	
 	/**
 	 * The page that the user is trying to view
 	 */
@@ -50,6 +53,13 @@ public class MasterController {
 		try {
 			usersGateway = new UsersGateway();
 		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			inventoryGateway = new InventoryGateway ();
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
