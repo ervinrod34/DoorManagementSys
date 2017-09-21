@@ -120,4 +120,7 @@ public class MasterController {
 		this.mainPane = mainPane;
 	}
 	
+	public UsersGateway getUsersGateway() {
+		return usersGateway;
+	}
 }
