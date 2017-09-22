@@ -59,6 +59,8 @@ public class RunDPM extends Application {
 			
 			MasterController.getInstance().setMainPane((BorderPane) view);
 			
+			
+			
 			Scene scene = new Scene(view);
 			
 			primaryStage.setScene(scene);

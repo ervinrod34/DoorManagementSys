@@ -8,9 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class InventoryGateway {
@@ -19,6 +17,8 @@ public class InventoryGateway {
 	private Properties dbProperties;
 	FileInputStream dbPropertiesFile;
 	private MysqlDataSource database;
+	PreparedStatement preparedStatement;
+	ResultSet resultSet;
 	
 	public InventoryGateway () {
 		
@@ -66,16 +66,16 @@ public class InventoryGateway {
 		}
 	}
 	
-	public ArrayList <Inventory> searchInventory (String description) {
+	public ArrayList <Inventory> searchInventory (String category) {
 		
 		ArrayList <Inventory> matches = new ArrayList <Inventory> ();
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
+		preparedStatement = null;
+		resultSet = null;
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("SELECT * FROM Inventory WHERE description='");
-		sqlCommand.append(description);
+		sqlCommand.append("SELECT * FROM Inventory WHERE category='");
+		sqlCommand.append(category);
 		sqlCommand.append("'");
 		
 		try {
@@ -84,11 +84,9 @@ public class InventoryGateway {
 		
 			while (resultSet.next()) {
 			
-				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getInt("quantity"),
-						resultSet.getDouble("price"), resultSet.getDouble("weight"), resultSet.getString("category"),
-						resultSet.getString("description"), resultSet.getDouble("totalPrice"),
-						resultSet.getString("itemsList"));
-				
+				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getInt("quantity"), resultSet.getDouble("weight"),
+													 resultSet.getDouble("height"), resultSet.getDouble("width"), resultSet.getString("category"),
+													 resultSet.getString("description"));
 				matches.add(inventory);
 			}
 		}
@@ -106,6 +104,26 @@ public class InventoryGateway {
 		}
 		
 		return matches;
+	}
+	
+	public void addInventory (Inventory inventory) {
+		
+		StringBuffer sqlCommand = new StringBuffer ();
+		
+		sqlCommand.append("INSERT INTO Inventory (id, quantity, weight, height, width, category, description) VALUES ('" +
+						   inventory.getId() + "', '" + inventory.getQuantity() + "', '" + inventory.getWeight() + "', '" +
+						   inventory.getHeight() + "', '" + inventory.getWidth() + "', '" + inventory.getCategory() + "', '" +
+						   inventory.getDescription() + "')");
+		
+		preparedStatement = null;
+		
+		try {
+			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
+			preparedStatement.execute();
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+		
 	}
 	
 	public void closePSandRS (PreparedStatement ps, ResultSet rs) throws SQLException {

@@ -16,7 +16,8 @@ import landing.*;
 import java.io.IOException;
 import java.util.List;
 
-import inventory.InventoryGateway;
+import inventory.*;
+import product.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
@@ -41,6 +42,8 @@ public class MasterController {
 	
 	private InventoryGateway inventoryGateway;
 	
+	private ProductGateway productGateway;
+	
 	/**
 	 * The page that the user is trying to view
 	 */
@@ -62,6 +65,20 @@ public class MasterController {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			productGateway = new ProductGateway ();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+		//Test
+		//System.out.print(inventoryGateway.searchInventory("screw"));
+		//Product testProduct = new Product (0, 1, 5.5, 2.5, 3.5, 199.99, "door, window, lock", "oak door with stain window", "door");
+		//productGateway.addProduct(testProduct);
+		//Inventory testInventory = new Inventory (0, 5, 10.2, 6.4, 7.4, "glass", "sheet of glass");
+		//inventoryGateway.addInventory(testInventory);
+		
 	}
 	
 	/**
@@ -123,4 +140,5 @@ public class MasterController {
 	public UsersGateway getUsersGateway() {
 		return usersGateway;
 	}
+	
 }
