@@ -3,20 +3,19 @@ package inventory;
 public class Inventory {
 
 	private int id, quantity;
-	private double price, totalPrice, weight;
-	private String category, description, itemsList;
+	private double weight, height, width;
+	private String category, description;
 	
-	public Inventory (int id, int quantity, double price, double weight, String category, String description,
-					  double totalPrice, String itemsList) {
-		
+	public Inventory (int id, int quantity, double weight, double height, double width,
+					  String category, String description) {
 		this.id = id;
 		this.quantity = quantity;
-		this.price = price;
 		this.weight = weight;
+		this.height = height;
+		this.width = width;
 		this.category = category;
 		this.description = description;
-		this.totalPrice = totalPrice;
-		this.itemsList = itemsList;
+		
 		
 	}
 	
@@ -24,9 +23,9 @@ public class Inventory {
 		
 		StringBuffer inventoryString = new StringBuffer ();
 		
-		inventoryString.append("ID: " + id + ", Quantity: " + quantity + ", Price: " + price +
-							   ", Weight: " + weight + ", Category: " + category + ", Description: " +
-							   description + ", totalPrice: " + totalPrice + ", ItemsList: " + itemsList + "\n");
+		inventoryString.append("ID: " + id + ", Quantity: " + quantity + ", Weight: " + weight +
+							   ", Height: " + height + ", Width: " + width + ", Category: " + category + ", Description: " +
+							   description);
 		
 		return inventoryString.toString();
 	}
