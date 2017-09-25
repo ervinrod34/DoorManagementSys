@@ -14,10 +14,10 @@ import user.*;
 import landing.*;
 import inventory.*;
 import login.*;
+import product.*;
 
 import java.io.IOException;
 import java.util.List;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -57,6 +57,8 @@ public class MasterController {
 	 */
 	private InventoryGateway inventoryGateway;
 	
+	private ProductGateway productGateway;
+	
 	/**
 	 * The page that the user is trying to view
 	 */
@@ -81,13 +83,19 @@ public class MasterController {
 		try {
 			this.usersGateway = new UsersGateway();
 			this.inventoryGateway = new InventoryGateway();
-			
+			productGateway = new ProductGateway ();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		loggedOut = false;
+		
+		//Test
+		//Inventory testInventory = new Inventory (0, "Stanley", "ND-384n", "???", "4.5 x 9 x 2", "default", "Heavy Weight", "US32D", 4.5, 9, 100, "hinge");
+		//inventoryGateway.addInventory(testInventory);
+		//System.out.print(inventoryGateway.searchInventory("hinge"));
+
 	}
 	
 	/**

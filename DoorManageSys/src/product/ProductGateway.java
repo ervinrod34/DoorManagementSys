@@ -1,4 +1,4 @@
-package inventory;
+package product;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
-public class InventoryGateway {
+public class ProductGateway {
 
 	private Connection dbConnection;
 	private Properties dbProperties;
@@ -20,7 +20,7 @@ public class InventoryGateway {
 	PreparedStatement preparedStatement;
 	ResultSet resultSet;
 	
-	public InventoryGateway () {
+	public ProductGateway () {
 		
 		dbProperties = new Properties ();
 		
@@ -66,15 +66,15 @@ public class InventoryGateway {
 		}
 	}
 	
-	public ArrayList <Inventory> searchInventory (String category) {
+	public ArrayList <Product> searchProduct (String category) {
 		
-		ArrayList <Inventory> matches = new ArrayList <Inventory> ();
+		ArrayList <Product> matches = new ArrayList <Product> ();
 		preparedStatement = null;
 		resultSet = null;
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("SELECT * FROM Inventory WHERE category='");
+		sqlCommand.append("SELECT * FROM Product WHERE category='");
 		sqlCommand.append(category);
 		sqlCommand.append("'");
 		
@@ -84,11 +84,10 @@ public class InventoryGateway {
 		
 			while (resultSet.next()) {
 			
-				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("manufacturer"), resultSet.getString("partNo"),
-													 resultSet.getString("vendor"), resultSet.getString("size"), resultSet.getString("colorCode"),
-													 resultSet.getString("extra"), resultSet.getString("unitOfMeasure"), resultSet.getDouble("actualCost"),
-													 resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"), resultSet.getString("category"));
-				matches.add(inventory);
+				Product product = new Product (resultSet.getInt("id"), resultSet.getInt("quantity"), resultSet.getDouble("weight"),
+											   resultSet.getDouble("height"), resultSet.getDouble("width"), resultSet.getDouble("price"),
+											   resultSet.getString("items"), resultSet.getString("description"), resultSet.getString("category"));
+				matches.add(product);
 			}
 		}
 		catch (SQLException sqlException) {
@@ -107,14 +106,14 @@ public class InventoryGateway {
 		return matches;
 	}
 	
-	public void addInventory (Inventory inventory) {
+	public void addProduct (Product product) {
 		
-		StringBuffer sqlCommand = new StringBuffer ();
+		StringBuffer sqlCommand = new StringBuffer();
 		
-		sqlCommand.append("INSERT INTO Inventory (id, manufacturer, partNo, vendor, size, colorCode, extra, unitOfMeasure, actualCost, sellingPrice, quantity, category) VALUES ('"); 
-		sqlCommand.append (inventory.getId() + "', '" + inventory.getManufacturer() + "', '" + inventory.getPartNo() + "', '" + inventory.getVendor() + "', '" +
-						   inventory.getSize() + "', '" + inventory.getColorCode() + "', '" + inventory.getExtra() + "', '" + inventory.getUnitOfMeasure() + "', '" +
-						   inventory.getActualCost() + "', '" + inventory.getSellingPrice() + "', '" + inventory.getQuantity() + "', '" + inventory.getCategory() + "')");
+		sqlCommand.append("INSERT INTO Product (id, quantity, weight, height, width, price, items, description, category) VALUES ('");
+		sqlCommand.append(product.getId() + "', '" + product.getQuantity() + "', '" + product.getWeight() + "', '" + product.getHeight()
+						  + "', '" + product.getWidth() + "', '" + product.getPrice() + "', '" + product.getItems() + "', '"
+						  + product.getDescription() + "', '" + product.getCategory() + "')");
 		
 		preparedStatement = null;
 		
@@ -135,22 +134,5 @@ public class InventoryGateway {
 			ps.close();
 		}
 	}
+	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
