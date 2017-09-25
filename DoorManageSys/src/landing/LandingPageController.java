@@ -1,5 +1,8 @@
 package landing;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import application.*;
 
 /**
@@ -11,17 +14,28 @@ import application.*;
 import javafx.application.Platform;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
-public class LandingPageController {
+public class LandingPageController implements Initializable {
+	
+	@FXML private Label inventory;
+	
+	@FXML private Label orders;
+	
+	@FXML private Label quote;
+	
+	@FXML private Label users;
+	
+	@FXML private Label logout;
 
-	/**
-	 * The logout button
-	 */
-	@FXML private Button logoutButton;
+	@FXML private Label userIdentifierLabel;
 	
 	/**
 	 * The search button
@@ -34,16 +48,6 @@ public class LandingPageController {
 	@FXML private TextField searchTextField;
 	
 	/**
-	 * The View Inventory menu item
-	 */
-	@FXML private MenuItem viewInventory;
-	
-	/**
-	 * The View Users menu item
-	 */
-	@FXML private MenuItem viewUsers;
-	
-	/**
 	 * Initializes a LandingPageController object.
 	 */
 	public LandingPageController() {
@@ -51,19 +55,61 @@ public class LandingPageController {
 	}
 	
 	/**
-	 * Handles the user interaction with the GUI components in the
-	 * landing page.
+	 * Handles the user interaction with the the menu labels in the
+	 * Landing page.
 	 * @param ae An ActionEvent
 	 */
-	@FXML private void handleLandingPage(ActionEvent ae) {
-		Object source = ae.getSource();
+	@FXML private void handleMenu(MouseEvent me) {
+		Object source = me.getSource();
 		
-		if(source == logoutButton) {
-			Platform.exit(); //TEMPORARY just for demo
-		}
-		else if(source == viewUsers) {
-			MasterController.getInstance().changeView(PageTypes.VIEW_USERS_PAGE, new Object());
+		if(source == logout) {
+			MasterController.getInstance().logoutPressed();
+			MasterController.getInstance().changeView(PageTypes.LOGIN_PAGE);
+		}else if(source == inventory) {
+			this.applyEffectOnMenuLabel(inventory);
+			this.changeViewOnLabelClick(inventory, PageTypes.INVENTORY_LIST_PAGE);
+		}else if(source == orders) {
+			this.applyEffectOnMenuLabel(orders);
+		}else if(source == quote) {
+			this.applyEffectOnMenuLabel(quote);
+		}else if(source == users) {
+			this.applyEffectOnMenuLabel(users);
+			this.changeViewOnLabelClick(users, PageTypes.VIEW_USERS_PAGE);
 		}
 	}
 	
+	@FXML private void handleSearch(ActionEvent ae) {
+		
+	}
+
+	public void initialize(URL location, ResourceBundle resources) {
+		this.userIdentifierLabel.setText("Welcome " + MasterController.getInstance().getUser().getName());
+	}
+	
+	private void applyEffectOnMenuLabel(Label label) {
+		label.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent e) {
+		        label.setScaleX(1.5);
+		        label.setScaleY(1.5);
+		    }
+		});
+		
+		label.setOnMouseExited(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent e) {
+		        label.setScaleX(1.0);
+		        label.setScaleY(1.0);
+		    }
+		});
+	}
+	
+	private void changeViewOnLabelClick(Label label, PageTypes pageType) {
+		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				MasterController.getInstance().changeView(pageType);
+			}
+		});
+	}
 }

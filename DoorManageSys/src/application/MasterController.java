@@ -12,14 +12,17 @@ package application;
 
 import user.*;
 import landing.*;
+import inventory.*;
+import login.*;
 
 import java.io.IOException;
 import java.util.List;
 
-import inventory.InventoryGateway;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 
 public class MasterController {
@@ -35,10 +38,23 @@ public class MasterController {
 	private BorderPane mainPane;
 	
 	/**
+	 * A reference to the Stage of this application
+	 */
+	private Stage stage;
+	
+	/**
+	 * The current logged in user of this application
+	 */
+	private DPMUser user;
+	
+	/**
 	 * The Gateway to the User table in the DB
 	 */
 	private UsersGateway usersGateway;
 	
+	/**
+	 * The Gateway to the Inventory table in the Database
+	 */
 	private InventoryGateway inventoryGateway;
 	
 	/**
@@ -47,48 +63,94 @@ public class MasterController {
 	private PageTypes desiredPage;
 	
 	/**
+	 * Boolean whether user logged out
+	 */
+	private boolean loggedOut;
+	
+	/**
+	 * A Object holder for an object the user wishes to edit
+	 * Mainly used when passing an object from a DetailController into a 
+	 * EditController
+	 */
+	private Object editObj;
+	
+	/**
 	 * Initialize a MasterController object.
 	 */
 	private MasterController() {
 		try {
-			usersGateway = new UsersGateway();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			inventoryGateway = new InventoryGateway ();
+			this.usersGateway = new UsersGateway();
+			this.inventoryGateway = new InventoryGateway();
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		loggedOut = false;
 	}
 	
 	/**
 	 * This is the main function that is called when the user
 	 * wishes to change the current page.
 	 * @param pageType The type of page
-	 * @param obj
 	 * @return
 	 */
-	public boolean changeView(PageTypes pageType, Object obj) {
-		FXMLLoader loader = null;
+	public boolean changeView(PageTypes pageType) {
 		desiredPage = pageType;
 		Parent view = null;
 		
-		loader = this.loadView();
+		view = this.loadView();
 		
-		try {
-			view = loader.load();
-		} catch(IOException io) {
-			io.printStackTrace();
+		if(desiredPage == PageTypes.LANDING_PAGE || desiredPage == PageTypes.LOGIN_PAGE) {
+			this.setMainPane((BorderPane) view);
+			Scene scene = new Scene(view);
+			this.stage.setScene(scene);
+			this.stage.show();
+		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE) {
+			mainPane.setCenter(view);
+			
+		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE) {
+			mainPane.setRight(view);
+		} else if(desiredPage == PageTypes.INVENTORY_LIST_PAGE) {
+			FXMLLoader loader = null;
+			Parent viewOne = null;
+			
+			loader = new FXMLLoader(getClass().getResource("/inventory/InventoryList_Page.fxml"));
+			loader.setController(new InventoryListController());
+			try {
+				viewOne = loader.load();
+				mainPane.setCenter(viewOne);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			loader = new FXMLLoader(getClass().getResource("/inventory/InventoryDetail_Page.fxml"));
+			loader.setController(new InventoryDetailController(new Inventory()));
+			try {
+				viewOne = loader.load();
+				mainPane.setRight(viewOne);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-		mainPane.setCenter(view);
 		return true;
 	}
 	
-	public FXMLLoader loadView() {
+	public void displayAllInventory() {
+		
+	}
+	
+	/**
+	 * Loads the view by loading the requested page and assigning
+	 * a Controller for it.
+	 * @return A Parent object specifying a base class for all scene nodes
+	 */
+	public Parent loadView() {
+		Parent view = null;
 		FXMLLoader loader = null;
 		
 		if(desiredPage == PageTypes.LANDING_PAGE) {
@@ -98,12 +160,40 @@ public class MasterController {
 		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE) {
 			List<DPMUser> users = this.usersGateway.getUsers();
 			loader = new FXMLLoader(getClass().getResource("/user/ViewUsers_Page.fxml"));
-			loader.setController(new ViewUsersController(users));;
+			loader.setController(new ViewUsersController(users));
+			
+		} else if(desiredPage == PageTypes.LOGIN_PAGE) {
+			loader = new FXMLLoader(getClass().getResource("/login/Login_Page.fxml"));			
+			loader.setController(new LoginController(new DPMUser()));
+		
+		} else if(desiredPage == PageTypes.INVENTORY_LIST_PAGE) {
+			loader = new FXMLLoader(getClass().getResource("/inventory/InventoryList_Page.fxml"));
+			loader.setController(new InventoryListController());
+		
+		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE) {
+			loader = new FXMLLoader(getClass().getResource("/inventory/InventoryDetail_Page.fxml"));
+			loader.setController(new InventoryDetailController((Inventory)this.editObj));
 		}
 		
-		return loader;
+		try {
+			view = loader.load();
+		} catch(IOException io) {
+			io.printStackTrace();
+		}
+		
+		return view;
 	}
 	
+	public boolean updateRightMenu(PageTypes pageType) {
+		
+		
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public static MasterController getInstance() {
 		if(instance == null) {
 			instance = new MasterController();
@@ -120,7 +210,37 @@ public class MasterController {
 		this.mainPane = mainPane;
 	}
 	
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+	
 	public UsersGateway getUsersGateway() {
 		return usersGateway;
+	}
+	
+	public DPMUser getUser() {
+		return this.user;
+	}
+	
+	public void setUser(DPMUser user) {
+		this.user = user;
+	}
+	
+	public void logoutPressed() {
+		if(this.loggedOut == false) {
+			this.loggedOut = true;
+		}
+	}
+	
+	public boolean isLogoutPressed() {
+		return this.loggedOut;
+	}
+
+	public InventoryGateway getInventoryGateway() {
+		return inventoryGateway;
+	}
+
+	public void setEditObject(Object obj) {
+		this.editObj = obj;
 	}
 }

@@ -56,7 +56,6 @@ public class ViewUsersController implements Initializable {
 	 * Initializes the controller's components with data.
 	 */
 	public void initialize(URL loc, ResourceBundle rsc) {
-		
 		this.observableList = this.usersListView.getItems();
 		for(DPMUser user : this.users) {
 			this.observableList.add(user);

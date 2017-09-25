@@ -58,9 +58,11 @@ public class RunDPM extends Application {
 			Parent view = loader.load();
 			
 			MasterController.getInstance().setMainPane((BorderPane) view);
+			MasterController.getInstance().setStage(primaryStage);
 			
 			Scene scene = new Scene(view);
 			
+			primaryStage.setTitle("Deansteel DPM v1.0");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

@@ -20,6 +20,10 @@ public class Inventory {
 		
 	}
 	
+	public Inventory() {
+		
+	}
+
 	public String toString () {
 		
 		StringBuffer inventoryString = new StringBuffer ();
