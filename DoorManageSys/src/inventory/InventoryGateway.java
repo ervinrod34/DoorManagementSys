@@ -84,9 +84,10 @@ public class InventoryGateway {
 		
 			while (resultSet.next()) {
 			
-				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getInt("quantity"), resultSet.getDouble("weight"),
-													 resultSet.getDouble("height"), resultSet.getDouble("width"), resultSet.getString("category"),
-													 resultSet.getString("description"));
+				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("manufacturer"), resultSet.getString("partNo"),
+													 resultSet.getString("vendor"), resultSet.getString("size"), resultSet.getString("colorCode"),
+													 resultSet.getString("extra"), resultSet.getString("unitOfMeasure"), resultSet.getDouble("actualCost"),
+													 resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"), resultSet.getString("category"));
 				matches.add(inventory);
 			}
 		}
@@ -110,10 +111,10 @@ public class InventoryGateway {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("INSERT INTO Inventory (id, quantity, weight, height, width, category, description) VALUES ('" +
-						   inventory.getId() + "', '" + inventory.getQuantity() + "', '" + inventory.getWeight() + "', '" +
-						   inventory.getHeight() + "', '" + inventory.getWidth() + "', '" + inventory.getCategory() + "', '" +
-						   inventory.getDescription() + "')");
+		sqlCommand.append("INSERT INTO Inventory (id, manufacturer, partNo, vendor, size, colorCode, extra, unitOfMeasure, actualCost, sellingPrice, quantity, category) VALUES ('"); 
+		sqlCommand.append (inventory.getId() + "', '" + inventory.getManufacturer() + "', '" + inventory.getPartNo() + "', '" + inventory.getVendor() + "', '" +
+						   inventory.getSize() + "', '" + inventory.getColorCode() + "', '" + inventory.getExtra() + "', '" + inventory.getUnitOfMeasure() + "', '" +
+						   inventory.getActualCost() + "', '" + inventory.getSellingPrice() + "', '" + inventory.getQuantity() + "', '" + inventory.getCategory() + "')");
 		
 		preparedStatement = null;
 		

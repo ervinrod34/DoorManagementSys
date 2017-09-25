@@ -71,13 +71,11 @@ public class MasterController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
+		
 		//Test
-		//System.out.print(inventoryGateway.searchInventory("screw"));
-		//Product testProduct = new Product (0, 1, 5.5, 2.5, 3.5, 199.99, "door, window, lock", "oak door with stain window", "door");
-		//productGateway.addProduct(testProduct);
-		//Inventory testInventory = new Inventory (0, 5, 10.2, 6.4, 7.4, "glass", "sheet of glass");
+		//Inventory testInventory = new Inventory (0, "Stanley", "ND-384n", "???", "4.5 x 9 x 2", "default", "Heavy Weight", "US32D", 4.5, 9, 100, "hinge");
 		//inventoryGateway.addInventory(testInventory);
+		//System.out.print(inventoryGateway.searchInventory("hinge"));
 		
 	}
 	
