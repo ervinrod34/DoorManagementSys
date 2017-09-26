@@ -17,6 +17,7 @@ import login.*;
 import product.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -83,7 +84,7 @@ public class MasterController {
 		try {
 			this.usersGateway = new UsersGateway();
 			this.inventoryGateway = new InventoryGateway();
-			productGateway = new ProductGateway ();
+			this.productGateway = new ProductGateway ();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -110,46 +111,27 @@ public class MasterController {
 		
 		view = this.loadView();
 		
+		//Switching between Login and Landing
 		if(desiredPage == PageTypes.LANDING_PAGE || desiredPage == PageTypes.LOGIN_PAGE) {
 			this.setMainPane((BorderPane) view);
 			Scene scene = new Scene(view);
 			this.stage.setScene(scene);
 			this.stage.show();
-		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE) {
+		
+		//for List Page
+		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE) {
 			mainPane.setCenter(view);
-			
+		
+		//for Detail Page
 		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE) {
 			mainPane.setRight(view);
-		} else if(desiredPage == PageTypes.INVENTORY_LIST_PAGE) {
-			FXMLLoader loader = null;
-			Parent viewOne = null;
 			
-			loader = new FXMLLoader(getClass().getResource("/inventory/InventoryList_Page.fxml"));
-			loader.setController(new InventoryListController());
-			try {
-				viewOne = loader.load();
-				mainPane.setCenter(viewOne);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			loader = new FXMLLoader(getClass().getResource("/inventory/InventoryDetail_Page.fxml"));
-			loader.setController(new InventoryDetailController(new Inventory()));
-			try {
-				viewOne = loader.load();
-				mainPane.setRight(viewOne);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		//for Edit Page
+		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE) {
+			mainPane.setRight(view);
 		}
 		
 		return true;
-	}
-	
-	public void displayAllInventory() {
-		
 	}
 	
 	/**
@@ -161,26 +143,43 @@ public class MasterController {
 		Parent view = null;
 		FXMLLoader loader = null;
 		
-		if(desiredPage == PageTypes.LANDING_PAGE) {
-			loader = new FXMLLoader(getClass().getResource("/landing/Landing_Page.fxml"));
-			loader.setController(new LandingPageController());
-			
-		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE) {
-			List<DPMUser> users = this.usersGateway.getUsers();
-			loader = new FXMLLoader(getClass().getResource("/user/ViewUsers_Page.fxml"));
-			loader.setController(new ViewUsersController(users));
-			
-		} else if(desiredPage == PageTypes.LOGIN_PAGE) {
-			loader = new FXMLLoader(getClass().getResource("/login/Login_Page.fxml"));			
-			loader.setController(new LoginController(new DPMUser()));
 		
-		} else if(desiredPage == PageTypes.INVENTORY_LIST_PAGE) {
-			loader = new FXMLLoader(getClass().getResource("/inventory/InventoryList_Page.fxml"));
-			loader.setController(new InventoryListController());
-		
-		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE) {
-			loader = new FXMLLoader(getClass().getResource("/inventory/InventoryDetail_Page.fxml"));
-			loader.setController(new InventoryDetailController((Inventory)this.editObj));
+		switch(desiredPage) {
+			case LANDING_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/landing/Landing_Page.fxml"));
+				loader.setController(new LandingPageController());
+				break;
+				
+			case LOGIN_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/login/Login_Page.fxml"));			
+				loader.setController(new LoginController(new DPMUser()));
+				break;
+				
+			case VIEW_USERS_PAGE:
+				List<DPMUser> users = this.usersGateway.getUsers();
+				loader = new FXMLLoader(getClass().getResource("/user/ViewUsers_Page.fxml"));
+				loader.setController(new ViewUsersController(users));
+				break;
+				
+			case INVENTORY_LIST_PAGE:
+				List<Inventory> inventories = new ArrayList<Inventory>();
+				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryList_Page.fxml"));
+				loader.setController(new InventoryListController(inventories));
+				break;
+				
+			case INVENTORY_DETAIL_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryDetail_Page.fxml"));
+				loader.setController(new InventoryDetailController((Inventory)this.editObj));
+				break;
+				
+			case INVENTORY_EDIT_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryEdit_Page.fxml"));
+				loader.setController(new InventoryEditController(new Inventory()));
+				break;
+				
+			default:
+				break;
+			
 		}
 		
 		try {

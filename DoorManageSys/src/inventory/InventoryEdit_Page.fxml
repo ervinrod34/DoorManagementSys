@@ -1,11 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
-
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="580.0" stroke="#32000f" strokeType="INSIDE" strokeWidth="3.0" width="466.0" />
+      <Button fx:id="saveButton" layoutX="166.0" layoutY="543.0" mnemonicParsing="false" onAction="#handleInventoryEdit" text="Save " />
+      <Button fx:id="cancelButton" layoutX="235.0" layoutY="543.0" mnemonicParsing="false" onAction="#handleInventoryEdit" text="Cancel" />
+      <Label layoutX="28.0" layoutY="15.0" text="Item #">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="22.0" layoutY="275.0" text="Vendors:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="290.0" layoutY="48.0" text="Part #:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="22.0" layoutY="80.0" text="Sizes:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="227.0" layoutY="80.0" text="Color Code:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="20.0" layoutY="140.0" text="Other Information:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <ListView fx:id="vendorsList" layoutX="14.0" layoutY="295.0" prefHeight="74.0" prefWidth="438.0" />
+      <Label layoutX="20.0" layoutY="50.0" text="Manufacturer:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="19.0" layoutY="420.0" text="Unit of Measure:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="20.0" layoutY="450.0" text="Actual Cost:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="225.0" layoutY="450.0" text="Selling Price:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="20.0" layoutY="480.0" text="Taxable:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="141.0" layoutY="480.0" text="Accounting Code:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="itemNumberField" layoutX="89.0" layoutY="12.0" onAction="#handleInventoryEdit">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="manufacturerField" layoutX="122.0" layoutY="48.0" onAction="#handleInventoryEdit" prefHeight="25.0" prefWidth="159.0" />
+      <TextField fx:id="partNumberField" layoutX="339.0" layoutY="48.0" onAction="#handleInventoryEdit" prefHeight="25.0" prefWidth="109.0" />
+      <TextField fx:id="sizesField" layoutX="65.0" layoutY="80.0" onAction="#handleInventoryEdit" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="colorCodeField" layoutX="312.0" layoutY="80.0" onAction="#handleInventoryEdit" prefHeight="25.0" prefWidth="134.0" />
+      <TextArea fx:id="otherInfoField" layoutX="14.0" layoutY="161.0" prefHeight="105.0" prefWidth="438.0" promptText="Enter other information here." />
+      <TextField fx:id="unitOfMeasureField" layoutX="140.0" layoutY="418.0" onAction="#handleInventoryEdit" />
+      <TextField fx:id="actualCostField" layoutX="107.0" layoutY="448.0" onAction="#handleInventoryEdit" prefHeight="25.0" prefWidth="91.0" />
+      <TextField fx:id="sellingPriceField" layoutX="319.0" layoutY="450.0" onAction="#handleInventoryEdit" prefHeight="25.0" prefWidth="91.0" />
+      <CheckBox fx:id="taxable" layoutX="83.0" layoutY="480.0" mnemonicParsing="false" onAction="#handleInventoryEdit" />
+      <TextField fx:id="accountingCodeField" layoutX="269.0" layoutY="480.0" onAction="#handleInventoryEdit" prefHeight="25.0" prefWidth="181.0" />
+      <TextField fx:id="vendorField" layoutX="15.0" layoutY="375.0" prefHeight="25.0" prefWidth="290.0" promptText="Enter vendor here." />
+      <Button fx:id="addVendorButton" layoutX="311.0" layoutY="375.0" mnemonicParsing="false" text="Add" />
+      <Label layoutX="21.0" layoutY="110.0" text="Quantity:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="191.0" layoutY="110.0" text="Min. Qty.:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="quantityField" layoutX="91.0" layoutY="110.0" onAction="#handleInventoryEdit" prefHeight="25.0" prefWidth="83.0" />
+      <TextField fx:id="minQuantityField" layoutX="263.0" layoutY="110.0" onAction="#handleInventoryEdit" prefHeight="25.0" prefWidth="83.0" />
    </children>
 </AnchorPane>
