@@ -33,9 +33,6 @@ public class Inventory {
 	}
 	
 	public Inventory () {
-<<<<<<< HEAD
-		this.id = 0;
-=======
 		id = 0;
 		itemNo = "";
 		manufacturer = "";
@@ -53,7 +50,6 @@ public class Inventory {
 		category = "";
 		taxable = false;
 		accountingCode = "";
->>>>>>> branch 'dev' of https://github.com/StefanMarchand/TeamNoNameYet
 	}
 	
 	public int getMinQuantity () {
