@@ -22,6 +22,7 @@ import java.util.List;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -135,6 +136,7 @@ public class MasterController {
 		//for List Page
 		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE) {
 			mainPane.setCenter(view);
+			mainPane.setRight(this.getEmptyRightPane());
 		
 		//for Detail Page
 		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE) {
@@ -188,7 +190,13 @@ public class MasterController {
 				
 			case INVENTORY_EDIT_PAGE:
 				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryEdit_Page.fxml"));
-				loader.setController(new InventoryEditController(new Inventory()));
+				Inventory editInventory = (Inventory)this.editObj;
+				
+				if(editInventory.getId() > 0) {
+					loader.setController(new InventoryEditController(editInventory));
+				} else if(editInventory.getId() == 0) {
+					loader.setController(new InventoryEditController(new Inventory()));
+				}
 				break;
 				
 			default:
@@ -263,5 +271,12 @@ public class MasterController {
 
 	public void setEditObject(Object obj) {
 		this.editObj = obj;
+	}
+	
+	public AnchorPane getEmptyRightPane() {
+		AnchorPane emptyAnchor = new AnchorPane();
+		emptyAnchor.setPrefSize(466.0, 580.0);
+		
+		return emptyAnchor;
 	}
 }

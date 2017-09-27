@@ -30,7 +30,7 @@ public class Inventory {
 	}
 	
 	public Inventory () {
-		
+		this.id = 0;
 	}
 	
 	public int getMinQuantity () {

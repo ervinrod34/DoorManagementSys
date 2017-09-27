@@ -128,16 +128,27 @@ public class InventoryGateway {
 		
 	}
 
-	public void updateInventory (int id, String column, String value) {
+	public void updateInventory (Inventory inventory) {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("UPDATE Inventory SET " + column + " = '" + value  + "' WHERE id = '" + id + "'");
+		sqlCommand.append("UPDATE Inventory SET id=?, itemNo=?, manufacturer=?, manufacturerNo=?, partNo=?, " + 
+											   "vendor=?, size=?, colorCode=?, extra=?, unitOfMeasure=?, " + 
+											   "actualCost=?, sellingPrice=?, quantity=?, minQuantity=?, " +
+											   "category=? " + 
+											   "WHERE id =?");
 		
 		preparedStatement = null;
+		resultSet = null;
 		
 		try {
-			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
+			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, inventory.getId());
+			preparedStatement.setString(2, inventory.getItemNo());
+			preparedStatement.setString(3, inventory.getManufacturer());
+			preparedStatement.setString(4, inventory.getManufacturerNo());
+			//finish this part
+			
 			preparedStatement.execute();
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();

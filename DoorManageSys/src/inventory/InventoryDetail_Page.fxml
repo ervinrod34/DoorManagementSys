@@ -123,5 +123,25 @@
          <font>
             <Font size="15.0" />
          </font></Label>
+      <Label layoutX="293.0" layoutY="400.0" text="Quantity:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="293.0" layoutY="440.0" text="Min. Qty.:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="quantity" layoutX="293.0" layoutY="420.0" text="not defined">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="minQuantity" layoutX="293.0" layoutY="460.0" text="not defined">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

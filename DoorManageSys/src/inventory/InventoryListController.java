@@ -26,12 +26,12 @@ public class InventoryListController implements Initializable {
 	
 	private List<Inventory> inventories;
 	
-	private Button addButton;
+	@FXML private Button addButton;
 	
 	public InventoryListController(List<Inventory> inventories) {
 		this.inventories = new ArrayList<Inventory>();
 		
-		//for testing
+		//for testing - DELETE this later
 		Inventory data1 = new Inventory();
 		data1.setManufacturer("STANLEY");
 		this.inventories.add(data1);
@@ -40,6 +40,7 @@ public class InventoryListController implements Initializable {
 	@FXML private void handleInventory(ActionEvent ae) {
 		Object source = ae.getSource();
 		if(source == addButton) {
+			MasterController.getInstance().setEditObject(new Inventory());
 			MasterController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
 		}
 	}
@@ -48,7 +49,7 @@ public class InventoryListController implements Initializable {
 		if((mouseEvent.getButton() == MouseButton.PRIMARY) && (mouseEvent.getClickCount() == 2)) {
 			Inventory selected = inventoryListView.getSelectionModel().getSelectedItem();
 			MasterController.getInstance().setEditObject(selected);
-			MasterController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
+			MasterController.getInstance().changeView(PageTypes.INVENTORY_DETAIL_PAGE);
 		}
 	}
 	

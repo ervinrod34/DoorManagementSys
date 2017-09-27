@@ -1,6 +1,7 @@
 package inventory;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,7 +39,11 @@ public class InventoryDetailController implements Initializable {
 	
 	@FXML private Label taxable;
 	
-	@FXML private Label accoundtingCode;
+	@FXML private Label accountingCode;
+	
+	@FXML private Label quantity;
+	
+	@FXML private Label minQuantity;
 	
 	@FXML private Button editButton;
 	
@@ -48,12 +53,12 @@ public class InventoryDetailController implements Initializable {
 	
 	private ObservableList<String> observableList;
 	
-	private List<String> vendors;
-	
 	private Inventory inventory;
 	
 	public InventoryDetailController(Inventory inventory) {
 		this.inventory = inventory;
+		this.inventory.setId(1);
+		this.inventory.setVendor("STANLEY,CHINA");
 	}
 	
 	@FXML private void handleInventoryDetail(ActionEvent ae) {
@@ -64,19 +69,26 @@ public class InventoryDetailController implements Initializable {
 			MasterController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
-			//MasterController.getInstance().getInventoryGateway().delete(this.inventory);
+			//MasterController.getInstance().getInventoryGateway().deleteInventory(this.inventory.getId());
 		}
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		if(this.inventory.getId() > 0) {
+			this.dbID.setText(Integer.toString(this.inventory.getId()));
+			this.itemNumber.setText(this.inventory.getItemNo());
+			this.manufacturer.setText(this.inventory.getManufacturer());
+			this.populateVendorList();
+		}
 	}
 	
 	private void populateVendorList() {
+		List<String> vendors = Arrays.asList(inventory.getVendor().split(","));
+		
 		this.observableList = this.vendorsList.getItems();
-		//for(String vendor : this.inventory) {
-		//	this.observableList.add(vendor);
-		//}
+		for(String vendor : vendors) {
+			this.observableList.add(vendor);
+		}
 	}
 }
