@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import application.MasterController;
+import application.PageTypes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,6 +45,8 @@ public class InventoryEditController implements Initializable {
 	
 	@FXML private TextField minQuantityField;
 	
+	@FXML private TextField maxQuantityField;
+	
 	@FXML private Button addVendorButton;
 	
 	@FXML private Button saveButton;
@@ -62,16 +66,61 @@ public class InventoryEditController implements Initializable {
 	}
 	
 	@FXML public void handleInventoryEdit(ActionEvent ae) {
+		Object source = ae.getSource();
 		
+		if(source == cancelButton) {
+			MasterController.getInstance().setEditObject(this.inventory);
+			MasterController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
+		} else if(source == saveButton) {
+			this.updateInventoryObject();
+			this.inventory.save();
+		} else if(source == addVendorButton) {
+			this.observableList.add(this.vendorField.getText());
+			this.populateVendorList();
+		}
 	}
 	
 	public void initialize(URL loc, ResourceBundle rsc) {
 		if(this.inventory.getId() > 0) {
 			this.itemNumberField.setText(this.inventory.getItemNo());
 			this.manufacturerField.setText(this.inventory.getManufacturer());
+			this.partNumberField.setText(this.inventory.getManufacturerNo());
+			this.sizesField.setText(this.inventory.getSize());
+			this.colorCodeField.setText(this.inventory.getColorCode());
+			this.otherInfoField.setText(this.inventory.getExtra());
+			this.unitOfMeasureField.setText(this.inventory.getUnitOfMeasure());
+			this.actualCostField.setText(Double.toString(this.inventory.getActualCost()));
+			this.sellingPriceField.setText(Double.toString(this.inventory.getSellingPrice()));
+			this.accountingCodeField.setText(this.inventory.getAccountingCode());
+			this.quantityField.setText(Integer.toString(this.inventory.getQuantity()));
+			this.minQuantityField.setText(Integer.toString(this.inventory.getMinQuantity()));
+			this.maxQuantityField.setText(Integer.toString(this.inventory.getMaxQuantity()));
+			this.taxable.setSelected(this.inventory.isTaxable());
 			this.populateVendorList();
 
 		}
+	}
+	
+	public void updateInventoryObject() {
+		Inventory updatedInventory = new Inventory(this.inventory.getId(),
+									 this.itemNumberField.getText(),
+									 this.manufacturerField.getText(),
+									 this.partNumberField.getText(),
+									 this.listViewToCSV(),
+									 this.sizesField.getText(),
+									 this.colorCodeField.getText(),
+									 this.otherInfoField.getText(),
+									 this.unitOfMeasureField.getText(),
+									 Double.parseDouble(this.actualCostField.getText()),
+									 Double.parseDouble(this.sellingPriceField.getText()),
+									 Integer.parseInt(this.quantityField.getText()),
+									 Integer.parseInt(this.minQuantityField.getText()),
+									 Integer.parseInt(this.maxQuantityField.getText()),
+									 "default Category",
+									 this.taxable.isSelected(),
+									 this.accountingCodeField.getText());
+		
+		this.inventory = updatedInventory;
 	}
 	
 	private void populateVendorList() {
@@ -85,19 +134,16 @@ public class InventoryEditController implements Initializable {
 	
 	private String listViewToCSV() {
 		String csvVendors = "";
-		for(String vendor : this.vendorsList.getItems()) {
-			csvVendors += vendor + ",";
+		if(!this.vendorsList.getItems().isEmpty()) {
+			for(String vendor : this.vendorsList.getItems()) {
+				csvVendors += vendor + ",";
+			}
+			csvVendors = csvVendors.substring(0, csvVendors.length() - 1);
 		}
-		csvVendors = csvVendors.substring(0, csvVendors.length() - 1);
+		else {
+			csvVendors = "";
+		}
 		
 		return csvVendors;
-	}
-	
-	private Inventory getTextFromFields() {
-		Inventory updatedInventory = new Inventory();
-		
-		updatedInventory.setId(this.inventory.getId());
-		
-		return updatedInventory;
 	}
 }

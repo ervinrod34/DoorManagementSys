@@ -197,6 +197,7 @@ public class InventoryGateway {
 			preparedStatement.setString(15, inventory.getCategory());
 			preparedStatement.setBoolean(16, inventory.isTaxable());
 			preparedStatement.setString(17, inventory.getAccountingCode());
+			preparedStatement.setInt(18, inventory.getId());
 			
 			preparedStatement.execute();
 		} catch (SQLException sqlException) {

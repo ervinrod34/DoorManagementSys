@@ -164,10 +164,11 @@ public class Inventory {
 	}
 	
 	public void save() {
-		if (id == 0)
+		if (id == 0) {
 			MasterController.getInstance().getInventoryGateway().addInventory(this);
-		else // id > 0
+		} else {
 			MasterController.getInstance().getInventoryGateway().updateInventory(this);
+		}
 	}
 	
 	public String toString () {

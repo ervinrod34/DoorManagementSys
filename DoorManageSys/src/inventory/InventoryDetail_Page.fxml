@@ -143,5 +143,15 @@
             <Font size="15.0" />
          </font>
       </Label>
+      <Label layoutX="293.0" layoutY="480.0" text="Max Qty.:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="maxQuantity" layoutX="293.0" layoutY="500.0" text="not defined">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

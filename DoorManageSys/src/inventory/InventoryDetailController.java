@@ -45,6 +45,8 @@ public class InventoryDetailController implements Initializable {
 	
 	@FXML private Label minQuantity;
 	
+	@FXML private Label maxQuantity;
+	
 	@FXML private Button editButton;
 	
 	@FXML private Button deleteButton;
@@ -77,6 +79,19 @@ public class InventoryDetailController implements Initializable {
 			this.dbID.setText(Integer.toString(this.inventory.getId()));
 			this.itemNumber.setText(this.inventory.getItemNo());
 			this.manufacturer.setText(this.inventory.getManufacturer());
+			this.manufacturerID.setText(this.inventory.getManufacturerNo());
+			this.sizes.setText(this.inventory.getSize());
+			this.colorCode.setText(this.inventory.getColorCode());
+			this.otherInformation.setText(this.inventory.getExtra());
+			this.unitOfMeasure.setText(this.inventory.getUnitOfMeasure());
+			this.actualCost.setText(Double.toString(this.inventory.getActualCost()));
+			this.sellingPrice.setText(Double.toString(this.inventory.getSellingPrice()));
+			this.displayTaxable();
+			this.accountingCode.setText(this.inventory.getAccountingCode());
+			this.quantity.setText(Integer.toString(this.inventory.getQuantity()));
+			this.minQuantity.setText(Integer.toString(this.inventory.getMinQuantity()));
+			this.maxQuantity.setText(Integer.toString(this.inventory.getMaxQuantity()));
+			
 			this.populateVendorList();
 		}
 	}
@@ -87,6 +102,14 @@ public class InventoryDetailController implements Initializable {
 		this.observableList = this.vendorsList.getItems();
 		for(String vendor : vendors) {
 			this.observableList.add(vendor);
+		}
+	}
+	
+	private void displayTaxable() {
+		if(this.inventory.isTaxable()) {
+			this.taxable.setText("Y");
+		} else {
+			this.taxable.setText("N");
 		}
 	}
 }
