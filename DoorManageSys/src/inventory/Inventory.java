@@ -2,16 +2,19 @@ package inventory;
 
 public class Inventory {
 
-	private int id, quantity;
-	private String manufacturer, partNo, vendor, size, colorCode, extra, unitOfMeasure, category;
+	private int id, quantity, minQuantity;
+	private String manufacturer, partNo, vendor, size, colorCode, extra, unitOfMeasure, category,
+				   itemNo, manufacturerNo;
 	private double actualCost, sellingPrice;
 	
-	public Inventory (int id, String manufacturer, String partNo, String vendor, String size, String colorCode,
-					  String extra, String unitOfMeasure, double actualCost, double sellingPrice, int quantity,
-					  String category) {
+	public Inventory (int id, String itemNo, String manufacturer, String manufacturerNo, String partNo, String vendor,
+					  String size, String colorCode, String extra, String unitOfMeasure, double actualCost, double sellingPrice,
+					  int quantity, int minQuantity, String category) {
 		
 		this.id = id;
+		this.itemNo = itemNo;
 		this.manufacturer = manufacturer;
+		this.manufacturerNo = manufacturerNo;
 		this.partNo = partNo;
 		this.vendor = vendor;
 		this.size = size;
@@ -21,12 +24,37 @@ public class Inventory {
 		this.actualCost = actualCost;
 		this.sellingPrice = sellingPrice;
 		this.quantity = quantity;
+		this.minQuantity = minQuantity;
 		this.category = category;
 		
 	}
 	
-	public Inventory() {
+	public Inventory () {
 		
+	}
+	
+	public int getMinQuantity () {
+		return minQuantity;
+	}
+	
+	public void setMinQuantity (int minQuantity) {
+		this.minQuantity = minQuantity;
+	}
+	
+	public String getItemNo() {
+		return itemNo;
+	}
+
+	public void setItemNo(String itemNo) {
+		this.itemNo = itemNo;
+	}
+
+	public String getManufacturerNo() {
+		return manufacturerNo;
+	}
+
+	public void setManufacturerNo(String manufacturerNo) {
+		this.manufacturerNo = manufacturerNo;
 	}
 
 	public int getId() {
@@ -106,9 +134,10 @@ public class Inventory {
 		
 		StringBuffer stringBuffer = new StringBuffer ();
 		
-		stringBuffer.append("id= " + id + ", manufacturer= " + manufacturer + ", partNo= " + partNo + ", vendor= " + vendor +
-							", size= " + size + ", colorCode= " + colorCode + ", extra= " + extra + ", unitOfMeasure= " + unitOfMeasure +
-							", actualCost= " + actualCost + ", sellingPrice= " + sellingPrice + ", quantity= " + quantity + ", category= " + category);
+		stringBuffer.append("id= " + id + ", itemNo= " + itemNo + ", manufacturer= " + manufacturer + ", manufacturerNo= " + manufacturerNo +
+							", partNo= " + partNo + ", vendor= " + vendor + ", size= " + size + ", colorCode= " + colorCode + ", extra= " +
+							extra + ", unitOfMeasure= " + unitOfMeasure + ", actualCost= " + actualCost + ", sellingPrice= " + sellingPrice +
+							", quantity= " + quantity + ", minQuantity= " + minQuantity + ", category= " + category);
 		
 		return stringBuffer.toString();
 		

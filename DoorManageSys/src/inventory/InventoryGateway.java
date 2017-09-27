@@ -66,7 +66,7 @@ public class InventoryGateway {
 		}
 	}
 	
-	public ArrayList <Inventory> searchInventory (String category) {
+	public ArrayList <Inventory> searchInventory (String column, String value) {
 		
 		ArrayList <Inventory> matches = new ArrayList <Inventory> ();
 		preparedStatement = null;
@@ -74,9 +74,7 @@ public class InventoryGateway {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("SELECT * FROM Inventory WHERE category='");
-		sqlCommand.append(category);
-		sqlCommand.append("'");
+		sqlCommand.append("SELECT * FROM Inventory WHERE " + column + "='" + value + "'");
 		
 		try {
 			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
@@ -84,10 +82,10 @@ public class InventoryGateway {
 		
 			while (resultSet.next()) {
 			
-				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("manufacturer"), resultSet.getString("partNo"),
-													 resultSet.getString("vendor"), resultSet.getString("size"), resultSet.getString("colorCode"),
+				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("itemNo"), resultSet.getString("manufacturer"), resultSet.getString("manufacturerNo"),
+													 resultSet.getString("partNo"), resultSet.getString("vendor"), resultSet.getString("size"), resultSet.getString("colorCode"),
 													 resultSet.getString("extra"), resultSet.getString("unitOfMeasure"), resultSet.getDouble("actualCost"),
-													 resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"), resultSet.getString("category"));
+													 resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"), resultSet.getInt("minQuantity"), resultSet.getString("category"));
 				matches.add(inventory);
 			}
 		}
@@ -111,10 +109,13 @@ public class InventoryGateway {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("INSERT INTO Inventory (id, manufacturer, partNo, vendor, size, colorCode, extra, unitOfMeasure, actualCost, sellingPrice, quantity, category) VALUES ('"); 
-		sqlCommand.append (inventory.getId() + "', '" + inventory.getManufacturer() + "', '" + inventory.getPartNo() + "', '" + inventory.getVendor() + "', '" +
-						   inventory.getSize() + "', '" + inventory.getColorCode() + "', '" + inventory.getExtra() + "', '" + inventory.getUnitOfMeasure() + "', '" +
-						   inventory.getActualCost() + "', '" + inventory.getSellingPrice() + "', '" + inventory.getQuantity() + "', '" + inventory.getCategory() + "')");
+		sqlCommand.append("INSERT INTO Inventory (id, itemNo, manufacturer, manufacturerNo, partNo, vendor, size, colorCode, extra, " +
+						  "unitOfMeasure, actualCost, sellingPrice, quantity, minQuantity, category) VALUES ('"); 
+		sqlCommand.append (inventory.getId() + "', '" + inventory.getItemNo() + "', '" + inventory.getManufacturer() + "', '" + inventory.getManufacturerNo()
+						   + "', '" + inventory.getPartNo() + "', '" + inventory.getVendor() + "', '" + inventory.getSize() + "', '" + inventory.getColorCode()
+						   + "', '" + inventory.getExtra() + "', '" + inventory.getUnitOfMeasure() + "', '" + inventory.getActualCost()
+						   + "', '" + inventory.getSellingPrice() + "', '" + inventory.getQuantity() + "', '" + inventory.getMinQuantity()
+						   + "', '" + inventory.getCategory() + "')");
 		
 		preparedStatement = null;
 		
@@ -126,6 +127,59 @@ public class InventoryGateway {
 		}
 		
 	}
+
+	public void updateInventory (int id, String column, String value) {
+		
+		StringBuffer sqlCommand = new StringBuffer ();
+		
+		sqlCommand.append("UPDATE Inventory SET " + column + " = '" + value  + "' WHERE id = '" + id + "'");
+		
+		preparedStatement = null;
+		
+		try {
+			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
+			preparedStatement.execute();
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+		
+	}
+	
+	public void updateInventory (int id, String column, int value) {
+		
+		StringBuffer sqlCommand = new StringBuffer ();
+		
+		sqlCommand.append("UPDATE Inventory SET " + column + " = '" + value  + "' WHERE id = '" + id + "'");
+		
+		preparedStatement = null;
+		
+		try {
+			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
+			preparedStatement.execute();
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+		
+	}
+	
+	public void deleteInventory (int id) {
+		
+		StringBuffer sqlCommand = new StringBuffer ();
+		
+		sqlCommand.append("DELETE FROM Inventory WHERE id = '" + id + "'");
+		
+		preparedStatement = null;
+		
+		try {
+			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
+			preparedStatement.execute();
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+		
+	}
+	
+	
 	
 	public void closePSandRS (PreparedStatement ps, ResultSet rs) throws SQLException {
 		if (rs != null) {
