@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -82,10 +83,13 @@ public class InventoryGateway {
 		
 			while (resultSet.next()) {
 			
-				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("itemNo"), resultSet.getString("manufacturer"), resultSet.getString("manufacturerNo"),
-													 resultSet.getString("partNo"), resultSet.getString("vendor"), resultSet.getString("size"), resultSet.getString("colorCode"),
-													 resultSet.getString("extra"), resultSet.getString("unitOfMeasure"), resultSet.getDouble("actualCost"),
-													 resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"), resultSet.getInt("minQuantity"), resultSet.getString("category"));
+				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("itemNo"), resultSet.getString("manufacturer"),
+						resultSet.getString("manufacturerNo"), resultSet.getString("vendor"), resultSet.getString("size"),
+						resultSet.getString("colorCode"), resultSet.getString("extra"), resultSet.getString("unitOfMeasure"),
+						resultSet.getDouble("actualCost"), resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"),
+						resultSet.getInt("minQuantity"), resultSet.getInt("maxQuantity"), resultSet.getString("category"),
+						resultSet.getBoolean("taxable"), resultSet.getString("accountingCode"));
+				
 				matches.add(inventory);
 			}
 		}
@@ -109,30 +113,15 @@ public class InventoryGateway {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("INSERT INTO Inventory (id, itemNo, manufacturer, manufacturerNo, partNo, vendor, size, colorCode, extra, " +
-						  "unitOfMeasure, actualCost, sellingPrice, quantity, minQuantity, category) VALUES ('"); 
+		sqlCommand.append("INSERT INTO Inventory (id, itemNo, manufacturer, manufacturerNo, vendor, size, colorCode, extra, " +
+						  "unitOfMeasure, actualCost, sellingPrice, quantity, minQuantity, maxQuantity, category, taxable, " +
+						  "accountingCode) VALUES ('"); 
 		sqlCommand.append (inventory.getId() + "', '" + inventory.getItemNo() + "', '" + inventory.getManufacturer() + "', '" + inventory.getManufacturerNo()
-						   + "', '" + inventory.getPartNo() + "', '" + inventory.getVendor() + "', '" + inventory.getSize() + "', '" + inventory.getColorCode()
+						   + "', '" + inventory.getVendor() + "', '" + inventory.getSize() + "', '" + inventory.getColorCode()
 						   + "', '" + inventory.getExtra() + "', '" + inventory.getUnitOfMeasure() + "', '" + inventory.getActualCost()
 						   + "', '" + inventory.getSellingPrice() + "', '" + inventory.getQuantity() + "', '" + inventory.getMinQuantity()
-						   + "', '" + inventory.getCategory() + "')");
-		
-		preparedStatement = null;
-		
-		try {
-			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
-			preparedStatement.execute();
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-		}
-		
-	}
-
-	public void updateInventory (int id, String column, String value) {
-		
-		StringBuffer sqlCommand = new StringBuffer ();
-		
-		sqlCommand.append("UPDATE Inventory SET " + column + " = '" + value  + "' WHERE id = '" + id + "'");
+						   + "', '" + inventory.getMaxQuantity() + "', '" + inventory.getCategory() + "', '" + inventory.isTaxable()
+						   + "', '" + inventory.getAccountingCode() + "')");
 		
 		preparedStatement = null;
 		
@@ -145,16 +134,71 @@ public class InventoryGateway {
 		
 	}
 	
-	public void updateInventory (int id, String column, int value) {
+	public List<Inventory> getInventory() {
+		List<Inventory> fullInventory = new ArrayList<Inventory>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = dbConnection.prepareStatement("SELECT * FROM Inventory");
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("itemNo"), resultSet.getString("manufacturer"),
+						 resultSet.getString("manufacturerNo"), resultSet.getString("vendor"), resultSet.getString("size"),
+						 resultSet.getString("colorCode"), resultSet.getString("extra"), resultSet.getString("unitOfMeasure"),
+						 resultSet.getDouble("actualCost"), resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"),
+						 resultSet.getInt("minQuantity"), resultSet.getInt("maxQuantity"), resultSet.getString("category"),
+						 resultSet.getBoolean("taxable"), resultSet.getString("accountingCode"));
+				
+				fullInventory.add(inventory);
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			try {
+				this.closePSandRS(ps, rs);
+			} catch (SQLException se){
+				se.printStackTrace();
+			}
+		}
+		return fullInventory;
+	}
+
+	public void updateInventory (Inventory inventory) {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("UPDATE Inventory SET " + column + " = '" + value  + "' WHERE id = '" + id + "'");
+		sqlCommand.append("UPDATE Inventory SET id=?, itemNo=?, manufacturer=?, manufacturerNo=?, " + 
+											   "vendor=?, size=?, colorCode=?, extra=?, unitOfMeasure=?, " + 
+											   "actualCost=?, sellingPrice=?, quantity=?, minQuantity=?, " +
+											   "maxQuantity=?, category=?, taxable=?, accountingCode=? " + 
+											   "WHERE id =?");
 		
 		preparedStatement = null;
+		resultSet = null;
 		
 		try {
-			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
+			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString(), 
+					PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, inventory.getId());
+			preparedStatement.setString(2, inventory.getItemNo());
+			preparedStatement.setString(3, inventory.getManufacturer());
+			preparedStatement.setString(4, inventory.getManufacturerNo());
+			preparedStatement.setString(5, inventory.getVendor());
+			preparedStatement.setString(6, inventory.getSize());
+			preparedStatement.setString(7, inventory.getColorCode());
+			preparedStatement.setString(8, inventory.getExtra());
+			preparedStatement.setString(9, inventory.getUnitOfMeasure());
+			preparedStatement.setDouble(10, inventory.getActualCost());
+			preparedStatement.setDouble(11, inventory.getSellingPrice());
+			preparedStatement.setInt(12, inventory.getQuantity());
+			preparedStatement.setInt(13, inventory.getMinQuantity());
+			preparedStatement.setInt(14, inventory.getMaxQuantity());
+			preparedStatement.setString(15, inventory.getCategory());
+			preparedStatement.setBoolean(16, inventory.isTaxable());
+			preparedStatement.setString(17, inventory.getAccountingCode());
+			
 			preparedStatement.execute();
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();

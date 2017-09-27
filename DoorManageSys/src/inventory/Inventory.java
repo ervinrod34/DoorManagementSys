@@ -2,20 +2,20 @@ package inventory;
 
 public class Inventory {
 
-	private int id, quantity, minQuantity;
-	private String manufacturer, partNo, vendor, size, colorCode, extra, unitOfMeasure, category,
-				   itemNo, manufacturerNo;
+	private int id, quantity, minQuantity, maxQuantity;
+	private String manufacturer, vendor, size, colorCode, extra, unitOfMeasure, category,
+				   itemNo, manufacturerNo, accountingCode;
 	private double actualCost, sellingPrice;
+	private boolean taxable;
 	
-	public Inventory (int id, String itemNo, String manufacturer, String manufacturerNo, String partNo, String vendor,
-					  String size, String colorCode, String extra, String unitOfMeasure, double actualCost, double sellingPrice,
-					  int quantity, int minQuantity, String category) {
+	public Inventory (int id, String itemNo, String manufacturer, String manufacturerNo, String vendor, String size, 
+					  String colorCode, String extra, String unitOfMeasure, double actualCost, double sellingPrice,
+					  int quantity, int minQuantity, int maxQuantity, String category, boolean taxable, String accountingCode) {
 		
 		this.id = id;
 		this.itemNo = itemNo;
 		this.manufacturer = manufacturer;
 		this.manufacturerNo = manufacturerNo;
-		this.partNo = partNo;
 		this.vendor = vendor;
 		this.size = size;
 		this.colorCode = colorCode;
@@ -25,12 +25,31 @@ public class Inventory {
 		this.sellingPrice = sellingPrice;
 		this.quantity = quantity;
 		this.minQuantity = minQuantity;
+		this.maxQuantity = maxQuantity;
 		this.category = category;
+		this.taxable = taxable;
+		this.accountingCode = accountingCode;
 		
 	}
 	
 	public Inventory () {
-		
+		id = 0;
+		itemNo = "";
+		manufacturer = "";
+		manufacturerNo = "";
+		vendor = "";
+		size = "";
+		colorCode = "";
+		extra = "";
+		unitOfMeasure = "";
+		actualCost = 0;
+		sellingPrice = 0;
+		quantity = 0;
+		minQuantity = 0;
+		maxQuantity = 0;
+		category = "";
+		taxable = false;
+		accountingCode = "";
 	}
 	
 	public int getMinQuantity () {
@@ -74,12 +93,6 @@ public class Inventory {
 	}
 	public void setManufacturer(String manufacturer) {
 		this.manufacturer = manufacturer;
-	}
-	public String getPartNo() {
-		return partNo;
-	}
-	public void setPartNo(String partNo) {
-		this.partNo = partNo;
 	}
 	public String getVendor() {
 		return vendor;
@@ -129,15 +142,34 @@ public class Inventory {
 	public void setSellingPrice(double sellingPrice) {
 		this.sellingPrice = sellingPrice;
 	}
+	public int getMaxQuantity() {
+		return maxQuantity;
+	}
+	public void setMaxQuantity(int maxQuantity) {
+		this.maxQuantity = maxQuantity;
+	}
+	public boolean isTaxable() {
+		return taxable;
+	}
+	public void setTaxable(boolean taxable) {
+		this.taxable = taxable;
+	}
+	public String getAccountingCode() {
+		return accountingCode;
+	}
+	public void setAccountingCode(String accountingCode) {
+		this.accountingCode = accountingCode;
+	}
 	
 	public String toString () {
 		
 		StringBuffer stringBuffer = new StringBuffer ();
 		
 		stringBuffer.append("id= " + id + ", itemNo= " + itemNo + ", manufacturer= " + manufacturer + ", manufacturerNo= " + manufacturerNo +
-							", partNo= " + partNo + ", vendor= " + vendor + ", size= " + size + ", colorCode= " + colorCode + ", extra= " +
-							extra + ", unitOfMeasure= " + unitOfMeasure + ", actualCost= " + actualCost + ", sellingPrice= " + sellingPrice +
-							", quantity= " + quantity + ", minQuantity= " + minQuantity + ", category= " + category);
+							", vendor= " + vendor + ", size= " + size + ", colorCode= " + colorCode + ", extra= " + extra + ", unitOfMeasure= " + 
+							unitOfMeasure + ", actualCost= " + actualCost + ", sellingPrice= " + sellingPrice + ", quantity= " + quantity + 
+							", minQuantity= " + minQuantity + ", maxQuantity" + maxQuantity + ", category= " + category +
+							", taxable=" + taxable + ", accountingCode=" + accountingCode);
 		
 		return stringBuffer.toString();
 		
