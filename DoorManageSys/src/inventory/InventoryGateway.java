@@ -143,12 +143,12 @@ public class InventoryGateway {
 			rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("itemNo"), resultSet.getString("manufacturer"),
-						 resultSet.getString("manufacturerNo"), resultSet.getString("vendor"), resultSet.getString("size"),
-						 resultSet.getString("colorCode"), resultSet.getString("extra"), resultSet.getString("unitOfMeasure"),
-						 resultSet.getDouble("actualCost"), resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"),
-						 resultSet.getInt("minQuantity"), resultSet.getInt("maxQuantity"), resultSet.getString("category"),
-						 resultSet.getBoolean("taxable"), resultSet.getString("accountingCode"));
+				Inventory inventory = new Inventory (rs.getInt("id"), rs.getString("itemNo"), rs.getString("manufacturer"),
+						 rs.getString("manufacturerNo"), rs.getString("vendor"), rs.getString("size"),
+						 rs.getString("colorCode"), rs.getString("extra"), rs.getString("unitOfMeasure"),
+						 rs.getDouble("actualCost"), rs.getDouble("sellingPrice"), rs.getInt("quantity"),
+						 rs.getInt("minQuantity"), rs.getInt("maxQuantity"), rs.getString("category"),
+						 rs.getBoolean("taxable"), rs.getString("accountingCode"));
 				
 				fullInventory.add(inventory);
 			}

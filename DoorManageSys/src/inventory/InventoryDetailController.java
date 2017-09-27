@@ -57,8 +57,6 @@ public class InventoryDetailController implements Initializable {
 	
 	public InventoryDetailController(Inventory inventory) {
 		this.inventory = inventory;
-		this.inventory.setId(1);
-		this.inventory.setVendor("STANLEY,CHINA");
 	}
 	
 	@FXML private void handleInventoryDetail(ActionEvent ae) {
@@ -69,7 +67,7 @@ public class InventoryDetailController implements Initializable {
 			MasterController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
-			//MasterController.getInstance().getInventoryGateway().deleteInventory(this.inventory.getId());
+			MasterController.getInstance().getInventoryGateway().deleteInventory(this.inventory.getId());
 		}
 	}
 

@@ -29,12 +29,7 @@ public class InventoryListController implements Initializable {
 	@FXML private Button addButton;
 	
 	public InventoryListController(List<Inventory> inventories) {
-		this.inventories = new ArrayList<Inventory>();
-		
-		//for testing - DELETE this later
-		Inventory data1 = new Inventory();
-		data1.setManufacturer("STANLEY");
-		this.inventories.add(data1);
+		this.inventories = inventories;
 	}
 	
 	@FXML private void handleInventory(ActionEvent ae) {

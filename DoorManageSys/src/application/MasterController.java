@@ -92,26 +92,6 @@ public class MasterController {
 		}
 		
 		loggedOut = false;
-		
-		//Test
-		//Inventory testInventory = new Inventory (0, "50178", "Stanley", "3f08yah#HF*#(", "ND-384n", "???", "4.5 x 9 x 2", "default", "Heavy Weight", "US32D", 4.5, 9, 100, 10, "hinge");
-		//Inventory testInventory2 = new Inventory (0, "38#&FJ", "OIAEHFI", "fJJDN#IKD)", "NBDU3dd", "???", "4.5 x 9 x 2", "default", "Heavy Weight", "US32D", 4.5, 9, 10000, 1000, "screw");
-		//Inventory testInventory3 = new Inventory (0, "380-F", "Stanley2", "209872139847HHD", "NDJK3344", "???", "4.5 x 9 x 2", "default", "Heavy Weight", "US32D", 4.5, 9, 70, 10, "lock");
-		//Inventory testInventory4 = new Inventory (0, "3lDPEK", "CHEAP", "9839674BBJD", "MALKJD-00093", "???", "4.5 x 9 x 2", "default", "Heavy Weight", "US32D", 4.5, 9, 800, 10, "knob");
-		//inventoryGateway.addInventory(testInventory);
-		//inventoryGateway.addInventory(testInventory2);
-		//inventoryGateway.addInventory(testInventory3);
-		//inventoryGateway.addInventory(testInventory4);
-		//System.out.print(inventoryGateway.searchInventory("category", "hinge"));
-		//ArrayList<Inventory> foundArray = new ArrayList<Inventory> ();
-		//foundArray = inventoryGateway.searchInventory("manufacturer", "Stanley");
-		//inventoryGateway.updateInventory(foundArray.get(0).getId(), "quantity", (foundArray.get(0).getQuantity()-50));
-		//foundArray = inventoryGateway.searchInventory("itemNo", "38#&FJ");
-		//inventoryGateway.deleteInventory(foundArray.get(0).getId());
-		
-		
-		
-
 	}
 	
 	/**
@@ -178,7 +158,7 @@ public class MasterController {
 				break;
 				
 			case INVENTORY_LIST_PAGE:
-				List<Inventory> inventories = new ArrayList<Inventory>();
+				List<Inventory> inventories = MasterController.getInstance().getInventoryGateway().getInventory();
 				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryList_Page.fxml"));
 				loader.setController(new InventoryListController(inventories));
 				break;
