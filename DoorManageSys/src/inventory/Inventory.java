@@ -1,5 +1,7 @@
 package inventory;
 
+import application.MasterController;
+
 public class Inventory {
 
 	private int id, quantity, minQuantity, maxQuantity;
@@ -159,6 +161,13 @@ public class Inventory {
 	}
 	public void setAccountingCode(String accountingCode) {
 		this.accountingCode = accountingCode;
+	}
+	
+	public void save() {
+		if (id == 0)
+			MasterController.getInstance().getInventoryGateway().addInventory(this);
+		else // id > 0
+			MasterController.getInstance().getInventoryGateway().updateInventory(this);
 	}
 	
 	public String toString () {
