@@ -115,17 +115,31 @@ public class InventoryGateway {
 		
 		sqlCommand.append("INSERT INTO Inventory (id, itemNo, manufacturer, manufacturerNo, vendor, size, colorCode, extra, " +
 						  "unitOfMeasure, actualCost, sellingPrice, quantity, minQuantity, maxQuantity, category, taxable, " +
-						  "accountingCode) VALUES ('"); 
-		sqlCommand.append (inventory.getId() + "', '" + inventory.getItemNo() + "', '" + inventory.getManufacturer() + "', '" + inventory.getManufacturerNo()
-						   + "', '" + inventory.getVendor() + "', '" + inventory.getSize() + "', '" + inventory.getColorCode()
-						   + "', '" + inventory.getExtra() + "', '" + inventory.getUnitOfMeasure() + "', '" + inventory.getActualCost()
-						   + "', '" + inventory.getSellingPrice() + "', '" + inventory.getQuantity() + "', '" + inventory.getMinQuantity()
-						   + "', '" + inventory.getCategory() + "')");
-		
+						  "accountingCode)");
+		sqlCommand.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
 		preparedStatement = null;
 		
 		try {
-			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
+			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString(),
+					PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, inventory.getId());
+			preparedStatement.setString(2, inventory.getItemNo());
+			preparedStatement.setString(3, inventory.getManufacturer());
+			preparedStatement.setString(4, inventory.getManufacturerNo());
+			preparedStatement.setString(5, inventory.getVendor());
+			preparedStatement.setString(6, inventory.getSize());
+			preparedStatement.setString(7, inventory.getColorCode());
+			preparedStatement.setString(8, inventory.getExtra());
+			preparedStatement.setString(9, inventory.getUnitOfMeasure());
+			preparedStatement.setDouble(10, inventory.getActualCost());
+			preparedStatement.setDouble(11, inventory.getSellingPrice());
+			preparedStatement.setInt(12, inventory.getQuantity());
+			preparedStatement.setInt(13, inventory.getMinQuantity());
+			preparedStatement.setInt(14, inventory.getMaxQuantity());
+			preparedStatement.setString(15, inventory.getCategory());
+			preparedStatement.setBoolean(16, inventory.isTaxable());
+			preparedStatement.setString(17, inventory.getAccountingCode());
+			
 			preparedStatement.execute();
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();
