@@ -171,18 +171,29 @@ public class Inventory {
 		}
 	}
 	
-	public String toString () {
+	public String toString () { //TODO: MAKE THIS BETTER
 		
 		StringBuffer stringBuffer = new StringBuffer ();
 		
-		stringBuffer.append("id= " + id + ", itemNo= " + itemNo + ", manufacturer= " + manufacturer + ", manufacturerNo= " + manufacturerNo +
+		/*stringBuffer.append("id= " + id + ", itemNo= " + itemNo + ", manufacturer= " + manufacturer + ", manufacturerNo= " + manufacturerNo +
 							", vendor= " + vendor + ", size= " + size + ", colorCode= " + colorCode + ", extra= " + extra + ", unitOfMeasure= " + 
 							unitOfMeasure + ", actualCost= " + actualCost + ", sellingPrice= " + sellingPrice + ", quantity= " + quantity + 
 							", minQuantity= " + minQuantity + ", maxQuantity" + maxQuantity + ", category= " + category +
-							", taxable=" + taxable + ", accountingCode=" + accountingCode);
+							", taxable=" + taxable + ", accountingCode=" + accountingCode);*/
 		
+		stringBuffer.append(String.format("%-14s\t%-12s  %s  %s  ", itemNo, manufacturer, manufacturerNo, colorCode));
+		if (!size.equals("")) {
+			stringBuffer.append(size + "\t");
+		} else {
+			stringBuffer.append("\t\t");
+		}
+		if (!extra.equals("")) {
+			stringBuffer.append(extra + "\t");
+		} else {
+			stringBuffer.append("\t\t\t");
+		}
+		stringBuffer.append(String.format("  || Curr. Qty.= %d || Cost= $%,.2f || Vendor(s): %s", quantity, actualCost, vendor));
 		return stringBuffer.toString();
-		
 	}
 	
 }
