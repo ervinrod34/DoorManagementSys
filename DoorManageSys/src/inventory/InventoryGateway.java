@@ -67,6 +67,49 @@ public class InventoryGateway {
 		}
 	}
 	
+	public ArrayList<Inventory> searchInventory(String search) {
+		ArrayList<Inventory> searchResults = new ArrayList<Inventory>();
+		
+		try {
+			String query = "SELECT * FROM Inventory WHERE "
+					+ "manufacturer LIKE ? OR manufacturerNo LIKE ? OR size LIKE ? OR "
+					+ "colorCode LIKE ? OR extra LIKE ?";
+			preparedStatement = dbConnection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			search = "%" + search + "%";
+			preparedStatement.setString(1, search);
+			preparedStatement.setString(2, search);
+			preparedStatement.setString(3, search);
+			preparedStatement.setString(4, search);
+			preparedStatement.setString(5, search);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()) {
+				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("itemNo"), resultSet.getString("manufacturer"),
+						resultSet.getString("manufacturerNo"), resultSet.getString("vendor"), resultSet.getString("size"),
+						resultSet.getString("colorCode"), resultSet.getString("extra"), resultSet.getString("unitOfMeasure"),
+						resultSet.getDouble("actualCost"), resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"),
+						resultSet.getInt("minQuantity"), resultSet.getInt("maxQuantity"), resultSet.getString("category"),
+						resultSet.getBoolean("taxable"), resultSet.getString("accountingCode"));
+				
+				searchResults.add(inventory);
+			}
+			
+		} catch(SQLException sqlException) {
+			sqlException.printStackTrace();
+		} finally {
+			try {
+				closePSandRS (preparedStatement, resultSet);
+			}
+			catch (SQLException sqlException) {
+				sqlException.printStackTrace();
+			}
+		}
+		
+		return searchResults;
+	}
+	
 	public ArrayList <Inventory> searchInventory (String column, String value) {
 		
 		ArrayList <Inventory> matches = new ArrayList <Inventory> ();

@@ -70,6 +70,9 @@ public class InventoryDetailController implements Initializable {
 			
 		} else if(source == deleteButton) {
 			MasterController.getInstance().getInventoryGateway().deleteInventory(this.inventory.getId());
+			
+			//Go back to this later
+			MasterController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
 		}
 	}
 

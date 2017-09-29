@@ -16,7 +16,7 @@
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#32000f" height="592.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
             <TextField fx:id="searchTextField" layoutX="6.0" layoutY="524.0" onAction="#handleSearch" prefHeight="25.0" prefWidth="189.0" />
-            <Button fx:id="searchButton" layoutX="75.0" layoutY="555.0" mnemonicParsing="false" onAction="#handleSearch" text="Button" />
+            <Button fx:id="searchButton" layoutX="75.0" layoutY="555.0" mnemonicParsing="false" onAction="#handleSearch" text="Search" />
             <Label fx:id="userIdentifierLabel" layoutX="14.0" layoutY="14.0" text="Hello!" textFill="WHITE">
                <font>
                   <Font size="15.0" />

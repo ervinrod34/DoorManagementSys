@@ -39,25 +39,19 @@ public class InventoryEditController implements Initializable {
 	
 	@FXML private TextField accountingCodeField;
 	
-	@FXML private TextField vendorField;
-	
+	@FXML private TextField vendorsField;
+
 	@FXML private TextField quantityField;
 	
 	@FXML private TextField minQuantityField;
 	
 	@FXML private TextField maxQuantityField;
 	
-	@FXML private Button addVendorButton;
-	
 	@FXML private Button saveButton;
 	
 	@FXML private Button cancelButton;
 	
 	@FXML private CheckBox taxable;
-	
-	@FXML private ListView<String> vendorsList;
-	
-	private ObservableList<String> observableList;
 	
 	private Inventory inventory;
 	
@@ -74,9 +68,12 @@ public class InventoryEditController implements Initializable {
 		} else if(source == saveButton) {
 			this.updateInventoryObject();
 			this.inventory.save();
-		} else if(source == addVendorButton) {
-			this.observableList.add(this.vendorField.getText());
-			this.populateVendorList();
+			
+			//After saving, change the screen into detail of the updated inventory
+			MasterController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
+			
+			MasterController.getInstance().setEditObject(this.inventory);
+			MasterController.getInstance().changeView(PageTypes.INVENTORY_DETAIL_PAGE);
 		}
 	}
 	
@@ -96,8 +93,7 @@ public class InventoryEditController implements Initializable {
 			this.minQuantityField.setText(Integer.toString(this.inventory.getMinQuantity()));
 			this.maxQuantityField.setText(Integer.toString(this.inventory.getMaxQuantity()));
 			this.taxable.setSelected(this.inventory.isTaxable());
-			this.populateVendorList();
-
+			this.vendorsField.setText(this.inventory.getVendor());
 		}
 	}
 	
@@ -106,7 +102,7 @@ public class InventoryEditController implements Initializable {
 									 this.itemNumberField.getText(),
 									 this.manufacturerField.getText(),
 									 this.partNumberField.getText(),
-									 this.listViewToCSV(),
+									 this.vendorsField.getText(),
 									 this.sizesField.getText(),
 									 this.colorCodeField.getText(),
 									 this.otherInfoField.getText(),
@@ -121,29 +117,5 @@ public class InventoryEditController implements Initializable {
 									 this.accountingCodeField.getText());
 		
 		this.inventory = updatedInventory;
-	}
-	
-	private void populateVendorList() {
-		List<String> vendors = Arrays.asList(inventory.getVendor().split(","));
-		
-		this.observableList = this.vendorsList.getItems();
-		for(String vendor : vendors) {
-			this.observableList.add(vendor);
-		}
-	}
-	
-	private String listViewToCSV() {
-		String csvVendors = "";
-		if(!this.vendorsList.getItems().isEmpty()) {
-			for(String vendor : this.vendorsList.getItems()) {
-				csvVendors += vendor + ",";
-			}
-			csvVendors = csvVendors.substring(0, csvVendors.length() - 1);
-		}
-		else {
-			csvVendors = "";
-		}
-		
-		return csvVendors;
 	}
 }

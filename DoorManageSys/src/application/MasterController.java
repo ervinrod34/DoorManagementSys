@@ -78,6 +78,8 @@ public class MasterController {
 	 */
 	private Object editObj;
 	
+	private List<Inventory> inventoryToDisplay;
+	
 	/**
 	 * Initialize a MasterController object.
 	 */
@@ -158,9 +160,8 @@ public class MasterController {
 				break;
 				
 			case INVENTORY_LIST_PAGE:
-				List<Inventory> inventories = MasterController.getInstance().getInventoryGateway().getInventory();
 				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryList_Page.fxml"));
-				loader.setController(new InventoryListController(inventories));
+				loader.setController(new InventoryListController(this.inventoryToDisplay));
 				break;
 				
 			case INVENTORY_DETAIL_PAGE:
@@ -251,6 +252,10 @@ public class MasterController {
 
 	public void setEditObject(Object obj) {
 		this.editObj = obj;
+	}
+	
+	public void setInventoryListToDisplay(List<Inventory> objects) {
+		this.inventoryToDisplay = objects;
 	}
 	
 	public AnchorPane getEmptyRightPane() {

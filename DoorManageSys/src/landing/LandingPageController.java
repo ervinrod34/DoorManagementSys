@@ -1,15 +1,18 @@
 package landing;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import application.*;
-
 /**
  * The LandingPageController class defines a controllers class
  * for the landing page of this application. The Landing Page is the 
  * main page of this application.
  */
+
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import application.*;
+import inventory.*;
 
 import javafx.application.Platform;
 
@@ -65,21 +68,33 @@ public class LandingPageController implements Initializable {
 		if(source == logout) {
 			MasterController.getInstance().logoutPressed();
 			MasterController.getInstance().changeView(PageTypes.LOGIN_PAGE);
-		}else if(source == inventory) {
+		} else if(source == inventory) {
 			this.applyEffectOnMenuLabel(inventory);
+			
+			List<Inventory> allInventory = MasterController.getInstance().getInventoryGateway().getInventory();
+			MasterController.getInstance().setInventoryListToDisplay(allInventory);
+			
 			this.changeViewOnLabelClick(inventory, PageTypes.INVENTORY_LIST_PAGE);
-		}else if(source == orders) {
+		} else if(source == orders) {
 			this.applyEffectOnMenuLabel(orders);
-		}else if(source == quote) {
+		} else if(source == quote) {
 			this.applyEffectOnMenuLabel(quote);
-		}else if(source == users) {
+		} else if(source == users) {
 			this.applyEffectOnMenuLabel(users);
 			this.changeViewOnLabelClick(users, PageTypes.VIEW_USERS_PAGE);
-		}
+		} 
 	}
 	
 	@FXML private void handleSearch(ActionEvent ae) {
+		Object source = ae.getSource();
 		
+		if(source == searchButton) {
+			String searchKey = this.searchTextField.getText();
+			List<Inventory> searchList = MasterController.getInstance().getInventoryGateway().searchInventory(searchKey);
+			MasterController.getInstance().setInventoryListToDisplay(searchList);
+		
+			MasterController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
+		}
 	}
 
 	public void initialize(URL location, ResourceBundle resources) {
