@@ -69,6 +69,7 @@ public class LoginController implements Initializable {
 					MasterController.getInstance().changeView(PageTypes.LANDING_PAGE);
 				}
 			}
+			this.notice.setText("Incorrect Username or Password");
 			notice.setVisible(true);
 		}
 	}
