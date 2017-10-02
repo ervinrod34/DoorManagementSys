@@ -25,7 +25,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-// TODO delete this comment
 
 public class MasterController {
 
