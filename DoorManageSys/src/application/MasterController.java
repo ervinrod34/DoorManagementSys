@@ -14,7 +14,7 @@ import user.*;
 import landing.*;
 import inventory.*;
 import login.*;
-import product.*;
+import quoteproduct.*;
 
 import java.io.IOException;
 import java.util.ArrayList;

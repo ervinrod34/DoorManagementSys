@@ -10,8 +10,8 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="580.0" stroke="#32000f" strokeType="INSIDE" strokeWidth="3.0" width="466.0" />
-      <Button fx:id="editButton" layoutX="197.0" layoutY="530.0" mnemonicParsing="false" onAction="#handleInventoryDetail" text="Edit Item" />
-      <Button fx:id="deleteButton" layoutX="388.0" layoutY="530.0" mnemonicParsing="false" onAction="#handleInventoryDetail" text="Delete" textFill="#b20000" />
+      <Button fx:id="editButton" layoutX="197.0" layoutY="535.0" mnemonicParsing="false" onAction="#handleInventoryDetail" text="Edit Item" />
+      <Button fx:id="deleteButton" layoutX="388.0" layoutY="535.0" mnemonicParsing="false" onAction="#handleInventoryDetail" text="Delete" textFill="#b20000" />
       <Label layoutX="28.0" layoutY="15.0" text="Item #">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -78,48 +78,48 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="400.0" text="Unit of Measure:">
+      <Label layoutX="20.0" layoutY="420.0" text="Unit of Measure:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="unitOfMeasure" layoutX="150.0" layoutY="400.0" text="not defined">
+      <Label fx:id="unitOfMeasure" layoutX="150.0" layoutY="420.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label layoutX="53.0" layoutY="420.0" text="Actual Cost:">
+      <Label layoutX="53.0" layoutY="440.0" text="Actual Cost:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="46.0" layoutY="440.0" text="Selling Price:">
+      <Label layoutX="46.0" layoutY="460.0" text="Selling Price:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="actualCost" layoutX="150.0" layoutY="420.0" text="not defined">
+      <Label fx:id="actualCost" layoutX="150.0" layoutY="440.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="sellingPrice" layoutX="150.0" layoutY="440.0" text="not defined">
+      <Label fx:id="sellingPrice" layoutX="150.0" layoutY="460.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label layoutX="77.0" layoutY="460.0" text="Taxable:">
+      <Label layoutX="77.0" layoutY="480.0" text="Taxable:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="taxable" layoutX="150.0" layoutY="460.0" text="No">
+      <Label fx:id="taxable" layoutX="150.0" layoutY="480.0" text="No">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label layoutX="12.0" layoutY="480.0" text="Accounting Code:">
+      <Label layoutX="12.0" layoutY="500.0" text="Accounting Code:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="accountingCode" layoutX="150.0" layoutY="480.0" text="not defined">
+      <Label fx:id="accountingCode" layoutX="150.0" layoutY="500.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font></Label>
@@ -149,6 +149,16 @@
          </font>
       </Label>
       <Label fx:id="maxQuantity" layoutX="293.0" layoutY="500.0" text="not defined">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="69.0" layoutY="400.0" text="Category:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="category" layoutX="150.0" layoutY="400.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font>

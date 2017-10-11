@@ -4,14 +4,14 @@ import java.time.LocalDateTime;
 
 import application.*;
 import blueprint.Blueprint;
-import product.Product;
+import quoteproduct.Product;
 
 public class Order {
 	
 	//object member variables
-	private int id, orderID, productID, blueprintID;
-	private Product p;
-	private Blueprint bp;
+	private int id;
+	private Product product;
+	private Blueprint blueprint;
 	//create product and blueprint objects
 	private String customerName, status;
 	private double orderDollarAmount;
@@ -19,43 +19,23 @@ public class Order {
 	
 	//constructors
 	public Order(){
-		this.orderID = 0;
-		this.productID = 0;
-		this.p = new Product(productID, 0, 0, 0, 0, 0, "", "", "");
-		this.blueprintID = 0;
-		this.bp = new Blueprint(blueprintID);
+		this.id = 0;
+		this.product = new Product(0);
+		this.blueprint = new Blueprint(0);
 		this.customerName = "";
 		this.status = "";
 		this.orderDollarAmount = 0;
 		this.orderDate = null;
 	}
 	
-	public Order(int oID, String cName, String status, double orderAmount,
-			int pID, int bpID, LocalDateTime oD){
+	public Order(int id, String cName, String status, double orderAmount, 
+			Product product, Blueprint blueprint, LocalDateTime oD){
 		this();
-		this.orderID = oID;
 		this.customerName = cName;
 		this.status = status;
 		this.orderDollarAmount = orderAmount;
-		this.productID = pID;
-		//this.p = 
-		this.blueprintID = bpID;
-		//this.bp = 
-		this.orderDate = oD;
-	}
-	
-	public Order(int id, int oID, String cName, String status, double orderAmount,
-			int pID, int bpID, LocalDateTime oD){
-		this();
-		this.id = id;
-		this.orderID = oID;
-		this.customerName = cName;
-		this.status = status;
-		this.orderDollarAmount = orderAmount;
-		this.productID = pID;
-		//this.p = 
-		this.blueprintID = bpID;
-		//this.bp = 
+		this.product = product;
+		this.blueprint = blueprint;
 		this.orderDate = oD;
 	}
 
@@ -68,28 +48,20 @@ public class Order {
 		this.id = id;
 	}
 
-	public int getOrderID() {
-		return orderID;
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setOrderID(int orderID) {
-		this.orderID = orderID;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
-	public int getProductID() {
-		return productID;
+	public Blueprint getBlueprint() {
+		return blueprint;
 	}
 
-	public void setProductID(int productID) {
-		this.productID = productID;
-	}
-
-	public int getBlueprintID() {
-		return blueprintID;
-	}
-
-	public void setBlueprintID(int blueprintID) {
-		this.blueprintID = blueprintID;
+	public void setBlueprint(Blueprint blueprint) {
+		this.blueprint = blueprint;
 	}
 
 	public String getCustomerName() {
@@ -126,9 +98,9 @@ public class Order {
 	
 	//toString
 	public String toString(){
-		String s = "Order: " + this.orderID + " Customer: " + this.customerName + " Amount: " +
+		String stringReturn = "Order: " + this.id + " Customer: " + this.customerName + " Amount: " +
 				this.orderDollarAmount + " Date: " + this.orderDate + " Status: " + this.status;
-		return s;
+		return stringReturn;
 	}
 	
 	//check for incorrect formatting

@@ -1,4 +1,4 @@
-package product;
+package quoteproduct;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

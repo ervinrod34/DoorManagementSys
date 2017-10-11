@@ -1,10 +1,14 @@
-package product;
+package quoteproduct;
 
 public class Product {
 
 	private int id, quantity;
 	private double weight, height, width, price;
 	private String items, description, category;
+	
+	public Product(int id) {
+		this.id = id;
+	}
 	
 	public Product (int id, int quantity, double weight, double height, double width, double price,
 					String items, String description, String category) {

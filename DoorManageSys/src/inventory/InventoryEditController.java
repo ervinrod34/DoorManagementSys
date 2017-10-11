@@ -47,6 +47,8 @@ public class InventoryEditController implements Initializable {
 	
 	@FXML private TextField maxQuantityField;
 	
+	@FXML private TextField categoryField;
+	
 	@FXML private Button saveButton;
 	
 	@FXML private Button cancelButton;
@@ -65,6 +67,7 @@ public class InventoryEditController implements Initializable {
 		if(source == cancelButton) {
 			MasterController.getInstance().setEditObject(this.inventory);
 			MasterController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
+			
 		} else if(source == saveButton) {
 			this.updateInventoryObject();
 			this.inventory.save();
@@ -94,28 +97,108 @@ public class InventoryEditController implements Initializable {
 			this.maxQuantityField.setText(Integer.toString(this.inventory.getMaxQuantity()));
 			this.taxable.setSelected(this.inventory.isTaxable());
 			this.vendorsField.setText(this.inventory.getVendor());
+			this.categoryField.setText(this.inventory.getCategory());
 		}
 	}
 	
 	public void updateInventoryObject() {
-		Inventory updatedInventory = new Inventory(this.inventory.getId(),
-									 this.itemNumberField.getText(),
-									 this.manufacturerField.getText(),
-									 this.partNumberField.getText(),
-									 this.vendorsField.getText(),
-									 this.sizesField.getText(),
-									 this.colorCodeField.getText(),
-									 this.otherInfoField.getText(),
-									 this.unitOfMeasureField.getText(),
-									 Double.parseDouble(this.actualCostField.getText()),
-									 Double.parseDouble(this.sellingPriceField.getText()),
-									 Integer.parseInt(this.quantityField.getText()),
-									 Integer.parseInt(this.minQuantityField.getText()),
-									 Integer.parseInt(this.maxQuantityField.getText()),
-									 "default Category",
-									 this.taxable.isSelected(),
-									 this.accountingCodeField.getText());
+		Inventory updatedInventory = new Inventory();
+		
+		updatedInventory.setId(this.inventory.getId());
+		
+		if(this.itemNumberField.getText().length() == 0) {
+			updatedInventory.setItemNo("");
+		} else {
+			updatedInventory.setItemNo(this.itemNumberField.getText());
+		}
+		
+		if(this.manufacturerField.getText().length() == 0) {
+			updatedInventory.setManufacturer("");
+		} else {
+			updatedInventory.setManufacturer(this.manufacturerField.getText());
+		}
+		
+		if(this.partNumberField.getText().length()== 0) {
+			updatedInventory.setManufacturerNo("");
+		} else {
+			updatedInventory.setManufacturerNo(this.partNumberField.getText());
+		}
+
+		if(this.vendorsField.getText().length() == 0) {
+			updatedInventory.setVendor("");
+		} else {
+			updatedInventory.setVendor(this.vendorsField.getText());
+		}
+		
+		if(this.sizesField.getText().length() == 0) {
+			updatedInventory.setSize("");
+		} else {
+			updatedInventory.setSize(this.sizesField.getText());
+		}
+
+		if(this.colorCodeField.getText().length() == 0) {
+			updatedInventory.setColorCode("");
+		} else {
+			updatedInventory.setColorCode(this.colorCodeField.getText());
+		}
+		
+		if(this.otherInfoField.getText().length() == 0) {
+			updatedInventory.setExtra("");
+		} else {
+			updatedInventory.setExtra(this.otherInfoField.getText());
+		}
+		
+		if(this.unitOfMeasureField.getText().length() == 0) {
+			updatedInventory.setUnitOfMeasure("");
+		} else {
+			updatedInventory.setUnitOfMeasure(this.unitOfMeasureField.getText());
+		}
+		
+		if(this.actualCostField.getText().length() == 0) {
+			updatedInventory.setActualCost(0.0);
+		} else {
+			updatedInventory.setActualCost(Double.parseDouble(this.actualCostField.getText()));
+		}
+		
+		if(this.sellingPriceField.getText().length() == 0) {
+			updatedInventory.setSellingPrice(0.0);
+		} else {
+			updatedInventory.setSellingPrice(Double.parseDouble(this.sellingPriceField.getText()));
+		}
+									 
+		if(this.quantityField.getText().length() == 0) {
+			updatedInventory.setQuantity(0);
+		} else {
+			updatedInventory.setQuantity(Integer.parseInt(this.quantityField.getText()));
+		}
+		
+		if(this.minQuantityField.getText().length() == 0) {
+			updatedInventory.setMinQuantity(0);
+		} else {
+			updatedInventory.setMinQuantity(Integer.parseInt(this.minQuantityField.getText()));
+		}
+		
+		if(this.maxQuantityField.getText().length() == 0) {
+			updatedInventory.setMaxQuantity(0);
+		} else {
+			updatedInventory.setMaxQuantity(Integer.parseInt(this.maxQuantityField.getText()));
+		}
+		
+		if(this.categoryField.getText().length() == 0) {
+			updatedInventory.setCategory("");
+		} else {
+			updatedInventory.setCategory(this.categoryField.getText());
+		}
+		
+		if(this.accountingCodeField.getText().length() == 0) {
+			updatedInventory.setAccountingCode("");
+		} else {
+			updatedInventory.setAccountingCode(this.accountingCodeField.getText());
+		}
+		
+		updatedInventory.setTaxable(this.taxable.isSelected());
 		
 		this.inventory = updatedInventory;
 	}
+	
 }
