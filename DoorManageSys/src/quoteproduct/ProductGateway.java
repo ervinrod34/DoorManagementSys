@@ -171,12 +171,10 @@ public class ProductGateway {
 	}
 	
 	public void deleteProduct (int id) {
-		
 		StringBuffer sqlCommand = new StringBuffer ();
+		preparedStatement = null;
 		
 		sqlCommand.append("DELETE FROM Product WHERE id = '" + id + "'");
-		
-		preparedStatement = null;
 		
 		try {
 			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
