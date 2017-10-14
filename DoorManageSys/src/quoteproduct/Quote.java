@@ -19,9 +19,9 @@ public class Quote {
 		this.totalCost = 0.0;
 	}
 	
-	public Quote(int id, ArrayList<Product> products, double totalCost) {
+	public Quote(int id, List<Product> list, double totalCost) {
 		this.id = id;
-		this.products = products;
+		this.products = list;
 		this.totalCost = totalCost;
 	}
 

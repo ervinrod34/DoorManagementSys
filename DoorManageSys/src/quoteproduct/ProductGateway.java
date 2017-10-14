@@ -84,7 +84,6 @@ public class ProductGateway {
 		}
 		
 		return allProducts;
-		
 	}
 	
 	public ArrayList <Product> searchProduct (String column, String value) {
@@ -182,6 +181,28 @@ public class ProductGateway {
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();
 		}
+	}
+	
+	public Product getProductByID(int id) {
+		Product product = new Product(id);
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = dbConnection.prepareStatement("SELECT FROM Product WHERE id=?",
+					PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			
+		product.setInventoryIDs(rs.getString("idList"));
+		product.setTotalCost(rs.getDouble("totalCost"));
+		product.setCategory(rs.getString("category"));
+		
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+		
+		return product;
 	}
 	
 	public void closePSandRS (PreparedStatement ps, ResultSet rs) throws SQLException {
