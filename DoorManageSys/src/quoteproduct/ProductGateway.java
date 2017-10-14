@@ -66,7 +66,28 @@ public class ProductGateway {
 		}
 	}
 	
-	public ArrayList <Product> searchProduct (String category) {
+	public ArrayList <Product> getProducts () {
+		ArrayList <Product> allProducts = new ArrayList <Product> ();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = dbConnection.prepareStatement("SELECT * FROM Product");
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				Product product = new Product (rs.getInt("id"), rs.getString("idList"), rs.getDouble("totalCost"), rs.getString("category"));
+				allProducts.add(product);
+			}
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+		
+		return allProducts;
+		
+	}
+	
+	public ArrayList <Product> searchProduct (String column, String value) {
 		
 		ArrayList <Product> matches = new ArrayList <Product> ();
 		preparedStatement = null;
@@ -74,9 +95,7 @@ public class ProductGateway {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("SELECT * FROM Product WHERE category='");
-		sqlCommand.append(category);
-		sqlCommand.append("'");
+		sqlCommand.append("SELECT * FROM Product WHERE " + column + "='" + value + "'");
 		
 		try {
 			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
@@ -84,9 +103,9 @@ public class ProductGateway {
 		
 			while (resultSet.next()) {
 			
-				Product product = new Product (resultSet.getInt("id"), resultSet.getInt("quantity"), resultSet.getDouble("weight"),
-											   resultSet.getDouble("height"), resultSet.getDouble("width"), resultSet.getDouble("price"),
-											   resultSet.getString("items"), resultSet.getString("description"), resultSet.getString("category"));
+				Product product = new Product (resultSet.getInt("id"), resultSet.getString("idList"),
+											   resultSet.getDouble("totalCost"), resultSet.getString("category"));
+				
 				matches.add(product);
 			}
 		}
@@ -110,10 +129,52 @@ public class ProductGateway {
 		
 		StringBuffer sqlCommand = new StringBuffer();
 		
-		sqlCommand.append("INSERT INTO Product (id, quantity, weight, height, width, price, items, description, category) VALUES ('");
-		sqlCommand.append(product.getId() + "', '" + product.getQuantity() + "', '" + product.getWeight() + "', '" + product.getHeight()
-						  + "', '" + product.getWidth() + "', '" + product.getPrice() + "', '" + product.getItems() + "', '"
-						  + product.getDescription() + "', '" + product.getCategory() + "')");
+		sqlCommand.append("INSERT INTO Product (id, idList, totalCost, category) VALUES (?, ?, ?, ?)");
+		
+		preparedStatement = null;
+		
+		try {
+			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString(), preparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, product.getId());
+			preparedStatement.setString(2, product.getInventoryIDs());
+			preparedStatement.setDouble(3, product.getTotalCost());
+			preparedStatement.setString(4, product.getCategory());
+			preparedStatement.execute();
+			
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+	}
+	
+	public void updateProduct (Product product) {
+		
+		StringBuffer sqlCommand = new StringBuffer ();
+		
+		sqlCommand.append("UPDATE Product SET id=?, idList=?, totalCost=?, category=?, " + 
+						  "WHERE id =?");
+		
+		preparedStatement = null;
+		resultSet = null;
+		
+		try {
+			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString(), 
+					PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, product.getId());
+			preparedStatement.setString(2, product.getInventoryIDs());
+			preparedStatement.setDouble(3, product.getTotalCost());
+			preparedStatement.setString(4, product.getCategory());
+			preparedStatement.execute();
+			
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+	}
+	
+	public void deleteProduct (int id) {
+		
+		StringBuffer sqlCommand = new StringBuffer ();
+		
+		sqlCommand.append("DELETE FROM Product WHERE id = '" + id + "'");
 		
 		preparedStatement = null;
 		
@@ -123,7 +184,6 @@ public class ProductGateway {
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();
 		}
-		
 	}
 	
 	public void closePSandRS (PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -134,5 +194,4 @@ public class ProductGateway {
 			ps.close();
 		}
 	}
-	
 }
