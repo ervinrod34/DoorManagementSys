@@ -70,8 +70,8 @@ public class OrderEditController implements Initializable {
 	
 	public void initialize(URL loc, ResourceBundle rsc) {
 		if(this.order.getId() > 0) {
-			this.quoteNumberField.setText(Integer.toString(this.order.getQuote().getId()));
-			this.blueprintNumberField.setText(Integer.toString(this.order.getBlueprint().getId()));
+			this.quoteNumberField.setText(Integer.toString(this.order.getQuoteId()));
+			this.blueprintNumberField.setText(Integer.toString(this.order.getBlueprintId()));
 			this.customerPurchaseOrderNumberField.setText(this.order.getCustomerPurchaseOrderNumber());
 			this.customerNameField.setText(this.order.getCustomerName());
 			this.productCodeField.setText(this.order.getProductCode());
