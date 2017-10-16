@@ -1,65 +1,77 @@
 package order;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
-import application.*;
+import application.MasterController;
 import blueprint.Blueprint;
-import product.Product;
+import quote.Quote;
 
 public class Order {
-	
+
 	//object member variables
-	private int id, orderID, productID, blueprintID;
-	private Product p;
-	private Blueprint bp;
-	//create product and blueprint objects
-	private String customerName, status;
-	private double orderDollarAmount;
-	private LocalDateTime orderDate; //change
+	private int id;
+	
+	private Quote quote;
+	private Blueprint blueprint;
+	
+	private String customerPurchaseOrderNumber;
+	private String customerName;
+	private String productCode;
+	private String status;
+	
+	private Date dateOrdered;
+	private Date targetShipping;
+	private Date actualShipping;
+	
+	private Double totalAmount;
 	
 	//constructors
 	public Order(){
-		this.orderID = 0;
-		this.productID = 0;
-		this.p = new Product(productID, 0, 0, 0, 0, 0, "", "", "");
-		this.blueprintID = 0;
-		this.bp = new Blueprint(blueprintID);
+		this.quote = new Quote(0);
+		this.blueprint = new Blueprint(0);
+		this.customerPurchaseOrderNumber = "";
 		this.customerName = "";
+		this.productCode = "";
 		this.status = "";
-		this.orderDollarAmount = 0;
-		this.orderDate = null;
+		this.dateOrdered = null;
+		this.targetShipping = null;
+		this.actualShipping = null;
+		this.totalAmount = 0.0;
 	}
 	
-	public Order(int oID, String cName, String status, double orderAmount,
-			int pID, int bpID, LocalDateTime oD){
+	public Order(int quoteId, int blueprintId, String cPON, String cName, 
+			String pCode, String status, Date dateOrdered, Date target, Date actual, 
+			Double totalAmount){
 		this();
-		this.orderID = oID;
+		this.customerPurchaseOrderNumber = cPON;
 		this.customerName = cName;
+		this.productCode = pCode;
 		this.status = status;
-		this.orderDollarAmount = orderAmount;
-		this.productID = pID;
-		//this.p = 
-		this.blueprintID = bpID;
-		//this.bp = 
-		this.orderDate = oD;
+		this.dateOrdered = dateOrdered;
+		this.targetShipping = target;
+		this.actualShipping = actual;
+		this.totalAmount = totalAmount;
+		this.quote = getQuoteById(quoteId);
+		this.blueprint = getBlueprintById(blueprintId);
 	}
 	
-	public Order(int id, int oID, String cName, String status, double orderAmount,
-			int pID, int bpID, LocalDateTime oD){
+	public Order(int id, int quoteId, int blueprintId, String cPON, String cName, 
+			String pCode, String status, Date dateOrdered, Date target, Date actual, 
+			Double totalAmount){
 		this();
 		this.id = id;
-		this.orderID = oID;
+		this.customerPurchaseOrderNumber = cPON;
 		this.customerName = cName;
+		this.productCode = pCode;
 		this.status = status;
-		this.orderDollarAmount = orderAmount;
-		this.productID = pID;
-		//this.p = 
-		this.blueprintID = bpID;
-		//this.bp = 
-		this.orderDate = oD;
-	}
+		this.dateOrdered = dateOrdered;
+		this.targetShipping = target;
+		this.actualShipping = actual;
+		this.totalAmount = totalAmount;
+		this.quote = getQuoteById(quoteId);
+		this.blueprint = getBlueprintById(blueprintId);
+}
 
-	//getters and setters
 	public int getId() {
 		return id;
 	}
@@ -67,30 +79,52 @@ public class Order {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	/*public boolean checkId(int id){
+		if(id >= 0)
+			return true;
+		else
+			return false;
+	}*/
 
-	public int getOrderID() {
-		return orderID;
+	public Quote getQuote() {
+		return quote;
 	}
 
-	public void setOrderID(int orderID) {
-		this.orderID = orderID;
+	public void setQuote(Quote quote) {
+		this.quote = quote;
+	}
+	
+	public int getQuoteId(){
+		return quote.getId();
 	}
 
-	public int getProductID() {
-		return productID;
+	public Blueprint getBlueprint() {
+		return blueprint;
+	}
+	
+	public int getBlueprintId(){
+		return blueprint.getId();
 	}
 
-	public void setProductID(int productID) {
-		this.productID = productID;
+	public void setBlueprint(Blueprint blueprint) {
+		this.blueprint = blueprint;
 	}
 
-	public int getBlueprintID() {
-		return blueprintID;
+	public String getCustomerPurchaseOrderNumber() {
+		return customerPurchaseOrderNumber;
 	}
 
-	public void setBlueprintID(int blueprintID) {
-		this.blueprintID = blueprintID;
+	public void setCustomerPurchaseOrderNumber(String customerPurchaseOrderNumber) {
+		this.customerPurchaseOrderNumber = customerPurchaseOrderNumber;
 	}
+	//check for other things too?
+	/*public boolean checkCustomerPurchaseOrderNumber(String customerPurchaseOrderNumber) {
+		if(customerPurchaseOrderNumber.length() > 0)
+			return true;
+		else
+			return false;
+	}*/
 
 	public String getCustomerName() {
 		return customerName;
@@ -99,6 +133,29 @@ public class Order {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
+	
+	/*public boolean checkCustomerName(String customerName) {
+		if(customerName.length() > 0)
+			return true;
+		else
+			return false;
+	}*/
+	
+
+	public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+	
+	/*public boolean checkProductCode(String productCode) {
+		if(productCode.length() > 0)
+			return true;
+		else
+			return false;
+	}*/
 
 	public String getStatus() {
 		return status;
@@ -107,83 +164,84 @@ public class Order {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	public double getOrderDollarAmount() {
-		return orderDollarAmount;
-	}
-
-	public void setOrderDollarAmount(double orderDollarAmount) {
-		this.orderDollarAmount = orderDollarAmount;
-	}
-
-	public LocalDateTime getOrderDate() {
-		return orderDate;
-	}
-
-	public void setOrderDate(LocalDateTime orderDate) {
-		this.orderDate = orderDate;
-	}
 	
-	//toString
-	public String toString(){
-		String s = "Order: " + this.orderID + " Customer: " + this.customerName + " Amount: " +
-				this.orderDollarAmount + " Date: " + this.orderDate + " Status: " + this.status;
-		return s;
-	}
-	
-	//check for incorrect formatting
-	public boolean checkID(int id){
-		if (id >= 0)
+	/*public boolean checkStatus(String status) {
+		if(status.length() > 0)
 			return true;
 		else
 			return false;
-	}
-	
-	public boolean checkOrderID(int oID){
-		if (oID >= 0)
-			return true;
-		else
-			return false;
-	}
-	
-	public boolean checkCustomerName(String cN){
-		int length = cN.length();
-		if (0 < length && length <= 255)
-			return true;
-		else
-			return false;
-	}
-	
-	public boolean checkStatus(String s){
-		int length = s.length();
-		if (0 < length && length <= 255)
-			return true;
-		else
-			return false;
-	}
-	
-	public boolean checkOrderDollarAmount(double oda){
-		if (oda >= 0)
-			return true;
-		else
-			return false;
-	}
-	
-	public boolean checkProductID(int pID){
-		if (pID >= 0)
-			return true;
-		else
-			return false;
-	}
-	
-	public boolean checkBlueprintID(int bpID){
-		if (bpID >= 0)
-			return true;
-		else
-			return false;
-	}
-	
-	/*public boolean checkOrderDate(LocalDateTime od){
-		
 	}*/
+
+	public Date getDateOrdered() {
+		return dateOrdered;
+	}
+
+	public void setDateOrdered(Date dateOrdered) {
+		this.dateOrdered = dateOrdered;
+	}
+	
+	/*public boolean checkDateOrdered(Date dateOrdered) {
+		if(dateOrdered != null)
+			return true;
+		else
+			return false;
+	}*/
+
+	public Date getTargetShipping() {
+		return targetShipping;
+	}
+
+	public void setTargetShipping(Date targetShipping) {
+		this.targetShipping = targetShipping;
+	}
+	
+	/*public boolean checkTargetShipping(Date targetShipping) {
+		if(targetShipping != null)
+			return true;
+		else
+			return false;
+	}*/
+
+	public Date getActualShipping() {
+		return actualShipping;
+	}
+
+	public void setActualShipping(Date actualShipping) {
+		this.actualShipping = actualShipping;
+	}
+	
+	/*public boolean checkActualShipping(Date actalShipping) {
+		if(actualShipping != null)
+			return true;
+		else
+			return false;
+	}*/
+
+	public Double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	
+	/*public boolean checkTotalAmount(Double totalAmount) {
+		if(totalAmount >= 0.0)
+			return true;
+		else
+			return false;
+	}*/
+	
+	public void save() {
+		if (id == 0) {
+			MasterController.getInstance().getOrderGateway().addOrder(this);
+		} else {
+			MasterController.getInstance().getOrderGateway().updateOrder(this);
+		}
+	}
+	
+	public String toString(){
+		return "";
+	}
+	
 }

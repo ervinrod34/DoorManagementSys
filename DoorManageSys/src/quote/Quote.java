@@ -1,9 +1,10 @@
-package blueprint;
+package quote;
 
-public class Blueprint {
+public class Quote {
+
 	private int id;
 	
-	public Blueprint(int id){
+	public Quote(int id){
 		this.id = id;
 	}
 

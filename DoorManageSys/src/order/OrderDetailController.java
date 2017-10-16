@@ -1,5 +1,8 @@
 package order;
 
-public class OrderDetailController {
+import javafx.fxml.Initializable;
 
+public class OrderDetailController implements Initializable{
+
+	@FXML private Label dbID;
 }

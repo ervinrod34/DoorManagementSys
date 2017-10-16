@@ -14,6 +14,7 @@ import user.*;
 import landing.*;
 import inventory.*;
 import login.*;
+import order.OrderGateway;
 import product.*;
 
 import java.io.IOException;
@@ -60,6 +61,8 @@ public class MasterController {
 	
 	private ProductGateway productGateway;
 	
+	private OrderGateway orderGateway;
+	
 	/**
 	 * The page that the user is trying to view
 	 */
@@ -87,6 +90,7 @@ public class MasterController {
 			this.usersGateway = new UsersGateway();
 			this.inventoryGateway = new InventoryGateway();
 			this.productGateway = new ProductGateway ();
+			this.orderGateway = new OrderGateway();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -247,6 +251,10 @@ public class MasterController {
 
 	public InventoryGateway getInventoryGateway() {
 		return inventoryGateway;
+	}
+	
+	public OrderGateway getOrderGateway(){
+		return orderGateway;
 	}
 
 	public void setEditObject(Object obj) {
