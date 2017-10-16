@@ -2,7 +2,6 @@ package application;
 
 import login.*;
 import user.*;
-import inventory.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;

@@ -16,9 +16,9 @@ import inventory.*;
 import login.*;
 import order.OrderGateway;
 import product.*;
+import quoteproduct.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -255,6 +255,10 @@ public class MasterController {
 	
 	public OrderGateway getOrderGateway(){
 		return orderGateway;
+	}
+	
+	public ProductGateway getProductGateway() {
+		return productGateway;
 	}
 
 	public void setEditObject(Object obj) {

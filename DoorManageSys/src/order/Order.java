@@ -30,6 +30,7 @@ public class Order {
 		this.quote = new Quote(0);
 		this.blueprint = new Blueprint(0);
 		this.customerPurchaseOrderNumber = "";
+		this.id = 0;
 		this.customerName = "";
 		this.productCode = "";
 		this.status = "";
@@ -70,7 +71,7 @@ public class Order {
 		this.totalAmount = totalAmount;
 		this.quote = getQuoteById(quoteId);
 		this.blueprint = getBlueprintById(blueprintId);
-}
+	}
 
 	public int getId() {
 		return id;
@@ -167,6 +168,18 @@ public class Order {
 	
 	/*public boolean checkStatus(String status) {
 		if(status.length() > 0)
+=======
+	//toString
+	public String toString(){
+		String stringReturn = "Order: " + this.id + " Customer: " + this.customerName + " Amount: " +
+				this.orderDollarAmount + " Date: " + this.orderDate + " Status: " + this.status;
+		return stringReturn;
+	}
+	
+	//check for incorrect formatting
+	public boolean checkID(int id){
+		if (id >= 0)
+>>>>>>> branch 'devS3' of https://github.com/StefanMarchand/TeamNoNameYet.git
 			return true;
 		else
 			return false;

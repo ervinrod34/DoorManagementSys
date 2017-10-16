@@ -277,7 +277,6 @@ public class InventoryGateway {
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();
 		}
-		
 	}
 	
 	

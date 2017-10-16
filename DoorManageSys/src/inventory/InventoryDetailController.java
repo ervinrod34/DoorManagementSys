@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import application.MasterController;
 import application.PageTypes;
@@ -30,6 +32,8 @@ public class InventoryDetailController implements Initializable {
 	@FXML private Label colorCode;
 	
 	@FXML private Label otherInformation;
+	
+	@FXML private Label category;
 	
 	@FXML private Label unitOfMeasure;
 	
@@ -72,7 +76,14 @@ public class InventoryDetailController implements Initializable {
 			MasterController.getInstance().getInventoryGateway().deleteInventory(this.inventory.getId());
 			
 			//Go back to this later
-			MasterController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
+			Timer timer = new Timer();
+					
+			timer.schedule(new TimerTask() {
+				public void run() {
+					MasterController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
+				}
+			}, 5000);
+			
 		}
 	}
 
@@ -87,6 +98,7 @@ public class InventoryDetailController implements Initializable {
 			this.colorCode.setText(this.inventory.getColorCode());
 			this.otherInformation.setText(this.inventory.getExtra());
 			this.unitOfMeasure.setText(this.inventory.getUnitOfMeasure());
+			this.category.setText(this.inventory.getCategory());
 			this.actualCost.setText(Double.toString(this.inventory.getActualCost()));
 			this.sellingPrice.setText(Double.toString(this.inventory.getSellingPrice()));
 			this.displayTaxable();
