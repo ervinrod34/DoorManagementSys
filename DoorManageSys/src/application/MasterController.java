@@ -15,7 +15,6 @@ import landing.*;
 import inventory.*;
 import login.*;
 import order.OrderGateway;
-import product.*;
 import quoteproduct.*;
 
 import java.io.IOException;
@@ -62,6 +61,8 @@ public class MasterController {
 	private ProductGateway productGateway;
 	
 	private OrderGateway orderGateway;
+	
+	private QuoteGateway quoteGateway;
 	
 	/**
 	 * The page that the user is trying to view
@@ -227,10 +228,6 @@ public class MasterController {
 		this.stage = stage;
 	}
 	
-	public UsersGateway getUsersGateway() {
-		return usersGateway;
-	}
-	
 	public DPMUser getUser() {
 		return this.user;
 	}
@@ -248,7 +245,11 @@ public class MasterController {
 	public boolean isLogoutPressed() {
 		return this.loggedOut;
 	}
-
+	
+	public UsersGateway getUsersGateway() {
+		return usersGateway;
+	}
+	
 	public InventoryGateway getInventoryGateway() {
 		return inventoryGateway;
 	}
@@ -259,6 +260,10 @@ public class MasterController {
 	
 	public ProductGateway getProductGateway() {
 		return productGateway;
+	}
+	
+	public QuoteGateway getQuoteGateway() {
+		return this.quoteGateway;
 	}
 
 	public void setEditObject(Object obj) {

@@ -1,7 +1,10 @@
 package order;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -69,19 +72,26 @@ public class OrderDetailController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		if(this.order.getId() > 0) {
 			this.dbID.setText(Integer.toString(this.order.getId()));
-			this.quoteNumber.setText(Integer.toString(this.order.getQuoteId()));
-			this.blueprintNumber.setText(Integer.toString(this.order.getBlueprintId()));
+			this.quoteNumber.setText(this.order.getQuote().toString());
+			this.blueprintNumber.setText(this.order.getBlueprint().toString());
 			this.customerPurchaseOrderNumber.setText(this.order.getCustomerPurchaseOrderNumber());
 			this.customerName.setText(this.order.getCustomerName());
 			this.productCode.setText(this.order.getProductCode());
 			this.status.setText(this.order.getStatus());
-			this.dateOrdered.setValue(this.order.getDateOrdered());
-			this.targetShipping.setValue(this.order.getTargetShipping());
-			this.actualShipping.setValue(this.order.getActualShipping());
+			
+			this.dateOrdered.setValue(this.convertDateToLocalDate(this.order.getDateOrdered()));
+			this.targetShipping.setValue(this.convertDateToLocalDate(this.order.getTargetShipping()));
+			this.actualShipping.setValue(this.convertDateToLocalDate(this.order.getActualShipping()));
+			
 			this.actualCost.setText(Double.toString(this.order.getTotalAmount()));
 			
 		}
 	}
 	
+	public LocalDate convertDateToLocalDate(Date date) {
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		return localDate;
+	}
 }
 
