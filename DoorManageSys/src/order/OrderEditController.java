@@ -3,22 +3,16 @@ package order;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import application.MasterController;
 import application.PageTypes;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import quoteproduct.*;
@@ -101,6 +95,8 @@ public class OrderEditController implements Initializable {
 								java.sql.Date.valueOf(this.actualShippingPicker.getValue()),
 								new Blueprint(0),
 								Double.parseDouble(this.totalAmountField.getText()));
+		
+		this.order = updatedOrder;
 	}
 	
 	public LocalDate convertDateToLocalDate(Date date) {
