@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ListView fx:id="productContents" layoutX="3.0" layoutY="32.0" onMouseClicked="#handleProductContents" prefHeight="211.0" prefWidth="695.0" />
+      <Label layoutX="10.0" layoutY="8.0" text="Product Contents:">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="deleteItem" layoutX="608.0" layoutY="247.0" mnemonicParsing="false" onAction="#handleProductContents" text="Delete Item" />
+      <ListView fx:id="searchResults" layoutX="3.0" layoutY="299.0" onMouseClicked="#handleSearchResults" prefHeight="275.0" prefWidth="695.0" />
+      <Label layoutX="10.0" layoutY="274.0" text="Search Results:">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
