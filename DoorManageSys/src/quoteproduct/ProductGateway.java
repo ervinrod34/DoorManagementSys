@@ -1,215 +1,160 @@
 package quoteproduct;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import application.MasterController;
+import inventory.Inventory;
+import quoteproduct.*;
 
 public class ProductGateway {
-
-	private Connection dbConnection;
-	private Properties dbProperties;
-	FileInputStream dbPropertiesFile;
-	private MysqlDataSource database;
-	PreparedStatement preparedStatement;
-	ResultSet resultSet;
 	
-	public ProductGateway () {
-		
-		dbProperties = new Properties ();
-		
-		setUpDBProperties ();
-		setUpDB ();
-		connectToDatabase ();
-		
-	}
+	private Connection connection;
 	
-	private void setUpDBProperties() {
+	public ProductGateway(){
+		this.connection = null;
+		Properties prop = new Properties();
+		FileInputStream fileStream = null;
 		
-		try {
-			dbPropertiesFile = new FileInputStream ("database.properties");
-		}
-		catch (FileNotFoundException fileNotFoudnException) {
-			System.err.println("Properties File not found.");
+		try{
+			fileStream = new FileInputStream("database.properties");
+			prop.load(fileStream);
+			fileStream.close();
+			
+			MysqlDataSource info = new MysqlDataSource();
+			info.setURL(prop.getProperty("MYSQL_DPM_DB_URL"));
+			info.setUser(prop.getProperty("MYSQL_DPM_DB_UN"));
+			info.setPassword(prop.getProperty("MYSQL_DPM_DB_PW"));
+			
+			this.connection = info.getConnection();
+			
+		} catch(IOException | SQLException e) {
+			e.printStackTrace();
 		}
 		
-		try {
-			dbProperties.load(dbPropertiesFile);
-		}
-		catch (IOException e) {
-			System.err.println("Error reading from Input Stream.");
-		}
-	}
+	}//End Constructor
 	
-	private void setUpDB() {
-		
-		database = new MysqlDataSource ();
-		
-		database.setURL(dbProperties.getProperty("MYSQL_DPM_DB_URL"));
-		database.setUser(dbProperties.getProperty("MYSQL_DPM_DB_UN"));
-		database.setPassword(dbProperties.getProperty("MYSQL_DPM_DB_PW"));
-	}
-
-	private void connectToDatabase() {
-		
-		try {
-			dbConnection = database.getConnection();
-		}
-		catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-		}
-	}
-	
-	public ArrayList <Product> getProducts() {
-		ArrayList<Product> allProducts = new ArrayList<Product>();
+	public List<Inventory> importListOfQuotesFromDB() {
+		List<Inventory> inventories = new ArrayList<Inventory>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
-			ps = dbConnection.prepareStatement("SELECT * FROM Product");
+			ps = this.connection.prepareStatement("SELECT * FROM Product "
+					+ "WHERE category=?", PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setString(1, "product");
+			
 			rs = ps.executeQuery();
 			
-			while (rs.next()) {
-				Product product = new Product(rs.getInt("id"), rs.getString("idList"), rs.getDouble("totalCost"), rs.getString("category"));
-				allProducts.add(product);
-			}
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-		}
-		
-		return allProducts;
-	}
-	
-	public ArrayList <Product> searchProduct(String column, String value) {
-		
-		ArrayList<Product> matches = new ArrayList<Product>();
-		preparedStatement = null;
-		resultSet = null;
-		
-		StringBuffer sqlCommand = new StringBuffer();
-		
-		sqlCommand.append("SELECT * FROM Product WHERE " + column + "='" + value + "'");
-		
-		try {
-			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
-			resultSet = preparedStatement.executeQuery();
-		
-			while (resultSet.next()) {
-			
-				Product product = new Product(resultSet.getInt("id"), resultSet.getString("idList"),
-											   resultSet.getDouble("totalCost"), resultSet.getString("category"));
+			while(rs.next()) {
+				Inventory inventory = new Inventory();
 				
-				matches.add(product);
+				inventories.add(inventory);
 			}
-		}
-		catch(SQLException sqlException) {
-			sqlException.printStackTrace();
-		}
-		
-		finally {
-			try {
-				closePSandRS (preparedStatement, resultSet);
-			}
-			catch (SQLException sqlException) {
-				sqlException.printStackTrace();
-			}
-		}
-		return matches;
-	}
-	
-	public void addProduct(Product product) {
-		
-		StringBuffer sqlCommand = new StringBuffer();
-		
-		sqlCommand.append("INSERT INTO Product (id, idList, totalCost, category) VALUES (?, ?, ?, ?)");
-		
-		preparedStatement = null;
-		
-		try {
-			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString(), preparedStatement.RETURN_GENERATED_KEYS);
-			preparedStatement.setInt(1, product.getId());
-			preparedStatement.setString(2, product.getInventoryIDs());
-			preparedStatement.setDouble(3, product.getTotalCost());
-			preparedStatement.setString(4, product.getCategory());
-			preparedStatement.execute();
 			
-		} catch (SQLException sqlException) {
+		} catch (SQLException sqlException){
 			sqlException.printStackTrace();
 		}
-	}
+		
+		return inventories;
+	}//end importList
 	
-	public void updateProduct(Product product) {
-		
-		StringBuffer sqlCommand = new StringBuffer();
-		
-		sqlCommand.append("UPDATE Product SET id=?, idList=?, totalCost=?, category=?, " + 
-						  "WHERE id =?");
-		
-		preparedStatement = null;
-		resultSet = null;
-		
-		try {
-			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString(), 
-					PreparedStatement.RETURN_GENERATED_KEYS);
-			preparedStatement.setInt(1, product.getId());
-			preparedStatement.setString(2, product.getInventoryIDs());
-			preparedStatement.setDouble(3, product.getTotalCost());
-			preparedStatement.setString(4, product.getCategory());
-			preparedStatement.execute();
-			
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-		}
-	}
+	//TODO check types of this function for compatibility with products
+//	public List<Product> parseCSVToProducts(String CSVid) {
+//		List<String> ids = new ArrayList<>();
+//		List<Product> products = new ArrayList<Product>();
+//		
+//		ids = Arrays.asList(CSVid.split(","));
+//		
+//		for(String id : ids) {
+//			products.add(MasterController.getInstance().getProductGateway().getProductByID(Integer.parseInt(id)));
+//		}
+//		
+//		return products;
+	//}
 	
-	public void deleteProduct(int id) {
-		StringBuffer sqlCommand = new StringBuffer ();
-		preparedStatement = null;
-		
-		sqlCommand.append("DELETE FROM Product WHERE id = '" + id + "'");
-		
-		try {
-			preparedStatement = dbConnection.prepareStatement(sqlCommand.toString());
-			preparedStatement.execute();
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-		}
-	}
-	
-	public Product getProductByID(int id) {
-		Product product = new Product(id);
+	public void insertNewProductRecord(Product product) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
-			ps = dbConnection.prepareStatement("SELECT FROM Product WHERE id=?",
-					PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
+			ps = this.connection.prepareStatement("INSERT INTO Product (id, idList, totalCost) "
+					+ "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, product.getId());
+			ps.setString(2, this.parseProductIDsToCSV(product.getInventories()));
+			ps.setDouble(3, product.getTotalCost());
+			ps.setString(4, "quote");
+			ps.executeQuery();
 			
-		product.setInventoryIDs(rs.getString("idList"));
-		product.setTotalCost(rs.getDouble("totalCost"));
-		product.setCategory(rs.getString("category"));
+		} catch(SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+	}
+	
+	public String parseProductIDsToCSV(List<Inventory> products) {
+		String CSV = "";
 		
+		for(Inventory product : products) {
+			CSV += product.getId() + ",";
+		}
+		
+		CSV = CSV.substring(0, CSV.length() - 1);
+		
+		return CSV;
+	}
+	
+	
+	public void updateProductRecord(Product product) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = this.connection.prepareStatement("UPDATE Product SET id=?, idList=?, "
+					+ "totalCost=?, category=? WHERE id=?", 
+					PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			ps.setInt(1, product.getId());
+			ps.setString(2, this.parseProductIDsToCSV(product.getInventories()));
+			ps.setDouble(3, product.getTotalCost());
+			ps.setString(4, "quote");
+			ps.setInt(5, product.getId());
+			ps.executeQuery();
+			
+		} catch(SQLException sqlException) {
+			sqlException.printStackTrace();
+		}
+	}
+	
+	
+	public void deleteProductRecord(int id) {
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			preparedStatement = this.connection.prepareStatement("DELETE FROM Product "
+					+ "WHERE id=?");
+			preparedStatement.setInt(1, id);
+			
+			preparedStatement.execute();
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();
 		}
-		
-		return product;
 	}
 	
 	public void closePSandRS(PreparedStatement ps, ResultSet rs) throws SQLException {
-		if (rs != null) {
+		if(rs != null) {
 			rs.close();
 		}
-		if (ps!= null) {
+		if(ps != null) {
 			ps.close();
 		}
 	}
-}
+
+}//End Class

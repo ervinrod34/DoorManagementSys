@@ -1,29 +1,33 @@
 package quoteproduct;
 
 import application.*;
+import inventory.Inventory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
 
 	private int id;
 
-	private String inventoryIDs;
+	private List<Inventory> inventories;
 	
 	private double totalCost;
 	
-	private String category;
+	
 	
 	public Product(int id) {
 		this.id = id;
+		this.totalCost = 0.0;
+		this.inventories = new ArrayList<Inventory>();
 	}
 	
-	public Product (int id, String ids, double totalCost, String category) {
+	public Product (int id, List<Inventory> ids, double totalCost) {
 		
 		this.id = id;
-		this.inventoryIDs = ids;
+		this.inventories = ids;
 		this.totalCost = totalCost;
-		this.category = category;
+		
 		
 	}	
 
@@ -35,13 +39,6 @@ public class Product {
 		this.id = id;
 	}
 
-	public String getInventoryIDs() {
-		return inventoryIDs;
-	}
-
-	public void setInventoryIDs(String inventoryIDs) {
-		this.inventoryIDs = inventoryIDs;
-	}
 
 	public double getTotalCost() {
 		return totalCost;
@@ -51,24 +48,26 @@ public class Product {
 		this.totalCost = totalCost;
 	}
 
-	public String getCategory() {
-		return category;
+	
+
+	public List<Inventory> getInventories() {
+		return inventories;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setInventories(List<Inventory> inventories) {
+		this.inventories = inventories;
 	}
 
-	public void save () {
-		if (id == 0) {
-			MasterController.getInstance().getProductGateway().addProduct(this);
-		}else {
-			MasterController.getInstance().getProductGateway().updateProduct(this);
-		}
-	}
+//	public void save () {
+//		if (id == 0) {
+//			MasterController.getInstance().getProductGateway().addProduct(this);
+//		}else {
+//			MasterController.getInstance().getProductGateway().updateProduct(this);
+//		}
+//	}
 	
 	public String toString () {
-		String returnValue = "ID: " + id + ", totalCost: " + totalCost + ", idList: " + inventoryIDs + ", Category: " + category;
+		String returnValue = "ID: " + id + ", totalCost: " + totalCost + ", idList: " + inventories + ", Category: ";
 		
 		return returnValue;
 		
