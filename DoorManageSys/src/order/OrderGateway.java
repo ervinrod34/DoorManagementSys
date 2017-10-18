@@ -4,9 +4,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -53,7 +56,7 @@ public class OrderGateway {
 		
 		database = new MysqlDataSource();
 		
-		database.setURL(dbProperties.getProperty("MYSQL_DPM_URL"));
+		database.setURL(dbProperties.getProperty("MYSQL_DPM_DB_URL"));
 		database.setUser(dbProperties.getProperty("MYSQL_DPM_DB_UN"));
 		database.setPassword(dbProperties.getProperty("MYSQL_DPM_DB_PW"));
 	}
@@ -71,25 +74,33 @@ public class OrderGateway {
 		
 		try{
 			String query = "SELECT * FROM Order WHERE "
-					+ "customerPurchaseOrderNumber LIKE ? OR customerName LIKE ? "
-					+ "OR productCode LIKE ? OR status LIKE ?";
+					+ "id LIKE ? OR customerPurchaseOrderNumber LIKE ? OR "
+					+ "customerName LIKE ? OR status LIKE ? OR dateOrdered LIKE ?";
 			preparedStatement = dbConnection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+
 			
 			search = "%" + search + "%";
 			preparedStatement.setString(1, search);
 			preparedStatement.setString(2, search);
 			preparedStatement.setString(3, search);
 			preparedStatement.setString(4, search);
+			preparedStatement.setString(5, search);
 			
 			resultSet = preparedStatement.executeQuery();
-			
+
 			while(resultSet.next()){ // TODO: ADD PROPER BLUEPRINTS
-				Order order = new Order(resultSet.getInt("id"),
-						MasterController.getInstance().getQuoteGateway().getQuoteByID(resultSet.getInt("quoteID")),
-						resultSet.getString("customerPurchaseOrderNumber"), resultSet.getString("customerName"), 
-						resultSet.getString("productCode"), resultSet.getString("status"), resultSet.getDate("dateOrdered"),
-						resultSet.getDate("targetShipping"), resultSet.getDate("actualShipping"),
-						new Blueprint(resultSet.getInt("blueprintID")), resultSet.getDouble("totalAmount"));
+				Quote quoteForOrder = MasterController.getInstance().getQuoteGateway().getQuoteByID(resultSet.getInt("quoteID"));
+				
+				Order order = new Order(resultSet.getInt("id"), quoteForOrder, 
+						resultSet.getString("customerPurchaseOrderNumber"), 
+						resultSet.getString("customerName"), 
+						resultSet.getString("productCode"), 
+						resultSet.getString("status"), 
+						resultSet.getDate("dateOrdered"), 
+						resultSet.getDate("targetShipping"), 
+						resultSet.getDate("actualShipping"),
+						new Blueprint(resultSet.getInt("blueprintID")),
+						resultSet.getDouble("totalAmount"));
 				
 				searchResults.add(order);
 			}
@@ -102,7 +113,6 @@ public class OrderGateway {
 				sqlException.printStackTrace();
 			}
 		}
-		
 		return searchResults;
 	}
 
@@ -216,32 +226,6 @@ public class OrderGateway {
 			sqlException.printStackTrace();
 		}
 	}
-
-/*	public Order getOrderById(int id){
-		Order order = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try{
-			ps = dbConnection.prepareStatement("SELECT * from Order where id=?");
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
-			while(rs.next()){
-				order = new Order(rs.getInt("id"), rs.getInt("quoteId"), rs.getInt("blueprintId"), 
-					 rs.getString("customerPurchaseOrderNumber"), rs.getString("customerName"), 
-					 rs.getString("productCode"), rs.getString("status"), rs.getDate("dateOrdered"), 
-					 rs.getDate("targetShipping"), rs.getDate("actualShipping"), rs.getDouble("totalAmount"));
-			}
-		} catch(SQLException e){
-			e.printStackTrace();
-		} finally {
-			try{
-				this.closePSandRS(ps, rs);
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-		}
-	return order;
-	}*/
 	
 	public void closePSandRS(PreparedStatement ps, ResultSet rs) throws SQLException{
 		if(rs != null){

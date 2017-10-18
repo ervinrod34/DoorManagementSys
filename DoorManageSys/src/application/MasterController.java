@@ -125,7 +125,7 @@ public class MasterController {
 		
 		//for List Page
 		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE
-				|| desiredPage == PageTypes.ORDER_LIST_PAGE) {
+				|| desiredPage == PageTypes.QORDER_LIST_PAGE) {
 			mainPane.setCenter(view);
 			mainPane.setRight(this.getEmptyRightPane());
 		
@@ -203,6 +203,11 @@ public class MasterController {
 				} else if (editOrder.getId() == 0) {
 					loader.setController(new QuoteEditController(new Order()));
 				}
+				break;
+				
+			case QORDER_LIST_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
+				loader.setController(new QOrderListController(this.orderToDisplay));
 				break;
 				
 			default:

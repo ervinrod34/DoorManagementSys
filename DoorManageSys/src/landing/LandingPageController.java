@@ -81,10 +81,10 @@ public class LandingPageController implements Initializable {
 		} else if(source == quote) {
 			this.applyEffectOnMenuLabel(quote);
 			
-			List<Order> unfinishedOrders = MasterController.getInstance().getOrderGateway().searchOrders("unfinished");
+			List<Order> unfinishedOrders = MasterController.getInstance().getOrderGateway().searchOrders("Unfinished");
 			MasterController.getInstance().setOrderListToDisplay(unfinishedOrders);
 			
-			this.changeViewOnLabelClick(quote, PageTypes.ORDER_LIST_PAGE);
+			this.changeViewOnLabelClick(quote, PageTypes.QORDER_LIST_PAGE);
 		} else if(source == users) {
 			this.applyEffectOnMenuLabel(users);
 			this.changeViewOnLabelClick(users, PageTypes.VIEW_USERS_PAGE);

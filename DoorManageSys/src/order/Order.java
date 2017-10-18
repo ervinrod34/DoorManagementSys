@@ -33,7 +33,7 @@ public class Order {
 		this.customerName = "";
 		this.productCode = "";
 		this.status = "";
-		this.dateOrdered = new Date(2000, 01, 01); //yyyy, mm, dd
+		this.dateOrdered = new Date(2000, 01, 01); //yyyy-MM-dd
 		this.targetShipping = new Date(2000, 01, 01);
 		this.actualShipping = new Date(2000, 01, 01);
 		this.blueprint = new Blueprint(0);
