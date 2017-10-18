@@ -9,13 +9,14 @@ import application.PageTypes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import order.Order;
 
-public class QOrderListController {
+public class QOrderListController implements Initializable {
 	
 	@FXML private ListView<Order> orderListView;
 	
@@ -48,6 +49,7 @@ public class QOrderListController {
 	public void initialize(URL loc, ResourceBundle rsc) {
 		this.observableList = this.orderListView.getItems();
 		for(Order order : this.orders) {
+			System.out.println("Placing -" + order);
 			this.observableList.add(order);
 		}
 		System.out.println(observableList);
