@@ -81,7 +81,7 @@ public class LandingPageController implements Initializable {
 		} else if(source == quote) {
 			this.applyEffectOnMenuLabel(quote);
 			
-			List<Order> unfinishedOrders = MasterController.getInstance().getOrderGateway().searchOrder("catagory", "unfinished");
+			List<Order> unfinishedOrders = MasterController.getInstance().getOrderGateway().searchOrders("unfinished");
 			MasterController.getInstance().setOrderListToDisplay(unfinishedOrders);
 			
 			this.changeViewOnLabelClick(quote, PageTypes.ORDER_LIST_PAGE);

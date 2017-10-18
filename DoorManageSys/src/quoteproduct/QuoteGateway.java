@@ -69,6 +69,29 @@ public class QuoteGateway {
 			return quotes;
 		}
 		
+		public Quote getQuoteByID(int quoteID) {
+			Quote quote = new Quote();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			
+			try {
+				ps = this.connection.prepareStatement("SELECT FROM Product "
+						+ "WHERE category=?", PreparedStatement.RETURN_GENERATED_KEYS);
+				ps.setString(1, "quote");
+				
+				rs = ps.executeQuery();
+				
+				quote = new Quote(rs.getInt("id"), 
+						this.parseCSVToProducts(rs.getString("idList")),
+						rs.getDouble("totalCost"));
+				
+			} catch (SQLException sqlException){
+				sqlException.printStackTrace();
+			}
+			
+			return quote;
+		}
+		
 		public List<Product> parseCSVToProducts(String CSVid) {
 			List<String> ids = new ArrayList<>();
 			List<Product> products = new ArrayList<Product>();
@@ -138,7 +161,7 @@ public class QuoteGateway {
 			
 			try {
 				preparedStatement = this.connection.prepareStatement("DELETE FROM Product "
-						+ "WHERE id=?");
+						+ "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
 				preparedStatement.setInt(1, id);
 				
 				preparedStatement.execute();

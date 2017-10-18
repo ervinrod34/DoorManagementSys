@@ -63,7 +63,7 @@ public class QuoteDetailController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		if (quote.getId() > 0) {
 			dbID.setText(Integer.toString(quote.getId()));
-			quoteNumber.setText(Integer.toString(order.getQuoteId()));
+			quoteNumber.setText(Integer.toString(order.getQuote().getId()));
 			quoteStatus.setText(order.getStatus());
 			purchaseOrderNumber.setText(order.getCustomerPurchaseOrderNumber());
 			customerName.setText(order.getCustomerName());

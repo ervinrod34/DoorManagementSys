@@ -128,7 +128,7 @@ public class QuoteEditController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		if (quote.getId() > 0) {
-			quoteNumber.setText(Integer.toString(order.getQuoteId()));
+			quoteNumber.setText(Integer.toString(order.getQuote().getId()));
 			quoteStatus.setText(order.getStatus());
 			purchaseOrderNumber.setText(order.getCustomerPurchaseOrderNumber());
 			customerName.setText(order.getCustomerName());

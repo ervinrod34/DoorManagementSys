@@ -1,22 +1,22 @@
 package order;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import application.MasterController;
 import application.PageTypes;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+
+import quoteproduct.*;
+import blueprint.*;
 
 public class OrderEditController implements Initializable {
 
@@ -70,33 +70,39 @@ public class OrderEditController implements Initializable {
 	
 	public void initialize(URL loc, ResourceBundle rsc) {
 		if(this.order.getId() > 0) {
-			this.quoteNumberField.setText(Integer.toString(this.order.getQuoteId()));
-			this.blueprintNumberField.setText(Integer.toString(this.order.getBlueprintId()));
+			this.quoteNumberField.setText(Integer.toString(this.order.getQuote().getId()));
+			this.blueprintNumberField.setText(Integer.toString(this.order.getBlueprint().getId()));
 			this.customerPurchaseOrderNumberField.setText(this.order.getCustomerPurchaseOrderNumber());
 			this.customerNameField.setText(this.order.getCustomerName());
 			this.productCodeField.setText(this.order.getProductCode());
 			this.statusField.setText(this.order.getStatus());
-			this.dateOrderedPicker.setValue(this.order.getDateOrdered());
-			this.targetShippingPicker.setValue(this.order.getTargetShipping());
-			this.actualShippingPicker.setValue(this.order.getActualShipping());
+			this.dateOrderedPicker.setValue(this.convertDateToLocalDate(this.order.getDateOrdered()));
+			this.targetShippingPicker.setValue(this.convertDateToLocalDate(this.order.getTargetShipping()));
+			this.actualShippingPicker.setValue(this.convertDateToLocalDate(this.order.getActualShipping()));
 			this.totalAmountField.setText(Double.toString(this.order.getTotalAmount()));
-			
 		}
 	}
 	
 	public void updateOrderObject() {
 		Order updatedOrder = new Order(this.order.getId(),
-									 Integer.parseInt(this.quoteNumberField.getText()),
-									 Integer.parseInt(this.blueprintNumberField.getText()),
-									 this.customerPurchaseOrderNumberField.getText(),
-									 this.customerNameField.getText(),
-									 this.productCodeField.getText(),
-									 this.statusField.getText(),
-									 this.dateOrderedPicker.getValue(),
-									 this.targetShippingPicker.getValue(),
-									 this.actualShippingPicker.getValue(),
-									 Double.parseDouble(this.totalAmountField.getText()),
+								new Quote(),
+								this.customerPurchaseOrderNumberField.getText(),
+								this.customerNameField.getText(),
+								this.productCodeField.getText(),
+								this.statusField.getText(),
+								java.sql.Date.valueOf(this.dateOrderedPicker.getValue()),
+								java.sql.Date.valueOf(this.targetShippingPicker.getValue()),
+								java.sql.Date.valueOf(this.actualShippingPicker.getValue()),
+								new Blueprint(0),
+								Double.parseDouble(this.totalAmountField.getText()));
+		
 		this.order = updatedOrder;
+	}
+	
+	public LocalDate convertDateToLocalDate(Date date) {
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		return localDate;
 	}
 }
 

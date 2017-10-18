@@ -30,7 +30,7 @@ public class ProductGateway {
 		
 	}
 	
-	private void setUpDBProperties () {
+	private void setUpDBProperties() {
 		
 		try {
 			dbPropertiesFile = new FileInputStream ("database.properties");
@@ -47,7 +47,7 @@ public class ProductGateway {
 		}
 	}
 	
-	private void setUpDB () {
+	private void setUpDB() {
 		
 		database = new MysqlDataSource ();
 		
@@ -56,18 +56,18 @@ public class ProductGateway {
 		database.setPassword(dbProperties.getProperty("MYSQL_DPM_DB_PW"));
 	}
 
-	private void connectToDatabase () {
+	private void connectToDatabase() {
 		
 		try {
 			dbConnection = database.getConnection();
 		}
 		catch (SQLException sqlException) {
-			sqlException.printStackTrace ();
+			sqlException.printStackTrace();
 		}
 	}
 	
-	public ArrayList <Product> getProducts () {
-		ArrayList <Product> allProducts = new ArrayList <Product> ();
+	public ArrayList <Product> getProducts() {
+		ArrayList<Product> allProducts = new ArrayList<Product>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
@@ -76,7 +76,7 @@ public class ProductGateway {
 			rs = ps.executeQuery();
 			
 			while (rs.next()) {
-				Product product = new Product (rs.getInt("id"), rs.getString("idList"), rs.getDouble("totalCost"), rs.getString("category"));
+				Product product = new Product(rs.getInt("id"), rs.getString("idList"), rs.getDouble("totalCost"), rs.getString("category"));
 				allProducts.add(product);
 			}
 		} catch (SQLException sqlException) {
@@ -86,13 +86,13 @@ public class ProductGateway {
 		return allProducts;
 	}
 	
-	public ArrayList <Product> searchProduct (String column, String value) {
+	public ArrayList <Product> searchProduct(String column, String value) {
 		
-		ArrayList <Product> matches = new ArrayList <Product> ();
+		ArrayList<Product> matches = new ArrayList<Product>();
 		preparedStatement = null;
 		resultSet = null;
 		
-		StringBuffer sqlCommand = new StringBuffer ();
+		StringBuffer sqlCommand = new StringBuffer();
 		
 		sqlCommand.append("SELECT * FROM Product WHERE " + column + "='" + value + "'");
 		
@@ -102,13 +102,13 @@ public class ProductGateway {
 		
 			while (resultSet.next()) {
 			
-				Product product = new Product (resultSet.getInt("id"), resultSet.getString("idList"),
+				Product product = new Product(resultSet.getInt("id"), resultSet.getString("idList"),
 											   resultSet.getDouble("totalCost"), resultSet.getString("category"));
 				
 				matches.add(product);
 			}
 		}
-		catch (SQLException sqlException) {
+		catch(SQLException sqlException) {
 			sqlException.printStackTrace();
 		}
 		
@@ -120,11 +120,10 @@ public class ProductGateway {
 				sqlException.printStackTrace();
 			}
 		}
-		
 		return matches;
 	}
 	
-	public void addProduct (Product product) {
+	public void addProduct(Product product) {
 		
 		StringBuffer sqlCommand = new StringBuffer();
 		
@@ -145,9 +144,9 @@ public class ProductGateway {
 		}
 	}
 	
-	public void updateProduct (Product product) {
+	public void updateProduct(Product product) {
 		
-		StringBuffer sqlCommand = new StringBuffer ();
+		StringBuffer sqlCommand = new StringBuffer();
 		
 		sqlCommand.append("UPDATE Product SET id=?, idList=?, totalCost=?, category=?, " + 
 						  "WHERE id =?");
@@ -169,7 +168,7 @@ public class ProductGateway {
 		}
 	}
 	
-	public void deleteProduct (int id) {
+	public void deleteProduct(int id) {
 		StringBuffer sqlCommand = new StringBuffer ();
 		preparedStatement = null;
 		
@@ -205,7 +204,7 @@ public class ProductGateway {
 		return product;
 	}
 	
-	public void closePSandRS (PreparedStatement ps, ResultSet rs) throws SQLException {
+	public void closePSandRS(PreparedStatement ps, ResultSet rs) throws SQLException {
 		if (rs != null) {
 			rs.close();
 		}

@@ -249,10 +249,6 @@ public class MasterController {
 		this.stage = stage;
 	}
 	
-	public UsersGateway getUsersGateway() {
-		return usersGateway;
-	}
-	
 	public DPMUser getUser() {
 		return this.user;
 	}
@@ -270,7 +266,11 @@ public class MasterController {
 	public boolean isLogoutPressed() {
 		return this.loggedOut;
 	}
-
+	
+	public UsersGateway getUsersGateway() {
+		return usersGateway;
+	}
+	
 	public InventoryGateway getInventoryGateway() {
 		return inventoryGateway;
 	}
@@ -284,7 +284,7 @@ public class MasterController {
 	}
 	
 	public QuoteGateway getQuoteGateway() {
-		return quoteGateway;
+		return this.quoteGateway;
 	}
 
 	public void setEditObject(Object obj) {
