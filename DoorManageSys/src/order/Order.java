@@ -4,7 +4,8 @@ import java.sql.Date;
 
 import application.MasterController;
 import blueprint.Blueprint;
-import quote.Quote;
+//import quote.Quote;
+import quoteproduct.Quote;
 
 public class Order {
 
@@ -27,7 +28,7 @@ public class Order {
 	
 	//constructors
 	public Order(){
-		this.quote = new Quote(0);
+		this.quote = new Quote();
 		this.blueprint = new Blueprint(0);
 		this.customerPurchaseOrderNumber = "";
 		this.id = 0;
@@ -52,8 +53,8 @@ public class Order {
 		this.targetShipping = target;
 		this.actualShipping = actual;
 		this.totalAmount = totalAmount;
-		this.quote = getQuoteById(quoteId);
-		this.blueprint = getBlueprintById(blueprintId);
+		//this.quote = getQuoteById(quoteId);
+		//this.blueprint = getBlueprintById(blueprintId);
 	}
 	
 	public Order(int id, int quoteId, int blueprintId, String cPON, String cName, 
@@ -69,8 +70,8 @@ public class Order {
 		this.targetShipping = target;
 		this.actualShipping = actual;
 		this.totalAmount = totalAmount;
-		this.quote = getQuoteById(quoteId);
-		this.blueprint = getBlueprintById(blueprintId);
+		//this.quote = getQuoteById(quoteId);
+		//this.blueprint = getBlueprintById(blueprintId);
 	}
 
 	public int getId() {

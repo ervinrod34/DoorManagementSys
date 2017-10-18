@@ -14,8 +14,8 @@ import user.*;
 import landing.*;
 import inventory.*;
 import login.*;
+import order.Order;
 import order.OrderGateway;
-import product.*;
 import quoteproduct.*;
 
 import java.io.IOException;
@@ -63,6 +63,8 @@ public class MasterController {
 	
 	private OrderGateway orderGateway;
 	
+	private QuoteGateway quoteGateway;
+	
 	/**
 	 * The page that the user is trying to view
 	 */
@@ -82,6 +84,8 @@ public class MasterController {
 	
 	private List<Inventory> inventoryToDisplay;
 	
+	private List<Order> orderToDisplay;
+	
 	/**
 	 * Initialize a MasterController object.
 	 */
@@ -89,8 +93,9 @@ public class MasterController {
 		try {
 			this.usersGateway = new UsersGateway();
 			this.inventoryGateway = new InventoryGateway();
-			this.productGateway = new ProductGateway ();
+			this.productGateway = new ProductGateway();
 			this.orderGateway = new OrderGateway();
+			this.quoteGateway = new QuoteGateway();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -119,16 +124,17 @@ public class MasterController {
 			this.stage.show();
 		
 		//for List Page
-		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE) {
+		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE
+				|| desiredPage == PageTypes.ORDER_LIST_PAGE) {
 			mainPane.setCenter(view);
 			mainPane.setRight(this.getEmptyRightPane());
 		
 		//for Detail Page
-		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE) {
+		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE || desiredPage == PageTypes.QUOTE_DETAIL_PAGE) {
 			mainPane.setRight(view);
 			
 		//for Edit Page
-		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE) {
+		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE || desiredPage == PageTypes.QUOTE_EDIT_PAGE) {
 			mainPane.setRight(view);
 		}
 		
@@ -180,6 +186,22 @@ public class MasterController {
 					loader.setController(new InventoryEditController(editInventory));
 				} else if(editInventory.getId() == 0) {
 					loader.setController(new InventoryEditController(new Inventory()));
+				}
+				break;
+				
+			case QUOTE_DETAIL_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteDetail_Page.fxml"));
+				loader.setController(new QuoteDetailController((Order)this.editObj));
+				break;
+				
+			case QUOTE_EDIT_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteEdit_Page.fxml"));
+				Order editOrder = (Order)this.editObj;
+				
+				if (editOrder.getId() > 0) {
+					loader.setController(new QuoteEditController(editOrder));
+				} else if (editOrder.getId() == 0) {
+					loader.setController(new QuoteEditController(new Order()));
 				}
 				break;
 				
@@ -260,6 +282,10 @@ public class MasterController {
 	public ProductGateway getProductGateway() {
 		return productGateway;
 	}
+	
+	public QuoteGateway getQuoteGateway() {
+		return quoteGateway;
+	}
 
 	public void setEditObject(Object obj) {
 		this.editObj = obj;
@@ -267,6 +293,10 @@ public class MasterController {
 	
 	public void setInventoryListToDisplay(List<Inventory> objects) {
 		this.inventoryToDisplay = objects;
+	}
+	
+	public void setOrderListToDisplay(List<Order> objects) {
+		this.orderToDisplay = objects;
 	}
 	
 	public AnchorPane getEmptyRightPane() {
