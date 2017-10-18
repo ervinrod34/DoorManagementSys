@@ -50,5 +50,6 @@ public class QOrderListController {
 		for(Order order : this.orders) {
 			this.observableList.add(order);
 		}
+		System.out.println(observableList);
 	}
 }

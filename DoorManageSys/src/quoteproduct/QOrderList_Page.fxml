@@ -14,6 +14,6 @@
             <Font name="Times New Roman Bold" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="addButton" layoutX="600.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleOrder" onMouseClicked="#handleOrderList" text="Add New Order" />
+      <Button fx:id="addButton" layoutX="580.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleOrder" onMouseClicked="#handleOrderList" text="Add New Order" />
    </children>
 </AnchorPane>

@@ -153,7 +153,7 @@ public class Order {
 	}
 	
 	public String toString(){
-		return "";
+		return customerPurchaseOrderNumber + " " + customerName + " " + status + " " + dateOrdered;
 	}
 	
 }

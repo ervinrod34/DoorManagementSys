@@ -16,8 +16,8 @@ public class Product {
 	
 	
 	
-	public Product(int id) {
-		this.id = id;
+	public Product() {
+		this.id = 0;
 		this.totalCost = 0.0;
 		this.inventories = new ArrayList<Inventory>();
 	}

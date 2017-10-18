@@ -67,6 +67,44 @@ public class ProductGateway {
 		return inventories;
 	}//end importList
 	
+	public Product getProductByID(int productID) {
+		Product product = new Product();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = this.connection.prepareStatement("SELECT * FROM Product "
+					+ "WHERE id LIKE ? AND category LIKE ?", PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, productID);
+			ps.setString(2, "product");
+			
+			rs = ps.executeQuery();
+			
+			rs.next();
+			product = new Product(rs.getInt("id"), 
+					this.parseCSVToInventory(rs.getString("idList")),
+					rs.getDouble("totalCost"));
+			
+		} catch (SQLException sqlException){
+			sqlException.printStackTrace();
+		}
+		
+		return product;
+	}
+	
+	public List<Inventory> parseCSVToInventory(String CSVid) {
+		List<String> ids = new ArrayList<>();
+		List<Inventory> items = new ArrayList<Inventory>();
+		
+		ids = Arrays.asList(CSVid.split(","));
+		
+		for(String id : ids) {
+			items.add(MasterController.getInstance().getInventoryGateway().getInventoryByID(id));
+		}
+		
+		return items;
+	}
+	
 	//TODO check types of this function for compatibility with products
 //	public List<Product> parseCSVToProducts(String CSVid) {
 //		List<String> ids = new ArrayList<>();

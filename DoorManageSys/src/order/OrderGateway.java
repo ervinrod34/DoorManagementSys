@@ -69,28 +69,34 @@ public class OrderGateway {
 		}
 	}
 	
-	public ArrayList<Order> searchOrders(String search){
-		ArrayList<Order> searchResults = new ArrayList<Order>();
+	public List<Order> searchOrders(String search){
+		List<Order> searchResults = new ArrayList<Order>();
+		
 		
 		try{
-			String query = "SELECT * FROM Order WHERE "
-					+ "id LIKE ? OR customerPurchaseOrderNumber LIKE ? OR "
-					+ "customerName LIKE ? OR status LIKE ? OR dateOrdered LIKE ?";
+			String query = "SELECT * FROM `Order` WHERE status LIKE ?";
+			//String query = "SELECT * FROM `Order` WHERE "
+			//		+ "id LIKE ? OR customerPurchaseOrderNumber LIKE ? OR " //id LIKE ? OR
+			//		+ "customerName LIKE ? OR status LIKE ? OR dateOrdered LIKE ?";
 			preparedStatement = dbConnection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
 
 			
-			search = "%" + search + "%";
+			//search = "%" + search + "%";
+			//preparedStatement.setInt(1,Integer.valueOf(search));
+			//preparedStatement.setString(2, search);
+			//preparedStatement.setString(3, search);
+			//preparedStatement.setString(4, search);
+			//preparedStatement.setString(5, search);
 			preparedStatement.setString(1, search);
-			preparedStatement.setString(2, search);
-			preparedStatement.setString(3, search);
-			preparedStatement.setString(4, search);
-			preparedStatement.setString(5, search);
 			
 			resultSet = preparedStatement.executeQuery();
+			
+			if (!resultSet.isBeforeFirst())
+				System.out.println("sdfasdf");
 
 			while(resultSet.next()){ // TODO: ADD PROPER BLUEPRINTS
 				Quote quoteForOrder = MasterController.getInstance().getQuoteGateway().getQuoteByID(resultSet.getInt("quoteID"));
-				
+				System.out.println(quoteForOrder);
 				Order order = new Order(resultSet.getInt("id"), quoteForOrder, 
 						resultSet.getString("customerPurchaseOrderNumber"), 
 						resultSet.getString("customerName"), 
@@ -99,9 +105,10 @@ public class OrderGateway {
 						resultSet.getDate("dateOrdered"), 
 						resultSet.getDate("targetShipping"), 
 						resultSet.getDate("actualShipping"),
-						new Blueprint(resultSet.getInt("blueprintID")),
+						new Blueprint(0),//new Blueprint(resultSet.getInt("blueprintID")),
 						resultSet.getDouble("totalAmount"));
 				
+				System.out.println(order);
 				searchResults.add(order);
 			}
 		} catch(SQLException sqlException){

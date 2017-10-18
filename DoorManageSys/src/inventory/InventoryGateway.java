@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Properties;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
+import quoteproduct.Quote;
+
 public class InventoryGateway {
 
 	private Connection dbConnection;
@@ -279,7 +281,31 @@ public class InventoryGateway {
 		}
 	}
 	
-	
+	public Inventory getInventoryByID(String inventoryID) {
+		Inventory inventory = new Inventory();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = this.dbConnection.prepareStatement("SELECT * FROM Inventory "
+					+ "WHERE itemNo LIKE ?", PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setString(1, inventoryID);
+			
+			rs = ps.executeQuery();
+			rs.next();
+			inventory = new Inventory(rs.getInt("id"), rs.getString("itemNo"), rs.getString("manufacturer"),
+					 rs.getString("manufacturerNo"), rs.getString("vendor"), rs.getString("size"),
+					 rs.getString("colorCode"), rs.getString("extra"), rs.getString("unitOfMeasure"),
+					 rs.getDouble("actualCost"), rs.getDouble("sellingPrice"), rs.getInt("quantity"),
+					 rs.getInt("minQuantity"), rs.getInt("maxQuantity"), rs.getString("category"),
+					 rs.getBoolean("taxable"), rs.getString("accountingCode"));
+			
+		} catch (SQLException sqlException){
+			sqlException.printStackTrace();
+		}
+		
+		return inventory;
+	}
 	
 	public void closePSandRS (PreparedStatement ps, ResultSet rs) throws SQLException {
 		if (rs != null) {

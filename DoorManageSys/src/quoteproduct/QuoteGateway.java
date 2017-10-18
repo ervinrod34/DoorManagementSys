@@ -75,12 +75,17 @@ public class QuoteGateway {
 			ResultSet rs = null;
 			
 			try {
-				ps = this.connection.prepareStatement("SELECT FROM Product "
-						+ "WHERE category=?", PreparedStatement.RETURN_GENERATED_KEYS);
-				ps.setString(1, "quote");
+				ps = this.connection.prepareStatement("SELECT * FROM Product "
+						+ "WHERE id LIKE ? AND category='quote'", PreparedStatement.RETURN_GENERATED_KEYS);
+				ps.setInt(1, quoteID);
+				//ps.setString(2, "quote");
 				
 				rs = ps.executeQuery();
 				
+				if (!rs.isBeforeFirst())
+					System.out.println("NO DATA");
+				
+				rs.next();
 				quote = new Quote(rs.getInt("id"), 
 						this.parseCSVToProducts(rs.getString("idList")),
 						rs.getDouble("totalCost"));
