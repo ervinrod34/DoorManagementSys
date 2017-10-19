@@ -14,8 +14,7 @@ import user.*;
 import landing.*;
 import inventory.*;
 import login.*;
-import order.Order;
-import order.OrderGateway;
+import order.*;
 import quoteproduct.*;
 
 import java.io.IOException;
@@ -55,14 +54,11 @@ public class MasterController {
 	private UsersGateway usersGateway;
 	
 	/**
-	 * The Gateway to the Inventory table in the Database
+	 * The Gateways table in the Database
 	 */
 	private InventoryGateway inventoryGateway;
-	
 	private ProductGateway productGateway;
-	
 	private OrderGateway orderGateway;
-	
 	private QuoteGateway quoteGateway;
 	
 	/**
@@ -110,7 +106,6 @@ public class MasterController {
 	 * This is the main function that is called when the user
 	 * wishes to change the current page.
 	 * @param pageType The type of page
-	 * @return
 	 */
 	public boolean changeView(PageTypes pageType) {
 		desiredPage = pageType;
@@ -119,24 +114,29 @@ public class MasterController {
 		view = this.loadView();
 		
 		//Switching between Login and Landing
-		if(desiredPage == PageTypes.LANDING_PAGE || desiredPage == PageTypes.LOGIN_PAGE) {
+		if(desiredPage == PageTypes.LANDING_PAGE || 
+				desiredPage == PageTypes.LOGIN_PAGE) {
 			this.setMainPane((BorderPane) view);
 			Scene scene = new Scene(view);
 			this.stage.setScene(scene);
 			this.stage.show();
 		
 		//for List Page
-		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE
-				|| desiredPage == PageTypes.QORDER_LIST_PAGE || desiredPage == PageTypes.QUOTEITEMS_LIST_PAGE) {
+		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || 
+				desiredPage == PageTypes.INVENTORY_LIST_PAGE || 
+				desiredPage == PageTypes.QORDER_LIST_PAGE || 
+				desiredPage == PageTypes.ORDER_LIST_PAGE) {
 			mainPane.setCenter(view);
 			mainPane.setRight(this.getEmptyRightPane());
 		
 		//for Detail Page
-		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE || desiredPage == PageTypes.QUOTE_DETAIL_PAGE) {
+		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE || 
+				desiredPage == PageTypes.QUOTE_DETAIL_PAGE) {
 			mainPane.setRight(view);
 			
 		//for Edit Page
-		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE || desiredPage == PageTypes.QUOTE_EDIT_PAGE) {
+		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE || 
+				desiredPage == PageTypes.QUOTE_EDIT_PAGE) {
 			mainPane.setRight(view);
 		}
 		
@@ -189,6 +189,24 @@ public class MasterController {
 				} else if(editInventory.getId() == 0) {
 					loader.setController(new InventoryEditController(new Inventory()));
 				}
+				break;
+				
+			case ORDER_LIST_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/order/OrderList_Page.fxml/"));
+				loader.setController(new OrderListController(this.orderToDisplay));
+				break;
+				
+			case ORDER_DETAIL_PAGE:
+				
+				//TODO: just need to uncomment
+				//loader = new FXMLLoader(getClass().getResource("/order/OrderDetail_Page.fxml/"));
+				//loader.setController(new OrderDetailController((Order)this.editObj));
+				break;
+				
+			case ORDER_EDIT_PAGE:
+				
+				//TODO: similar to case INVENTORY_EDIT_PAGE:
+				//loader = new FXMLLoader(getClass().getResource("/order/OrderEdit_Page.fxml/"));
 				break;
 				
 			case QUOTE_DETAIL_PAGE:

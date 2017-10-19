@@ -110,7 +110,7 @@ public class OrderGateway {
 			sqlException.printStackTrace();
 		} finally {
 			try{
-				closePSandRS (preparedStatement, resultSet);
+				closePSandRS();
 			} catch(SQLException sqlException){
 				sqlException.printStackTrace();
 			}
@@ -122,7 +122,7 @@ public class OrderGateway {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("INSERT INTO Order (quoteID, customerPurchaseOrderNumber, customerName, "
+		sqlCommand.append("INSERT INTO `Order` (quoteID, customerPurchaseOrderNumber, customerName, "
 				+ "productCode, status, dateOrdered, targetShipping, actualShipping, blueprintID, totalAmount)");
 		sqlCommand.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
 		preparedStatement = null;
@@ -148,16 +148,14 @@ public class OrderGateway {
 		
 	}
 
-	public List<Order> getOrder() {
+	public List<Order> getOrders() {
 		List<Order> fullOrders = new ArrayList<Order>();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 	
 		try {
-			ps = dbConnection.prepareStatement("SELECT * FROM Order");
-			rs = ps.executeQuery();
+			preparedStatement = dbConnection.prepareStatement("SELECT * FROM `Order`");
+			resultSet = preparedStatement.executeQuery();
 		
-			while(rs.next()) {
+			while(resultSet.next()) {
 				Quote quoteForOrder = MasterController.getInstance().getQuoteGateway().getQuoteByID(resultSet.getInt("quoteID"));
 				
 				Order order = new Order(resultSet.getInt("id"), quoteForOrder, 
@@ -177,7 +175,7 @@ public class OrderGateway {
 			se.printStackTrace();
 		} finally {
 			try {
-				this.closePSandRS(ps, rs);
+				this.closePSandRS();
 			} catch (SQLException se){
 				se.printStackTrace();
 			}
@@ -187,7 +185,7 @@ public class OrderGateway {
 
 	public void updateOrder(Order order) {
 		StringBuffer sqlCommand = new StringBuffer ();
-		sqlCommand.append("UPDATE Order SET quoteID=?, customerPurchaseOrderNumber=?, "
+		sqlCommand.append("UPDATE `Order` SET quoteID=?, customerPurchaseOrderNumber=?, "
 				+ "customerName=?, productCode=?, status=?, " 
 				+ "dateOrdered=?, targetShipping=?, actualShipping=?, "
 				+ "blueprintID=?, totalAmount=? WHERE id=?");
@@ -220,7 +218,7 @@ public class OrderGateway {
 		preparedStatement = null;
 	
 		try {
-			preparedStatement = dbConnection.prepareStatement("DELETE from Order WHERE id=?",
+			preparedStatement = dbConnection.prepareStatement("DELETE from `Order` WHERE id=?",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, OrderID);
 			preparedStatement.execute();
@@ -229,12 +227,12 @@ public class OrderGateway {
 		}
 	}
 	
-	public void closePSandRS(PreparedStatement ps, ResultSet rs) throws SQLException{
-		if(rs != null){
-			rs.close();
+	public void closePSandRS() throws SQLException{
+		if(this.resultSet != null){
+			this.resultSet.close();
 		}
-		if(ps != null){
-			ps.close();
+		if(this.preparedStatement != null){
+			this.preparedStatement.close();
 		}
 	}
 }

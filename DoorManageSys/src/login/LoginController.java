@@ -1,11 +1,5 @@
 package login;
 
-
-
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
 /**
  * The LoginController class defines a controller class
  * for the login page of this application.
@@ -13,6 +7,11 @@ import java.util.ResourceBundle;
  * @author Team No Name Yet
  * @version 1.0
  */
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import application.MasterController;
 import application.PageTypes;
 import javafx.event.ActionEvent;
@@ -22,6 +21,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Paint;
 import user.DPMUser;
 
@@ -34,6 +35,11 @@ public class LoginController implements Initializable {
 	@FXML private TextField username;
 	@FXML private PasswordField password;
 	@FXML private Label notice;
+	
+	/**
+	 * The list of users from the DB
+	 */
+	private List<DPMUser> users;
 	
 	/**
 	 * The user that logged in
@@ -55,26 +61,37 @@ public class LoginController implements Initializable {
 	 */
 	@FXML private void handleLogin(ActionEvent ae) {
 		Object source = ae.getSource();
-		List<DPMUser> userList = MasterController.getInstance().getUsersGateway().getUsers();
 		if(source == login) {
-			if (userList.stream().anyMatch(user -> user.getLogin().equalsIgnoreCase(username.getText()))) {
-				for (DPMUser user : userList) {
-					if (user.getLogin().equalsIgnoreCase(username.getText())) {
-						this.user = user;
-						break;
-					}
-				}
-				if (user.getPassword().equals(password.getText().toString())) {
-					MasterController.getInstance().setUser(this.user);
-					MasterController.getInstance().changeView(PageTypes.LANDING_PAGE);
-				}
-			}
-			this.notice.setText("Incorrect Username or Password");
-			notice.setVisible(true);
+			this.attemptLogin();
+		}
+	}
+	
+	@FXML private void handleEnterKey(KeyEvent key) {
+		if(key.getCode() == KeyCode.ENTER) {
+			this.attemptLogin();
 		}
 	}
 
+	public void attemptLogin() {
+		if (users.stream().anyMatch(user -> user.getLogin().equalsIgnoreCase(username.getText()))) {
+			for (DPMUser user : users) {
+				if (user.getLogin().equalsIgnoreCase(username.getText())) {
+					this.user = user;
+					break;
+				}
+			}
+			if (user.getPassword().equals(password.getText().toString())) {
+				MasterController.getInstance().setUser(this.user);
+				MasterController.getInstance().changeView(PageTypes.LANDING_PAGE);
+			}
+		}
+		this.notice.setText("Incorrect Username or Password");
+		notice.setVisible(true);
+	}
+	
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.users = MasterController.getInstance().getUsersGateway().getUsers();
+		
 		if(MasterController.getInstance().isLogoutPressed()) {
 			this.notice.setText("You have logout successfully!");
 			this.notice.setVisible(true);
