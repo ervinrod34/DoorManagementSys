@@ -66,7 +66,7 @@ public class InventoryEditController implements Initializable {
 		
 		if(source == cancelButton) {
 			MasterController.getInstance().setEditObject(this.inventory);
-			MasterController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
+			MasterController.getInstance().changeView(PageTypes.INVENTORY_DETAIL_PAGE);
 			
 		} else if(source == saveButton) {
 			this.updateInventoryObject();

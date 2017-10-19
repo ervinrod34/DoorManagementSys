@@ -51,6 +51,5 @@ public class QOrderListController implements Initializable {
 		for(Order order : this.orders) {
 			this.observableList.add(order);
 		}
-		System.out.println(observableList);
 	}
 }

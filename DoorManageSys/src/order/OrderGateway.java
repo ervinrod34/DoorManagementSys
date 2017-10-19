@@ -91,12 +91,8 @@ public class OrderGateway {
 			
 			resultSet = preparedStatement.executeQuery();
 			
-			if (!resultSet.isBeforeFirst())
-				System.out.println("sdfasdf");
-
 			while(resultSet.next()){ // TODO: ADD PROPER BLUEPRINTS
 				Quote quoteForOrder = MasterController.getInstance().getQuoteGateway().getQuoteByID(resultSet.getInt("quoteID"));
-				System.out.println(quoteForOrder);
 				Order order = new Order(resultSet.getInt("id"), quoteForOrder, 
 						resultSet.getString("customerPurchaseOrderNumber"), 
 						resultSet.getString("customerName"), 
@@ -108,7 +104,6 @@ public class OrderGateway {
 						new Blueprint(0),//new Blueprint(resultSet.getInt("blueprintID")),
 						resultSet.getDouble("totalAmount"));
 				
-				System.out.println(order);
 				searchResults.add(order);
 			}
 		} catch(SQLException sqlException){
