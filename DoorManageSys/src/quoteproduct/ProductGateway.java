@@ -111,12 +111,12 @@ public class ProductGateway {
 		ResultSet rs = null;
 		
 		try {
-			ps = this.connection.prepareStatement("INSERT INTO Product (id, idList, totalCost) "
+			ps = this.connection.prepareStatement("INSERT INTO Product (id, idList, totalCost, category) "
 					+ "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, product.getId());
 			ps.setString(2, this.parseProductIDsToCSV(product.getInventories()));
 			ps.setDouble(3, product.getTotalCost());
-			ps.setString(4, "quote");
+			ps.setString(4, "product");
 			ps.executeQuery();
 			
 		} catch(SQLException sqlException) {
