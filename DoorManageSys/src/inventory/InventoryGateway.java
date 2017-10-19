@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Properties;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
+import quoteproduct.Quote;
+
 public class InventoryGateway {
 
 	private Connection dbConnection;
@@ -49,7 +51,6 @@ public class InventoryGateway {
 	}
 	
 	private void setUpDB () {
-		
 		database = new MysqlDataSource ();
 		
 		database.setURL(dbProperties.getProperty("MYSQL_DPM_DB_URL"));
@@ -152,6 +153,44 @@ public class InventoryGateway {
 		return matches;
 	}
 	
+	public ArrayList <Inventory> searchInventoryForExtras() {
+		
+		ArrayList <Inventory> matches = new ArrayList <Inventory> ();
+		preparedStatement = null;
+		resultSet = null;
+		
+		try {
+			String query = "SELECT * FROM Inventory WHERE NOT category='Door' "
+					+ "AND NOT category='Frame' AND NOT category='Hinge' "
+					+ "AND NOT category='Lock'";
+			preparedStatement = dbConnection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			resultSet = preparedStatement.executeQuery();
+		
+			while (resultSet.next()) {
+				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("itemNo"), resultSet.getString("manufacturer"),
+						resultSet.getString("manufacturerNo"), resultSet.getString("vendor"), resultSet.getString("size"),
+						resultSet.getString("colorCode"), resultSet.getString("extra"), resultSet.getString("unitOfMeasure"),
+						resultSet.getDouble("actualCost"), resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"),
+						resultSet.getInt("minQuantity"), resultSet.getInt("maxQuantity"), resultSet.getString("category"),
+						resultSet.getBoolean("taxable"), resultSet.getString("accountingCode"));
+				
+				matches.add(inventory);
+			}
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		} finally {
+			try {
+				closePSandRS (preparedStatement, resultSet);
+			}
+			catch (SQLException sqlException) {
+				sqlException.printStackTrace();
+			}
+		}
+		
+		return matches;
+	}
+
 	public void addInventory (Inventory inventory) {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
@@ -279,7 +318,31 @@ public class InventoryGateway {
 		}
 	}
 	
-	
+	public Inventory getInventoryByID(String itemNo) {
+		Inventory inventory = new Inventory();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = this.dbConnection.prepareStatement("SELECT * FROM Inventory "
+					+ "WHERE itemNo LIKE ?", PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setString(1, itemNo);
+			
+			rs = ps.executeQuery();
+			rs.next();
+			inventory = new Inventory(rs.getInt("id"), rs.getString("itemNo"), rs.getString("manufacturer"),
+					 rs.getString("manufacturerNo"), rs.getString("vendor"), rs.getString("size"),
+					 rs.getString("colorCode"), rs.getString("extra"), rs.getString("unitOfMeasure"),
+					 rs.getDouble("actualCost"), rs.getDouble("sellingPrice"), rs.getInt("quantity"),
+					 rs.getInt("minQuantity"), rs.getInt("maxQuantity"), rs.getString("category"),
+					 rs.getBoolean("taxable"), rs.getString("accountingCode"));
+			
+		} catch (SQLException sqlException){
+			sqlException.printStackTrace();
+		}
+		
+		return inventory;
+	}
 	
 	public void closePSandRS (PreparedStatement ps, ResultSet rs) throws SQLException {
 		if (rs != null) {

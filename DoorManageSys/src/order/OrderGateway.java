@@ -69,28 +69,30 @@ public class OrderGateway {
 		}
 	}
 	
-	public ArrayList<Order> searchOrders(String search){
-		ArrayList<Order> searchResults = new ArrayList<Order>();
+	public List<Order> searchOrders(String search){
+		List<Order> searchResults = new ArrayList<Order>();
+		
 		
 		try{
-			String query = "SELECT * FROM Order WHERE "
-					+ "id LIKE ? OR customerPurchaseOrderNumber LIKE ? "
-					+ "customerName LIKE ? dateOrdered LIKE ? status LIKE ?";
+			String query = "SELECT * FROM `Order` WHERE status LIKE ?";
+			//String query = "SELECT * FROM `Order` WHERE "
+			//		+ "id LIKE ? OR customerPurchaseOrderNumber LIKE ? OR " //id LIKE ? OR
+			//		+ "customerName LIKE ? OR status LIKE ? OR dateOrdered LIKE ?";
 			preparedStatement = dbConnection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
 
 			
-			search = "%" + search + "%";
+			//search = "%" + search + "%";
+			//preparedStatement.setInt(1,Integer.valueOf(search));
+			//preparedStatement.setString(2, search);
+			//preparedStatement.setString(3, search);
+			//preparedStatement.setString(4, search);
+			//preparedStatement.setString(5, search);
 			preparedStatement.setString(1, search);
-			preparedStatement.setString(2, search);
-			preparedStatement.setString(3, search);
-			preparedStatement.setString(4, search);
-			preparedStatement.setString(5, search);
 			
 			resultSet = preparedStatement.executeQuery();
 			
-			while(resultSet.next()){
+			while(resultSet.next()){ // TODO: ADD PROPER BLUEPRINTS
 				Quote quoteForOrder = MasterController.getInstance().getQuoteGateway().getQuoteByID(resultSet.getInt("quoteID"));
-				
 				Order order = new Order(resultSet.getInt("id"), quoteForOrder, 
 						resultSet.getString("customerPurchaseOrderNumber"), 
 						resultSet.getString("customerName"), 
@@ -99,7 +101,7 @@ public class OrderGateway {
 						resultSet.getDate("dateOrdered"), 
 						resultSet.getDate("targetShipping"), 
 						resultSet.getDate("actualShipping"),
-						new Blueprint(0),
+						new Blueprint(0),//new Blueprint(resultSet.getInt("blueprintID")),
 						resultSet.getDouble("totalAmount"));
 				
 				searchResults.add(order);
@@ -108,7 +110,7 @@ public class OrderGateway {
 			sqlException.printStackTrace();
 		} finally {
 			try{
-				closePSandRS (preparedStatement, resultSet);
+				closePSandRS();
 			} catch(SQLException sqlException){
 				sqlException.printStackTrace();
 			}
@@ -120,7 +122,7 @@ public class OrderGateway {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
 		
-		sqlCommand.append("INSERT INTO Order (quoteID, customerPurchaseOrderNumber, customerName, "
+		sqlCommand.append("INSERT INTO `Order` (quoteID, customerPurchaseOrderNumber, customerName, "
 				+ "productCode, status, dateOrdered, targetShipping, actualShipping, blueprintID, totalAmount)");
 		sqlCommand.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
 		preparedStatement = null;
@@ -146,16 +148,14 @@ public class OrderGateway {
 		
 	}
 
-	public List<Order> getOrder() {
+	public List<Order> getOrders() {
 		List<Order> fullOrders = new ArrayList<Order>();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 	
 		try {
-			ps = dbConnection.prepareStatement("SELECT * FROM Order");
-			rs = ps.executeQuery();
+			preparedStatement = dbConnection.prepareStatement("SELECT * FROM `Order`");
+			resultSet = preparedStatement.executeQuery();
 		
-			while(rs.next()) {
+			while(resultSet.next()) {
 				Quote quoteForOrder = MasterController.getInstance().getQuoteGateway().getQuoteByID(resultSet.getInt("quoteID"));
 				
 				Order order = new Order(resultSet.getInt("id"), quoteForOrder, 
@@ -175,7 +175,7 @@ public class OrderGateway {
 			se.printStackTrace();
 		} finally {
 			try {
-				this.closePSandRS(ps, rs);
+				this.closePSandRS();
 			} catch (SQLException se){
 				se.printStackTrace();
 			}
@@ -185,7 +185,7 @@ public class OrderGateway {
 
 	public void updateOrder(Order order) {
 		StringBuffer sqlCommand = new StringBuffer ();
-		sqlCommand.append("UPDATE Order SET quoteID=?, customerPurchaseOrderNumber=?, "
+		sqlCommand.append("UPDATE `Order` SET quoteID=?, customerPurchaseOrderNumber=?, "
 				+ "customerName=?, productCode=?, status=?, " 
 				+ "dateOrdered=?, targetShipping=?, actualShipping=?, "
 				+ "blueprintID=?, totalAmount=? WHERE id=?");
@@ -218,7 +218,7 @@ public class OrderGateway {
 		preparedStatement = null;
 	
 		try {
-			preparedStatement = dbConnection.prepareStatement("DELETE from Order WHERE id=?",
+			preparedStatement = dbConnection.prepareStatement("DELETE from `Order` WHERE id=?",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, OrderID);
 			preparedStatement.execute();
@@ -227,12 +227,12 @@ public class OrderGateway {
 		}
 	}
 	
-	public void closePSandRS(PreparedStatement ps, ResultSet rs) throws SQLException{
-		if(rs != null){
-			rs.close();
+	public void closePSandRS() throws SQLException{
+		if(this.resultSet != null){
+			this.resultSet.close();
 		}
-		if(ps != null){
-			ps.close();
+		if(this.preparedStatement != null){
+			this.preparedStatement.close();
 		}
 	}
 }

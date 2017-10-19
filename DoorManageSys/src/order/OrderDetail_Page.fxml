@@ -5,11 +5,12 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.DatePicker?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="580.0" stroke="#32000f" strokeType="INSIDE" strokeWidth="3.0" width="466.0" />
-		<Button fx:id="editButton" layoutX="197.0" layoutY="530.0" mnemonicParsing="false" onAction="#handleOrderDetail" text="Edit Item" />
+		<Button fx:id="editButton" layoutX="197.0" layoutY="530.0" mnemonicParsing="false" onAction="#handleOrderDetail" text="Edit Order" />
       <Button fx:id="deleteButton" layoutX="388.0" layoutY="530.0" mnemonicParsing="false" onAction="#handleOrderDetail" text="Delete" textFill="#b20000" />
       <Label layoutX="28.0" layoutY="15.0" text="Order #">
          <font>
@@ -21,137 +22,93 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="dbID" layoutX="10.0" layoutY="557.0" text="db0">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
-      <Label layoutX="16.0" layoutY="260.0" text="Vendors">
+      <Label layoutX="16.0" layoutY="260.0" text="Products">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="75.0" layoutY="70.0" text="Part #:">
+      <Label layoutX="75.0" layoutY="70.0" text="Customer Purchase Order #:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="manufacturer" layoutX="127.0" layoutY="50.0" text="not defined">
+      <Label fx:id="customerName" layoutX="127.0" layoutY="50.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="manufacturerID" layoutX="127.0" layoutY="70.0" text="not defined">
+      <Label fx:id="customerPurchaseOrderNumber" layoutX="127.0" layoutY="70.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label layoutX="82.0" layoutY="90.0" text="Sizes:">
+      <Label layoutX="82.0" layoutY="90.0" text="Product Code:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="38.0" layoutY="110.0" text="Color Code:">
+      <Label layoutX="38.0" layoutY="110.0" text="Status:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="sizes" layoutX="127.0" layoutY="90.0" text="not defined">
+      <Label fx:id="productCode" layoutX="127.0" layoutY="90.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="colorCode" layoutX="127.0" layoutY="110.0" text="not defined">
+      <Label fx:id="status" layoutX="127.0" layoutY="110.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label layoutX="19.0" layoutY="130.0" text="Other Information:">
+      <Label layoutX="19.0" layoutY="130.0" text="Quote Number:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="otherInformation" layoutX="19.0" layoutY="150.0" text="none">
+      <Label fx:id="quoteNumber" layoutX="127.0" layoutY="130.0" text="not defined">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <ListView fx:id="vendorsList" layoutX="10.0" layoutY="281.0" prefHeight="110.0" prefWidth="438.0" />
-      <Label layoutX="20.0" layoutY="50.0" text="Manufacturer:">
+      <Label layoutX="19.0" layoutY="150.0" text="Blueprint Number:">
+      	 <font>
+      	 	<Font name="System Bold" size="15.0" />
+      	 </font>
+      </Label>
+      <Label fx:id="blueprintNumber" layoutX="127.0" layoutY="150.0" text="not defined">
+      	 <font>
+      	 	<Font size="15.0" />
+      	 </font></Label>
+      <Label layoutX="19.0" layoutY="170.0" text="Actual Cost:">
+      	 <font>
+      	 	<Font name="System Bold" size="15.0" />
+      	 </font>
+      </Label>
+      <Label fx:id="actualCost" layoutX="127.0" layoutY="170.0" text="not defined">
+      	 <font>
+      	 	<Font size="15.0" />
+      	 </font></Label>
+      <ListView fx:id="productsList" layoutX="10.0" layoutY="281.0" prefHeight="110.0" prefWidth="438.0" />
+      <Label layoutX="20.0" layoutY="50.0" text="Customer Name:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="400.0" text="Unit of Measure:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
+      <Label layoutX="69.0" layoutY="400.0" text="Date Ordered:">
+      	 <font>
+      	 	<font name="System Bold" size="15.0" />
+      	 </font>
       </Label>
-      <Label fx:id="unitOfMeasure" layoutX="150.0" layoutY="400.0" text="not defined">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Label layoutX="53.0" layoutY="420.0" text="Actual Cost:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
+      <DatePicker fx:id="dateOrdered" layoutX="150.0" layoutY="400.0" />
+      <Label layoutX="69.0" layoutY="420.0" text="Target Shipping Date:">
+      	 <font>
+      	 	<font name="System Bold" size="15.0" />
+      	 </font>
       </Label>
-      <Label layoutX="46.0" layoutY="440.0" text="Selling Price:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
+      <DatePicker fx:id="targetShipping" layoutX="150.0" layoutY="420.0" />
+      <Label layoutX="69.0" layoutY="440.0" text="Actual Shipping Date:">
+      	 <font>
+      	 	<font name="System Bold" size="15.0" />
+      	 </font>
       </Label>
-      <Label fx:id="actualCost" layoutX="150.0" layoutY="420.0" text="not defined">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Label fx:id="sellingPrice" layoutX="150.0" layoutY="440.0" text="not defined">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Label layoutX="77.0" layoutY="460.0" text="Taxable:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Label fx:id="taxable" layoutX="150.0" layoutY="460.0" text="No">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Label layoutX="12.0" layoutY="480.0" text="Accounting Code:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Label fx:id="accountingCode" layoutX="150.0" layoutY="480.0" text="not defined">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Label layoutX="293.0" layoutY="400.0" text="Quantity:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Label layoutX="293.0" layoutY="440.0" text="Min. Qty.:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Label fx:id="quantity" layoutX="293.0" layoutY="420.0" text="not defined">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label fx:id="minQuantity" layoutX="293.0" layoutY="460.0" text="not defined">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label layoutX="293.0" layoutY="480.0" text="Max Qty.:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Label fx:id="maxQuantity" layoutX="293.0" layoutY="500.0" text="not defined">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
+      <DatePicker fx:id="actualShipping" layoutX="150.0" layoutY="440.0" />
    </children>
 </AnchorPane>
 

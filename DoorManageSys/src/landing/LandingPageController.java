@@ -25,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import order.Order;
 
 public class LandingPageController implements Initializable {
 	
@@ -68,6 +69,7 @@ public class LandingPageController implements Initializable {
 		if(source == logout) {
 			MasterController.getInstance().logoutPressed();
 			MasterController.getInstance().changeView(PageTypes.LOGIN_PAGE);
+			
 		} else if(source == inventory) {
 			this.applyEffectOnMenuLabel(inventory);
 			
@@ -77,8 +79,18 @@ public class LandingPageController implements Initializable {
 			this.changeViewOnLabelClick(inventory, PageTypes.INVENTORY_LIST_PAGE);
 		} else if(source == orders) {
 			this.applyEffectOnMenuLabel(orders);
+			
+			List<Order> allOrders = MasterController.getInstance().getOrderGateway().getOrders();
+			MasterController.getInstance().setOrderListToDisplay(allOrders);
+			
+			this.changeViewOnLabelClick(orders, PageTypes.ORDER_LIST_PAGE);
 		} else if(source == quote) {
 			this.applyEffectOnMenuLabel(quote);
+			
+			List<Order> unfinishedOrders = MasterController.getInstance().getOrderGateway().searchOrders("Unfinished");
+			MasterController.getInstance().setOrderListToDisplay(unfinishedOrders);
+
+			this.changeViewOnLabelClick(quote, PageTypes.QORDER_LIST_PAGE);
 		} else if(source == users) {
 			this.applyEffectOnMenuLabel(users);
 			this.changeViewOnLabelClick(users, PageTypes.VIEW_USERS_PAGE);

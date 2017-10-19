@@ -20,45 +20,26 @@ import javafx.scene.control.ListView;
 public class InventoryDetailController implements Initializable {
 
 	@FXML private Label dbID;
-	
 	@FXML private Label itemNumber;
-	
 	@FXML private Label manufacturer;
-	
 	@FXML private Label manufacturerID;
-	
 	@FXML private Label sizes;
-	
 	@FXML private Label colorCode;
-	
 	@FXML private Label otherInformation;
-	
 	@FXML private Label category;
-	
 	@FXML private Label unitOfMeasure;
-	
 	@FXML private Label actualCost;
-	
 	@FXML private Label sellingPrice;
-	
 	@FXML private Label taxable;
-	
 	@FXML private Label accountingCode;
-	
 	@FXML private Label quantity;
-	
 	@FXML private Label minQuantity;
-	
 	@FXML private Label maxQuantity;
-	
 	@FXML private Button editButton;
-	
 	@FXML private Button deleteButton;
-	
 	@FXML private ListView<String> vendorsList;
 	
 	private ObservableList<String> observableList;
-	
 	private Inventory inventory;
 	
 	public InventoryDetailController(Inventory inventory) {
@@ -75,16 +56,18 @@ public class InventoryDetailController implements Initializable {
 		} else if(source == deleteButton) {
 			MasterController.getInstance().getInventoryGateway().deleteInventory(this.inventory.getId());
 			
-			//Go back to this later
-			Timer timer = new Timer();
+			this.scheduleRefresh();
+		}
+	}
+	
+	private void scheduleRefresh() {
+		Timer timer = new Timer();
 					
 			timer.schedule(new TimerTask() {
 				public void run() {
 					MasterController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
 				}
-			}, 5000);
-			
-		}
+			}, 2000);
 	}
 
 	@Override

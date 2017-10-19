@@ -14,11 +14,7 @@ import user.*;
 import landing.*;
 import inventory.*;
 import login.*;
-import order.Order;
-import order.OrderDetailController;
-import order.OrderEditController;
-import order.OrderGateway;
-import order.OrderListController;
+import order.*;
 import quoteproduct.*;
 
 import java.io.IOException;
@@ -58,7 +54,7 @@ public class MasterController {
 	private UsersGateway usersGateway;
 	
 	/**
-	 * The Gateway to the Inventory table in the Database
+	 * The Gateways table in the Database
 	 */
 	private InventoryGateway inventoryGateway;
 	
@@ -98,6 +94,10 @@ public class MasterController {
 	
 	private List<Order> ordersToDisplay;
 	
+	private List<Order> orderToDisplay;
+	
+	private Product productToDisplay;
+	
 	/**
 	 * Initialize a MasterController object.
 	 */
@@ -105,8 +105,9 @@ public class MasterController {
 		try {
 			this.usersGateway = new UsersGateway();
 			this.inventoryGateway = new InventoryGateway();
-			this.productGateway = new ProductGateway ();
+			this.productGateway = new ProductGateway();
 			this.orderGateway = new OrderGateway();
+			this.quoteGateway = new QuoteGateway();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -119,7 +120,6 @@ public class MasterController {
 	 * This is the main function that is called when the user
 	 * wishes to change the current page.
 	 * @param pageType The type of page
-	 * @return
 	 */
 	public boolean changeView(PageTypes pageType) {
 		desiredPage = pageType;
@@ -128,38 +128,33 @@ public class MasterController {
 		view = this.loadView();
 		
 		//Switching between Login and Landing
-		if(desiredPage == PageTypes.LANDING_PAGE || desiredPage == PageTypes.LOGIN_PAGE) {
+		if(desiredPage == PageTypes.LANDING_PAGE || 
+				desiredPage == PageTypes.LOGIN_PAGE) {
 			this.setMainPane((BorderPane) view);
 			Scene scene = new Scene(view);
 			this.stage.setScene(scene);
 			this.stage.show();
 		
-		//for Inventory List Page
-		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE || desiredPage == PageTypes.ORDER_LIST_PAGE) {
+		//for List Page
+		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || 
+				desiredPage == PageTypes.INVENTORY_LIST_PAGE || 
+				desiredPage == PageTypes.QORDER_LIST_PAGE || 
+				desiredPage == PageTypes.ORDER_LIST_PAGE) {
 			mainPane.setCenter(view);
 			mainPane.setRight(this.getEmptyRightPane());
 		
-		//for Inventory Detail Page
-		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE) {
+		//for Detail Page
+		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE || 
+				desiredPage == PageTypes.QUOTE_DETAIL_PAGE ||
+				desiredPage == PageTypes.ORDER_DETAIL_PAGE) {
 			mainPane.setRight(view);
 			
-		//for Inventory Edit Page
-		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE) {
+		//for Edit Page
+		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE || 
+				desiredPage == PageTypes.QUOTE_EDIT_PAGE ||
+				desiredPage == PageTypes.ORDER_EDIT_PAGE) {
 			mainPane.setRight(view);
-		
-		//for Order Detail Page
-		} else if(desiredPage == PageTypes.ORDER_DETAIL_PAGE) {
-			mainPane.setRight(view);
-		
-		//for Order Edit Page
-		} else if(desiredPage == PageTypes.ORDER_EDIT_PAGE) {
-			mainPane.setRight(view);
-		}
-		
-			
-		
-		
-		
+		}	
 		return true;
 	}
 	
@@ -212,10 +207,8 @@ public class MasterController {
 				break;
 				
 			case ORDER_LIST_PAGE:
-				//System.out.println("switch statement entered");
 				loader = new FXMLLoader(getClass().getResource("/order/OrderList_Page.fxml"));
 				loader.setController(new OrderListController(this.ordersToDisplay));
-				//System.out.println("leaving switch");
 				break;
 				
 			case ORDER_DETAIL_PAGE:
@@ -232,6 +225,32 @@ public class MasterController {
 				} else if(editOrder.getId() == 0){
 					loader.setController(new OrderEditController(new Order()));
 				}
+				break;
+				
+			case QUOTE_DETAIL_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteDetail_Page.fxml"));
+				loader.setController(new QuoteDetailController((Order)this.editObj));
+				break;
+				
+			case QUOTE_EDIT_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteEdit_Page.fxml"));
+				editOrder = (Order)this.editObj;
+				
+				if (editOrder.getId() > 0) {
+					loader.setController(new QuoteEditController(editOrder));
+				} else if (editOrder.getId() == 0) {
+					loader.setController(new QuoteEditController(new Order()));
+				}
+				break;
+				
+			case QORDER_LIST_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
+				loader.setController(new QOrderListController(this.orderToDisplay));
+				break;
+				
+			case QUOTEITEMS_LIST_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteItemsList_Page.fxml"));
+				loader.setController(new QuoteItemsListController(this.productToDisplay, this.inventoryToDisplay));
 				break;
 				
 			default:
@@ -324,8 +343,12 @@ public class MasterController {
 		this.inventoryToDisplay = objects;
 	}
 	
-	public void setOrdersListToDisplay(List<Order> objects){
-		this.ordersToDisplay = objects;
+	public void setOrderListToDisplay(List<Order> objects) {
+		this.orderToDisplay = objects;
+	}
+	
+	public void setProductToDisplay(Product product) {
+		this.productToDisplay = product;
 	}
 	
 	public AnchorPane getEmptyRightPane() {
