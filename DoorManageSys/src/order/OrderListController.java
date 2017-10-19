@@ -32,7 +32,7 @@ public class OrderListController implements Initializable{
 		this.orders = orders;
 	}
 	
-	@FXML private void handleOrders(ActionEvent ae){
+	@FXML private void handleOrder(ActionEvent ae){
 		Object source = ae.getSource();
 		if(source == addButton){
 			MasterController.getInstance().setEditObject(new Order());

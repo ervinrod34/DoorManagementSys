@@ -16,9 +16,9 @@
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#32000f" height="629.0" layoutY="-8.0" stroke="BLACK" strokeType="INSIDE" width="1366.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9494b8" height="178.0" layoutX="512.0" layoutY="207.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="5.0" width="349.0" />
-            <TextField fx:id="username" layoutX="609.0" layoutY="239.0" promptText="Username" />
-            <PasswordField fx:id="password" layoutX="609.0" layoutY="276.0" promptText="Password" />
-            <Button fx:id="login" layoutX="660.0" layoutY="316.0" mnemonicParsing="false" onAction="#handleLogin" text="Login" />
+            <TextField fx:id="username" layoutX="609.0" layoutY="239.0" onKeyPressed="#handleEnterKey" promptText="Username" />
+            <PasswordField fx:id="password" layoutX="609.0" layoutY="276.0" onKeyPressed="#handleEnterKey" promptText="Password" />
+            <Button fx:id="login" layoutX="660.0" layoutY="316.0" mnemonicParsing="false" onAction="#handleLogin" onKeyPressed="#handleEnterKey" text="Login" />
             <Label fx:id="notice" alignment="CENTER" layoutX="578.0" layoutY="350.0" prefHeight="16.0" prefWidth="218.0" text="Incorrect Username or Password" textAlignment="CENTER" textFill="RED" visible="false" />
          </children>
       </AnchorPane>

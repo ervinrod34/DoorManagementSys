@@ -69,6 +69,7 @@ public class LandingPageController implements Initializable {
 		if(source == logout) {
 			MasterController.getInstance().logoutPressed();
 			MasterController.getInstance().changeView(PageTypes.LOGIN_PAGE);
+			
 		} else if(source == inventory) {
 			this.applyEffectOnMenuLabel(inventory);
 			
@@ -78,6 +79,11 @@ public class LandingPageController implements Initializable {
 			this.changeViewOnLabelClick(inventory, PageTypes.INVENTORY_LIST_PAGE);
 		} else if(source == orders) {
 			this.applyEffectOnMenuLabel(orders);
+			
+			List<Order> allOrders = MasterController.getInstance().getOrderGateway().getOrders();
+			MasterController.getInstance().setOrderListToDisplay(allOrders);
+			
+			this.changeViewOnLabelClick(orders, PageTypes.ORDER_LIST_PAGE);
 		} else if(source == quote) {
 			this.applyEffectOnMenuLabel(quote);
 			

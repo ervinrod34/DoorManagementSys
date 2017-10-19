@@ -49,7 +49,6 @@ public class QOrderListController implements Initializable {
 	public void initialize(URL loc, ResourceBundle rsc) {
 		this.observableList = this.orderListView.getItems();
 		for(Order order : this.orders) {
-			System.out.println("Placing -" + order);
 			this.observableList.add(order);
 		}
 		System.out.println(observableList);

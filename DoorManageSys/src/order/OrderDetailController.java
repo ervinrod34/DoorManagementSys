@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import application.MasterController;
 import application.PageTypes;
@@ -22,29 +24,17 @@ import javafx.scene.control.ListView;
 public class OrderDetailController implements Initializable {
 
 	@FXML private Label dbID;
-	
 	@FXML private Label quoteNumber;
-	
 	@FXML private Label blueprintNumber;
-	
 	@FXML private Label customerPurchaseOrderNumber;
-	
 	@FXML private Label customerName;
-	
 	@FXML private Label productCode;
-	
 	@FXML private Label status;
-	
 	@FXML private DatePicker dateOrdered;
-	
 	@FXML private DatePicker targetShipping;
-	
 	@FXML private DatePicker actualShipping;
-	
 	@FXML private Label actualCost;
-	
 	@FXML private Button editButton;
-	
 	@FXML private Button deleteButton;
 	
 	private Order order;
@@ -64,8 +54,18 @@ public class OrderDetailController implements Initializable {
 			MasterController.getInstance().getInventoryGateway().deleteInventory(this.order.getId());
 			
 			//Go back to this later
-			MasterController.getInstance().changeView(PageTypes.ORDER_LIST_PAGE);
+			this.scheduleRefresh();
 		}
+	}
+	
+	private void scheduleRefresh() {
+		Timer timer = new Timer();
+					
+			timer.schedule(new TimerTask() {
+				public void run() {
+					MasterController.getInstance().changeView(PageTypes.ORDER_LIST_PAGE);
+				}
+			}, 2000);
 	}
 
 	@Override

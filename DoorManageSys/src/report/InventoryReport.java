@@ -21,7 +21,7 @@ import inventory.Inventory;
  */
 public class InventoryReport {
 
-	private ArrayList <Inventory> inventory;
+	private ArrayList<Inventory> inventory;
 	private PDDocument doc;
 	private PDPageTree page;
 	private PDPage currentPage;
