@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -12,53 +12,77 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="580.0" stroke="#32000f" strokeType="INSIDE" strokeWidth="3.0" width="466.0" />
-      <Button fx:id="saveButton" layoutX="166.0" layoutY="543.0" mnemonicParsing="false" onAction="#handleOrderEdit" text="Save " />
-      <Button fx:id="cancelButton" layoutX="235.0" layoutY="543.0" mnemonicParsing="false" onAction="#handleOrderEdit" text="Cancel" />
-      <Label layoutX="28.0" layoutY="15.0" text="Order #:">
+      <Button fx:id="saveButton" layoutX="166.0" layoutY="480.0" mnemonicParsing="false" onAction="#handleOrderEdit" text="Save " />
+      <Button fx:id="cancelButton" layoutX="235.0" layoutY="480.0" mnemonicParsing="false" onAction="#handleOrderEdit" text="Cancel" />
+      <Label layoutX="28.0" layoutY="15.0" text="Order #">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="22.0" layoutY="275.0" text="Customer Name:">
+      <Label layoutX="19.0" layoutY="90.0" text="Customer Purchase Order Number:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="300.0" layoutY="48.0" text="Order Status:">
+      <Label layoutX="19.0" layoutY="130.0" text="Product Code:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="22.0" layoutY="80.0" text="Order Cost:">
+      <Label layoutX="19.0" layoutY="170.0" text="Status:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="227.0" layoutY="80.0" text="Product:">
+      <Label layoutX="19.0" layoutY="210.0" text="Quote Number:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="140.0" text="Blueprint:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
+      <Label layoutX="19.0" layoutY="250.0" text="Blueprint Number:">
+      	 <font>
+      	 	<Font name="System Bold" size="15.0" />
+      	 </font>
       </Label>
-      <Label layoutX="20.0" layoutY="50.0" text="Date Ordered:">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
+      <Label layoutX="19.0" layoutY="290.0" text="Actual Cost:">
+      	 <font>
+      	 	<Font name="System Bold" size="15.0" />
+      	 </font>
       </Label>
-      <TextField fx:id="orderNumberField" layoutX="89.0" layoutY="12.0" onAction="#handleOrderEdit">
+      <Label layoutX="19.0" layoutY="50.0" text="Customer Name:">
+      	 <font>
+      	 	<Font name="System Bold" size="15.0" />
+      	 </font>
+      </Label>
+      <Label layoutX="19.0" layoutY="330.0" text="Date Ordered:">
+      	 <font>
+      	 	<Font name="System Bold" size="15.0" />
+      	 </font>
+      </Label>
+      <Label layoutX="19.0" layoutY="370.0" text="Target Shipping Date:">
+      	 <font>
+      	 	<Font name="System Bold" size="15.0" />
+      	 </font>
+      </Label>
+      <Label layoutX="19.0" layoutY="410.0" text="Actual Shipping Date:">
+      	 <font>
+      	 	<Font name="System Bold" size="15.0" />
+      	 </font>
+      </Label>
+      <TextField fx:id="orderNumberField" layoutX="120.0" layoutY="15.0" onAction="#handleOrderEdit">
          <font>
             <Font size="15.0" />
          </font>
       </TextField>
-      <TextField fx:id="customerNameField" layoutX="122.0" layoutY="48.0" onAction="#handleOrderEdit" prefHeight="25.0" prefWidth="159.0" />
-      <TextField fx:id="statusField" layoutX="315.0" layoutY="48.0" onAction="#handleOrderEdit" prefHeight="25.0" prefWidth="109.0" />
-      <TextField fx:id="orderCostField" layoutX="65.0" layoutY="80.0" onAction="#handleOrderEdit" prefHeight="25.0" prefWidth="149.0" />
-      <TextField fx:id="productField" layoutX="312.0" layoutY="80.0" onAction="#handleOrderEdit" prefHeight="25.0" prefWidth="134.0" />
-      <TextField fx:id="blueprintField" layoutX="140.0" layoutY="418.0" onAction="#handleOrderEdit" prefHeight="25.0" prefWidth="68.0" />
-      <TextField fx:id="orderDateField" layoutX="107.0" layoutY="448.0" onAction="#handleOrderEdit" prefHeight="25.0" prefWidth="91.0" />
+      <TextField fx:id="customerPurchaseOrderNumberField" layoutX="300.0" layoutY="90.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />
+      <TextField fx:id="customerNameField" layoutX="200.0" layoutY="50.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />
+      <TextField fx:id="productCodeField" layoutX="200.0" layoutY="130.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />
+      <TextField fx:id="statusField" layoutX="200.0" layoutY="170.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />
+      <TextField fx:id="quoteNumberField" layoutX="200.0" layoutY="210.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />
+      <TextField fx:id="blueprintNumberField" layoutX="200.0" layoutY="250.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />
+      <TextField fx:id="actualCostField" layoutX="200.0" layoutY="290.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />
+      <DatePicker fx:id="dateOrderedPicker" layoutX="200.0" layoutY="330.0" onAction="#handleOrderEdit" />
+      <DatePicker fx:id="targetShippingPicker" layoutX="200.0" layoutY="370.0" onAction="#handleOrderEdit" />
+      <DatePicker fx:id="actualShippingPicker" layoutX="200.0" layoutY="410.0" onAction="#handleOrderEdit" />
    </children>
 </AnchorPane>

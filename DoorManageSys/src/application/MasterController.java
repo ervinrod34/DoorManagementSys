@@ -208,7 +208,7 @@ public class MasterController {
 				
 			case ORDER_LIST_PAGE:
 				loader = new FXMLLoader(getClass().getResource("/order/OrderList_Page.fxml"));
-				loader.setController(new OrderListController(this.ordersToDisplay));
+				loader.setController(new OrderListController(this.orderToDisplay));
 				break;
 				
 			case ORDER_DETAIL_PAGE:

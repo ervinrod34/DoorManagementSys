@@ -31,7 +31,7 @@ public class OrderEditController implements Initializable {
 	@FXML private TextField productCodeField;
 	
 	@FXML private TextField statusField;
-	
+		
 	@FXML private DatePicker dateOrderedPicker;
 	
 	@FXML private DatePicker targetShippingPicker;
