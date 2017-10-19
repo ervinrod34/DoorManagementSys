@@ -104,7 +104,6 @@ public class MasterController {
 	 * This is the main function that is called when the user
 	 * wishes to change the current page.
 	 * @param pageType The type of page
-	 * @return
 	 */
 	public boolean changeView(PageTypes pageType) {
 		desiredPage = pageType;
