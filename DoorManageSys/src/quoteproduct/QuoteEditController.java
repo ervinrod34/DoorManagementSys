@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
+import application.MasterController;
+import application.PageTypes;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -63,10 +65,17 @@ public class QuoteEditController implements Initializable {
 		Object source = ae.getSource();
 		
 		if (source == cancelQuoteButton) {
-			
+			MasterController.getInstance().setEditObject(this.order);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
 		} else if (source == saveQuoteButton) {
+			this.updateQuoteObject();
+			this.order.save();
 			
+			MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
+			MasterController.getInstance().setEditObject(this.order);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
 		} else if (source == createNewProductButton) {
+			// Product newProduct = new Product();
 			
 		} else if (source == addDoorButton) {
 			

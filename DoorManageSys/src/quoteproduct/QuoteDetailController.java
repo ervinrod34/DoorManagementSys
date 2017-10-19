@@ -53,7 +53,7 @@ public class QuoteDetailController implements Initializable {
 		
 		if (source == editButton) {
 			MasterController.getInstance().setEditObject(order);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == deleteButton) {
 			MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(quote.getId());
 		}
