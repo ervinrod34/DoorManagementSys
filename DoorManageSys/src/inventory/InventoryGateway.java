@@ -287,7 +287,7 @@ public class InventoryGateway {
 		
 		try {
 			ps = this.dbConnection.prepareStatement("SELECT * FROM Inventory "
-					+ "WHERE itemNo LIKE = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+					+ "WHERE itemNo LIKE ?", PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, itemNo);
 			
 			rs = ps.executeQuery();
