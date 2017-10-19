@@ -3,6 +3,8 @@ package quoteproduct;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import application.MasterController;
 import application.PageTypes;
@@ -52,10 +54,23 @@ public class QuoteDetailController implements Initializable {
 		Object source = ae.getSource();
 		
 		if (source == editButton) {
-			MasterController.getInstance().setEditObject(order);
+			MasterController.getInstance().setEditObject(this.order);
+			MasterController.getInstance().setProductToDisplay(this.quote.getProducts().get(0));
+			MasterController.getInstance().setInventoryListToDisplay(
+					MasterController.getInstance().getInventoryGateway().getInventory());
+			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
 			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == deleteButton) {
 			MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(quote.getId());
+			
+			//Go back to this later
+			Timer timer = new Timer();
+					
+			timer.schedule(new TimerTask() {
+				public void run() {
+					MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
+				}
+			}, 5000);
 		}
 	}
 

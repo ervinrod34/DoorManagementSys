@@ -77,11 +77,10 @@ public class QuoteItemsListController implements Initializable {
 	}
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//TODO, after getInventories in Product class is implemented
-		/*this.observableContents = this.productContents.getItems();
+		this.observableContents = this.productContents.getItems();
 		for(Inventory content : this.selectedProduct.getInventories()) {
 			this.observableContents.add(content);
-		}*/
+		}
 		
 		
 		this.observableResults = this.searchResults.getItems();

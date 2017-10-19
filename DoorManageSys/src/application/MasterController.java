@@ -86,6 +86,8 @@ public class MasterController {
 	
 	private List<Order> orderToDisplay;
 	
+	private Product productToDisplay;
+	
 	/**
 	 * Initialize a MasterController object.
 	 */
@@ -125,7 +127,7 @@ public class MasterController {
 		
 		//for List Page
 		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE
-				|| desiredPage == PageTypes.QORDER_LIST_PAGE) {
+				|| desiredPage == PageTypes.QORDER_LIST_PAGE || desiredPage == PageTypes.QUOTEITEMS_LIST_PAGE) {
 			mainPane.setCenter(view);
 			mainPane.setRight(this.getEmptyRightPane());
 		
@@ -208,6 +210,11 @@ public class MasterController {
 			case QORDER_LIST_PAGE:
 				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
 				loader.setController(new QOrderListController(this.orderToDisplay));
+				break;
+				
+			case QUOTEITEMS_LIST_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteItemsList_Page.fxml"));
+				loader.setController(new QuoteItemsListController(this.productToDisplay, this.inventoryToDisplay));
 				break;
 				
 			default:
@@ -302,6 +309,10 @@ public class MasterController {
 	
 	public void setOrderListToDisplay(List<Order> objects) {
 		this.orderToDisplay = objects;
+	}
+	
+	public void setProductToDisplay(Product product) {
+		this.productToDisplay = product;
 	}
 	
 	public AnchorPane getEmptyRightPane() {

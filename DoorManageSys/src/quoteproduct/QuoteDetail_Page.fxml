@@ -76,8 +76,8 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="editButton" layoutX="274.0" layoutY="528.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Edit Quote" />
-      <Button fx:id="deleteButton" layoutX="366.0" layoutY="528.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Delete" textFill="RED" />
+      <Button fx:id="editButton" layoutX="274.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleQuoteDetail" prefHeight="25.0" prefWidth="85.0" text="Edit Quote" />
+      <Button fx:id="deleteButton" layoutX="366.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleQuoteDetail" prefHeight="25.0" prefWidth="85.0" text="Delete" textFill="RED" />
       <Label fx:id="dbID" layoutX="18.0" layoutY="559.0" text="db0">
          <font>
             <Font size="10.0" />

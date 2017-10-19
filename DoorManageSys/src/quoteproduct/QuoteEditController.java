@@ -65,6 +65,13 @@ public class QuoteEditController implements Initializable {
 		Object source = ae.getSource();
 		
 		if (source == cancelQuoteButton) {
+			MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
+			for(int i = 0; i < products.getItems().size(); i++) {
+				if(products.getItems().get(i).getId() == 0) {
+					products.getItems().remove(i);
+					i--;
+				}
+			}
 			MasterController.getInstance().setEditObject(this.order);
 			MasterController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
 		} else if (source == saveQuoteButton) {
@@ -75,18 +82,37 @@ public class QuoteEditController implements Initializable {
 			MasterController.getInstance().setEditObject(this.order);
 			MasterController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
 		} else if (source == createNewProductButton) {
-			// Product newProduct = new Product();
-			
+			Product newProduct = new Product();
+			products.getItems().add(newProduct);
+			products.getSelectionModel().selectLast();
+			MasterController.getInstance().setProductToDisplay(newProduct);
+			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addDoorButton) {
-			
+			MasterController.getInstance().setInventoryListToDisplay(
+					MasterController.getInstance().getInventoryGateway().searchInventory("category", "Door"));
+			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addFrameButton) {
-			
+			MasterController.getInstance().setInventoryListToDisplay(
+					MasterController.getInstance().getInventoryGateway().searchInventory("category", "Frame"));
+			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addHingeButton) {
-			
+			MasterController.getInstance().setInventoryListToDisplay(
+					MasterController.getInstance().getInventoryGateway().searchInventory("category", "Hinge"));
+			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addLockButton) {
-			
+			MasterController.getInstance().setInventoryListToDisplay(
+					MasterController.getInstance().getInventoryGateway().searchInventory("category", "Lock"));
+			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addExtrasButton) {
-			
+			MasterController.getInstance().setInventoryListToDisplay(
+					MasterController.getInstance().getInventoryGateway().searchInventoryForExtras());
+			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		}
 	}
 	
@@ -143,6 +169,7 @@ public class QuoteEditController implements Initializable {
 			customerName.setText(order.getCustomerName());
 			orderDate.setText(order.getDateOrdered().toString());
 			products.setItems(observableList);
+			products.getSelectionModel().selectFirst();
 			totalPrice.setText(Double.toString(quote.getTotalCost()));
 		}
 	}

@@ -153,6 +153,44 @@ public class InventoryGateway {
 		return matches;
 	}
 	
+	public ArrayList <Inventory> searchInventoryForExtras() {
+		
+		ArrayList <Inventory> matches = new ArrayList <Inventory> ();
+		preparedStatement = null;
+		resultSet = null;
+		
+		try {
+			String query = "SELECT * FROM Inventory WHERE NOT category='Door' "
+					+ "AND NOT category='Frame' AND NOT category='Hinge' "
+					+ "AND NOT category='Lock'";
+			preparedStatement = dbConnection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			resultSet = preparedStatement.executeQuery();
+		
+			while (resultSet.next()) {
+				Inventory inventory = new Inventory (resultSet.getInt("id"), resultSet.getString("itemNo"), resultSet.getString("manufacturer"),
+						resultSet.getString("manufacturerNo"), resultSet.getString("vendor"), resultSet.getString("size"),
+						resultSet.getString("colorCode"), resultSet.getString("extra"), resultSet.getString("unitOfMeasure"),
+						resultSet.getDouble("actualCost"), resultSet.getDouble("sellingPrice"), resultSet.getInt("quantity"),
+						resultSet.getInt("minQuantity"), resultSet.getInt("maxQuantity"), resultSet.getString("category"),
+						resultSet.getBoolean("taxable"), resultSet.getString("accountingCode"));
+				
+				matches.add(inventory);
+			}
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+		} finally {
+			try {
+				closePSandRS (preparedStatement, resultSet);
+			}
+			catch (SQLException sqlException) {
+				sqlException.printStackTrace();
+			}
+		}
+		
+		return matches;
+	}
+
 	public void addInventory (Inventory inventory) {
 		
 		StringBuffer sqlCommand = new StringBuffer ();
