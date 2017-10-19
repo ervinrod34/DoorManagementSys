@@ -21,7 +21,7 @@ import javafx.scene.control.ListView;
 
 public class OrderDetailController implements Initializable {
 
-	@FXML private Label dbID;
+	@FXML private Label orderNumber;
 	
 	@FXML private Label quoteNumber;
 	
@@ -71,7 +71,7 @@ public class OrderDetailController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		if(this.order.getId() > 0) {
-			this.dbID.setText(Integer.toString(this.order.getId()));
+			this.orderNumber.setText(Integer.toString(this.order.getId()));
 			this.quoteNumber.setText(this.order.getQuote().toString());
 			this.blueprintNumber.setText(this.order.getBlueprint().toString());
 			this.customerPurchaseOrderNumber.setText(this.order.getCustomerPurchaseOrderNumber());

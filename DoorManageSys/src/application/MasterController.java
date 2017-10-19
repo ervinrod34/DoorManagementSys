@@ -14,7 +14,11 @@ import user.*;
 import landing.*;
 import inventory.*;
 import login.*;
+import order.Order;
+import order.OrderDetailController;
+import order.OrderEditController;
 import order.OrderGateway;
+import order.OrderListController;
 import quoteproduct.*;
 
 import java.io.IOException;
@@ -58,10 +62,19 @@ public class MasterController {
 	 */
 	private InventoryGateway inventoryGateway;
 	
+	/**
+	 * The Gateway to the Product table in the Database
+	 */
 	private ProductGateway productGateway;
 	
+	/**
+	 * The Gateway to the Order table in the Database
+	 */
 	private OrderGateway orderGateway;
 	
+	/**
+	 * The Gateway to the Quote table in the Database
+	 */
 	private QuoteGateway quoteGateway;
 	
 	/**
@@ -82,6 +95,8 @@ public class MasterController {
 	private Object editObj;
 	
 	private List<Inventory> inventoryToDisplay;
+	
+	private List<Order> ordersToDisplay;
 	
 	/**
 	 * Initialize a MasterController object.
@@ -119,19 +134,31 @@ public class MasterController {
 			this.stage.setScene(scene);
 			this.stage.show();
 		
-		//for List Page
-		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE) {
+		//for Inventory List Page
+		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || desiredPage == PageTypes.INVENTORY_LIST_PAGE || desiredPage == PageTypes.ORDER_LIST_PAGE) {
 			mainPane.setCenter(view);
 			mainPane.setRight(this.getEmptyRightPane());
 		
-		//for Detail Page
+		//for Inventory Detail Page
 		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE) {
 			mainPane.setRight(view);
 			
-		//for Edit Page
+		//for Inventory Edit Page
 		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE) {
 			mainPane.setRight(view);
+		
+		//for Order Detail Page
+		} else if(desiredPage == PageTypes.ORDER_DETAIL_PAGE) {
+			mainPane.setRight(view);
+		
+		//for Order Edit Page
+		} else if(desiredPage == PageTypes.ORDER_EDIT_PAGE) {
+			mainPane.setRight(view);
 		}
+		
+			
+		
+		
 		
 		return true;
 	}
@@ -181,6 +208,29 @@ public class MasterController {
 					loader.setController(new InventoryEditController(editInventory));
 				} else if(editInventory.getId() == 0) {
 					loader.setController(new InventoryEditController(new Inventory()));
+				}
+				break;
+				
+			case ORDER_LIST_PAGE:
+				//System.out.println("switch statement entered");
+				loader = new FXMLLoader(getClass().getResource("/order/OrderList_Page.fxml"));
+				loader.setController(new OrderListController(this.ordersToDisplay));
+				//System.out.println("leaving switch");
+				break;
+				
+			case ORDER_DETAIL_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/order/OrderDetail_Page.fxml"));
+				loader.setController(new OrderDetailController((Order) this.editObj));
+				break;
+				
+			case ORDER_EDIT_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/order/OrderEdit_Page.fxml"));
+				Order editOrder = (Order)this.editObj;
+				
+				if(editOrder.getId() > 0) {
+					loader.setController(new OrderEditController(editOrder));
+				} else if(editOrder.getId() == 0){
+					loader.setController(new OrderEditController(new Order()));
 				}
 				break;
 				
@@ -272,6 +322,10 @@ public class MasterController {
 	
 	public void setInventoryListToDisplay(List<Inventory> objects) {
 		this.inventoryToDisplay = objects;
+	}
+	
+	public void setOrdersListToDisplay(List<Order> objects){
+		this.ordersToDisplay = objects;
 	}
 	
 	public AnchorPane getEmptyRightPane() {

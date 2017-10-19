@@ -25,10 +25,10 @@ public class OrderGateway {
 
 	private Connection dbConnection;
 	private Properties dbProperties;
-	private FileInputStream dbPropertiesFile;
+	FileInputStream dbPropertiesFile;
 	private MysqlDataSource database;
-	private PreparedStatement preparedStatement;
-	private ResultSet resultSet;
+	PreparedStatement preparedStatement;
+	ResultSet resultSet;
 	
 	public OrderGateway(){
 		dbProperties = new Properties();
@@ -56,7 +56,7 @@ public class OrderGateway {
 		
 		database = new MysqlDataSource();
 		
-		database.setURL(dbProperties.getProperty("MYSQL_DPM_URL"));
+		database.setURL(dbProperties.getProperty("MYSQL_DPM_DB_URL"));
 		database.setUser(dbProperties.getProperty("MYSQL_DPM_DB_UN"));
 		database.setPassword(dbProperties.getProperty("MYSQL_DPM_DB_PW"));
 	}
