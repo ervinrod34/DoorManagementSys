@@ -42,8 +42,8 @@ public class ProductGateway {
 		
 	}//End Constructor
 	
-	public List<Inventory> importListOfQuotesFromDB() {
-		List<Inventory> inventories = new ArrayList<Inventory>();
+	public List<Product> importListOfProductsFromDB() {
+		List<Product> products = new ArrayList<Product>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
@@ -55,16 +55,18 @@ public class ProductGateway {
 			rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				Inventory inventory = new Inventory();
+				Product product = new Product(rs.getInt("id"),
+						this.parseCSVToInventory(rs.getString("idList")),
+						rs.getDouble("totalCost"));
 				
-				inventories.add(inventory);
+				products.add(product);
 			}
 			
 		} catch (SQLException sqlException){
 			sqlException.printStackTrace();
 		}
 		
-		return inventories;
+		return products;
 	}//end importList
 	
 	public Product getProductByID(int productID) {
@@ -74,9 +76,8 @@ public class ProductGateway {
 		
 		try {
 			ps = this.connection.prepareStatement("SELECT * FROM Product "
-					+ "WHERE id LIKE ? AND category LIKE ?", PreparedStatement.RETURN_GENERATED_KEYS);
+					+ "WHERE id LIKE ? AND category='product'", PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, productID);
-			ps.setString(2, "product");
 			
 			rs = ps.executeQuery();
 			
@@ -104,20 +105,6 @@ public class ProductGateway {
 		
 		return items;
 	}
-	
-	//TODO check types of this function for compatibility with products
-//	public List<Product> parseCSVToProducts(String CSVid) {
-//		List<String> ids = new ArrayList<>();
-//		List<Product> products = new ArrayList<Product>();
-//		
-//		ids = Arrays.asList(CSVid.split(","));
-//		
-//		for(String id : ids) {
-//			products.add(MasterController.getInstance().getProductGateway().getProductByID(Integer.parseInt(id)));
-//		}
-//		
-//		return products;
-	//}
 	
 	public void insertNewProductRecord(Product product) {
 		PreparedStatement ps = null;
