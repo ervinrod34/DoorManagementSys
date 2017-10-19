@@ -14,8 +14,6 @@ public class Product {
 	
 	private double totalCost;
 	
-	
-	
 	public Product() {
 		this.id = 0;
 		this.totalCost = 0.0;
@@ -23,12 +21,9 @@ public class Product {
 	}
 	
 	public Product (int id, List<Inventory> ids, double totalCost) {
-		
 		this.id = id;
 		this.inventories = ids;
 		this.totalCost = totalCost;
-		
-		
 	}	
 
 	public int getId() {
@@ -46,9 +41,7 @@ public class Product {
 
 	public void setTotalCost(double totalCost) {
 		this.totalCost = totalCost;
-	}
-
-	
+	}	
 
 	public List<Inventory> getInventories() {
 		return inventories;
@@ -67,7 +60,7 @@ public class Product {
 //	}
 	
 	public String toString () {
-		String returnValue = "ID: " + id + ", totalCost: " + totalCost + ", idList: " + inventories + ", Category: ";
+		String returnValue = "ID: " + id + ", totalCost: " + totalCost + ", Items" + inventories;
 		
 		return returnValue;
 		

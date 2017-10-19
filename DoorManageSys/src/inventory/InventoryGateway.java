@@ -51,7 +51,6 @@ public class InventoryGateway {
 	}
 	
 	private void setUpDB () {
-		
 		database = new MysqlDataSource ();
 		
 		database.setURL(dbProperties.getProperty("MYSQL_DPM_DB_URL"));
@@ -281,15 +280,15 @@ public class InventoryGateway {
 		}
 	}
 	
-	public Inventory getInventoryByID(String inventoryID) {
+	public Inventory getInventoryByID(String itemNo) {
 		Inventory inventory = new Inventory();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			ps = this.dbConnection.prepareStatement("SELECT * FROM Inventory "
-					+ "WHERE itemNo LIKE ?", PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setString(1, inventoryID);
+					+ "WHERE itemNo LIKE = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setString(1, itemNo);
 			
 			rs = ps.executeQuery();
 			rs.next();
