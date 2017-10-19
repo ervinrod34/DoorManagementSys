@@ -73,8 +73,8 @@ public class InventoryReport {
 				setCurrentPage (getNewPage ());
 				setStreamPage (currentPage);
 				setStreamFont ();
-				x = 70;
-				y  = 660;
+				x = START_X;
+				y = START_Y;
 			}
 			
 			stream.beginText();				
@@ -119,7 +119,7 @@ public class InventoryReport {
 			stream.endText();
 			
 			count ++;
-			x = 70;
+			x = START_X;
 			y -= 12;
 			
 		}
