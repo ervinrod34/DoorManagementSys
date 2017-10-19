@@ -136,7 +136,6 @@ public class ProductGateway {
 		return CSV;
 	}
 	
-	
 	public void updateProductRecord(Product product) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -157,7 +156,6 @@ public class ProductGateway {
 			sqlException.printStackTrace();
 		}
 	}
-	
 	
 	public void deleteProductRecord(int id) {
 		PreparedStatement preparedStatement = null;
@@ -182,4 +180,4 @@ public class ProductGateway {
 		}
 	}
 
-}//End Class
+}
