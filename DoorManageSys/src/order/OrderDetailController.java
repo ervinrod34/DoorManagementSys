@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import quoteproduct.Product;
 
 public class OrderDetailController implements Initializable {
 
@@ -53,7 +54,9 @@ public class OrderDetailController implements Initializable {
 			MasterController.getInstance().changeView(PageTypes.ORDER_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
-			MasterController.getInstance().getInventoryGateway().deleteInventory(this.order.getId());
+			MasterController.getInstance().getProductGateway().deleteProducts(this.order.getQuote().getProducts());
+			MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(this.order.getQuote().getId());
+			MasterController.getInstance().getOrderGateway().deleteOrder(this.order.getId());
 			
 			//Go back to this later
 			this.scheduleRefresh();
@@ -63,11 +66,14 @@ public class OrderDetailController implements Initializable {
 	private void scheduleRefresh() {
 		Timer timer = new Timer();
 					
-			timer.schedule(new TimerTask() {
+			timer.scheduleAtFixedRate(new TimerTask() {
 				public void run() {
+					List<Order> allOrders = MasterController.getInstance().getOrderGateway().getOrders();
+					MasterController.getInstance().setOrderListToDisplay(allOrders);
 					MasterController.getInstance().changeView(PageTypes.ORDER_LIST_PAGE);
+					timer.cancel();
 				}
-			}, 2000);
+			}, 1000, 1000);
 	}
 
 	@Override

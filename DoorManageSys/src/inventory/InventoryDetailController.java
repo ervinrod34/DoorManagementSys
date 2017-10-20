@@ -65,6 +65,8 @@ public class InventoryDetailController implements Initializable {
 					
 			timer.schedule(new TimerTask() {
 				public void run() {
+					List<Inventory> allInventory = MasterController.getInstance().getInventoryGateway().getInventory();
+					MasterController.getInstance().setInventoryListToDisplay(allInventory);
 					MasterController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
 				}
 			}, 2000);
