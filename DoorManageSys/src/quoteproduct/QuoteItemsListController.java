@@ -67,6 +67,8 @@ public class QuoteItemsListController implements Initializable {
 			this.selectedProduct.getInventories().add(selectedSearchedItem);
 			this.observableContents.add(selectedSearchedItem);
 			
+			this.selectedProduct.setTotalCost(this.selectedProduct.calculateTotalCost());
+			
 			//Need to create an instance of the active "Right Pane" in MasterController to access
 			//and update the product in the quote
 			//MasterController.getInstance().getActiveRightPane().update(Object);

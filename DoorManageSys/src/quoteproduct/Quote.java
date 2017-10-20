@@ -25,6 +25,14 @@ public class Quote {
 		this.products = list;
 		this.totalCost = totalCost;
 	}
+	
+	public Double calculateTotalCost() {
+		Double totalCost = 0.0;
+		for(Product product : this.products) {
+			totalCost += product.getTotalCost();
+		}
+		return totalCost;
+	}
 
 	public int getId() {
 		return id;
@@ -43,6 +51,9 @@ public class Quote {
 	}
 
 	public double getTotalCost() {
+		if(this.totalCost == 0) {
+			this.totalCost = calculateTotalCost();
+		}
 		return totalCost;
 	}
 

@@ -24,7 +24,15 @@ public class Product {
 		this.id = id;
 		this.inventories = ids;
 		this.totalCost = totalCost;
-	}	
+	}
+	
+	public Double calculateTotalCost() {
+		Double totalCost = 0.0;
+		for(Inventory item : this.inventories) {
+			totalCost += item.getSellingPrice();
+		}
+		return totalCost;
+	}
 
 	public int getId() {
 		return id;
@@ -36,6 +44,9 @@ public class Product {
 
 
 	public double getTotalCost() {
+		if(this.totalCost == 0) {
+			this.totalCost = calculateTotalCost();
+		}
 		return totalCost;
 	}
 

@@ -168,6 +168,8 @@ public class QuoteEditController implements Initializable {
 		
 		if (!products.getItems().isEmpty()) {
 			updatedOrder.getQuote().setProducts(products.getItems());
+			updatedOrder.getQuote().setTotalCost(
+					updatedOrder.getQuote().calculateTotalCost());
 		}
 		
 		order = updatedOrder;
@@ -182,6 +184,7 @@ public class QuoteEditController implements Initializable {
 			purchaseOrderNumber.setText(order.getCustomerPurchaseOrderNumber());
 			customerName.setText(order.getCustomerName());
 			orderDate.setText(order.getDateOrdered().toString());
+			quote.setTotalCost(quote.calculateTotalCost());
 			totalPrice.setText(Double.toString(quote.getTotalCost()));
 		}
 		products.setItems(observableList);
