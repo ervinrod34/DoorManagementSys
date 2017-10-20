@@ -35,6 +35,8 @@ public class LandingPageController implements Initializable {
 	
 	@FXML private Label quote;
 	
+	@FXML private Label reports;
+	
 	@FXML private Label users;
 	
 	@FXML private Label logout;
@@ -91,6 +93,10 @@ public class LandingPageController implements Initializable {
 			MasterController.getInstance().setOrderListToDisplay(unfinishedOrders);
 
 			this.changeViewOnLabelClick(quote, PageTypes.QORDER_LIST_PAGE);
+		} else if(source == reports) { 
+			this.applyEffectOnMenuLabel(reports);
+			this.changeViewOnLabelClick(reports, PageTypes.REPORTS_EXPORT_PAGE);
+			
 		} else if(source == users) {
 			this.applyEffectOnMenuLabel(users);
 			this.changeViewOnLabelClick(users, PageTypes.VIEW_USERS_PAGE);

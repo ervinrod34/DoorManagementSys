@@ -16,6 +16,7 @@ import inventory.*;
 import login.*;
 import order.*;
 import quoteproduct.*;
+import report.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -92,8 +93,6 @@ public class MasterController {
 	
 	private List<Inventory> inventoryToDisplay;
 	
-	private List<Order> ordersToDisplay;
-	
 	private List<Order> orderToDisplay;
 	
 	private Product productToDisplay;
@@ -154,7 +153,12 @@ public class MasterController {
 				desiredPage == PageTypes.QUOTE_EDIT_PAGE ||
 				desiredPage == PageTypes.ORDER_EDIT_PAGE) {
 			mainPane.setRight(view);
-		}	
+			
+		//for Pages with right pane, no center
+		} else if(desiredPage == PageTypes.REPORTS_EXPORT_PAGE) {
+			mainPane.setCenter(this.getEmptyCenterPane());
+			mainPane.setRight(view);
+		}
 		return true;
 	}
 	
@@ -251,6 +255,11 @@ public class MasterController {
 			case QUOTEITEMS_LIST_PAGE:
 				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteItemsList_Page.fxml"));
 				loader.setController(new QuoteItemsListController(this.productToDisplay, this.inventoryToDisplay));
+				break;
+				
+			case REPORTS_EXPORT_PAGE:	
+				loader = new FXMLLoader(getClass().getResource("/report/ReportsExport_Page.fxml"));
+				loader.setController(new ReportsExportController());
 				break;
 				
 			default:
@@ -352,9 +361,16 @@ public class MasterController {
 	}
 	
 	public AnchorPane getEmptyRightPane() {
-		AnchorPane emptyAnchor = new AnchorPane();
-		emptyAnchor.setPrefSize(466.0, 580.0);
+		AnchorPane emptyRightAnchor = new AnchorPane();
+		emptyRightAnchor.setPrefSize(466.0, 580.0);
 		
-		return emptyAnchor;
+		return emptyRightAnchor;
+	}
+	
+	public AnchorPane getEmptyCenterPane() {
+		AnchorPane emptyCenterAnchor = new AnchorPane();
+		emptyCenterAnchor.setPrefSize(466.0, 580.0);
+		
+		return emptyCenterAnchor;
 	}
 }

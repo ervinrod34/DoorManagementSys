@@ -48,7 +48,7 @@
                   <Font name="Times New Roman" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="users" layoutX="403.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Users" textFill="WHITE">
+            <Label fx:id="users" layoutX="517.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Users" textFill="WHITE">
                <font>
                   <Font name="Times New Roman" size="20.0" />
                </font>
@@ -56,6 +56,11 @@
             <Label fx:id="logout" layoutX="1300.0" layoutY="150.0" onMouseClicked="#handleMenu" text="Logout" textFill="WHITE">
                <font>
                   <Font name="Times New Roman" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="reports" layoutX="403.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Reports" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman" size="20.0" />
                </font>
             </Label>
          </children>

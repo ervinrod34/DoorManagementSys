@@ -22,7 +22,7 @@ public class TestInventoryReport {
 			list.add(new Inventory (0, "JFHH388493", "STANLEY", "HEIU3384", "STANLEY", "4.5x5.5", "US32D", "", "ea", 10.0, 15.0, 50, 10, 100, "Hinge", false, "3030"));
 		}
 		
-		InventoryReport report = new InventoryReport (list);
+		InventoryReport report = new InventoryReport (list, "");
 		
 		report.populateReport();
 		report.save();

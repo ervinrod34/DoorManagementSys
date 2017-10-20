@@ -1,9 +1,11 @@
 package report;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -21,17 +23,19 @@ import inventory.Inventory;
  */
 public class InventoryReport {
 
-	private ArrayList<Inventory> inventory;
+	private List<Inventory> inventory;
+	private Date date;
+	
+	private String fileName;
 	private PDDocument doc;
 	private PDPageTree page;
 	private PDPage currentPage;
 	private PDPageContentStream stream;
-	private Date date;
 	private File saveFile;
 	private int x, y;
 	private final int MAX_PER_PAGE = 40, START_X = 70, START_Y = 660;
 	
-	public InventoryReport (ArrayList <Inventory> inventory) throws IOException {
+	public InventoryReport (List<Inventory> inventory, String inputName) throws IOException {
 		
 		this.inventory = inventory;
 		
@@ -42,16 +46,8 @@ public class InventoryReport {
 		page = doc.getPages();
 		
 		currentPage = page.get(0);
-		
-		date = new Date ();
-		
-		System.out.println(date);
-		
-		String fileName = "Inventory";
-		fileName += date.toString().substring(4, 7);
-		fileName += date.toString().substring(8, 10);
-		fileName += date.toString().substring(24, 28);
-		fileName += ".pdf";
+
+		fileName = this.assignFileName(inputName);
 		
 		saveFile = new File (fileName);
 
@@ -60,7 +56,25 @@ public class InventoryReport {
 
 		x = START_X;
 		y = START_Y;
+	}
+	
+	public String assignFileName(String inputtedName) {
+		String newFileName = "";
 		
+		if(inputtedName.length() == 0) {
+			date = new Date();
+			//System.out.println(date);
+		
+			newFileName = "InventoryReport-";
+			newFileName += date.toString().substring(4, 7);
+			newFileName += date.toString().substring(8, 10);
+			newFileName += date.toString().substring(24, 28);
+			newFileName += ".pdf";
+		} else {
+			newFileName = inputtedName + ".pdf";
+		}
+		
+		return newFileName;
 	}
 	
 	public void populateReport () throws IOException {
@@ -133,7 +147,11 @@ public class InventoryReport {
 	}
 	
 	public void save () throws IOException {
-		doc.save(saveFile);
+		try {
+			doc.save(System.getProperty("user.home") + "\\Desktop\\" + saveFile);
+		} catch(FileNotFoundException e) {
+			System.err.print("Save unsuccessful");
+		}
 	}
 	
 	public void close () throws IOException {
