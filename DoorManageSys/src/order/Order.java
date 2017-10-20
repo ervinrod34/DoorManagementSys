@@ -1,6 +1,8 @@
 package order;
 
+import java.math.RoundingMode;
 import java.sql.Date;
+import java.text.DecimalFormat;
 
 import application.MasterController;
 import blueprint.Blueprint;
@@ -37,7 +39,7 @@ public class Order {
 		this.targetShipping = new Date(2000, 01, 01);
 		this.actualShipping = new Date(2000, 01, 01);
 		this.blueprint = new Blueprint(0);
-		this.totalAmount = 0.0;
+		this.totalAmount = 0.00;
 	}
 	
 	public Order(int id, Quote quote, String cPON, String cName, 

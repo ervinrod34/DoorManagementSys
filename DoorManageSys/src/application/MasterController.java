@@ -213,7 +213,7 @@ public class MasterController {
 				
 			case ORDER_DETAIL_PAGE:
 				loader = new FXMLLoader(getClass().getResource("/order/OrderDetail_Page.fxml"));
-				loader.setController(new OrderDetailController((Order) this.editObj));
+				loader.setController(new OrderDetailController((Order)this.editObj));
 				break;
 				
 			case ORDER_EDIT_PAGE:

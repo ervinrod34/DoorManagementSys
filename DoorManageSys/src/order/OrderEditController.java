@@ -1,6 +1,10 @@
 package order;
 
+import java.math.RoundingMode;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -38,7 +42,7 @@ public class OrderEditController implements Initializable {
 	
 	@FXML private DatePicker actualShippingPicker;
 	
-	@FXML private TextField totalAmountField;
+	@FXML private TextField actualCostField;
 	
 	@FXML private Button saveButton;
 	
@@ -48,6 +52,7 @@ public class OrderEditController implements Initializable {
 	
 	public OrderEditController(Order order) {
 		this.order = order;
+		System.out.println("Total amount " + this.order.getTotalAmount());
 	}
 	
 	@FXML public void handleOrderEdit(ActionEvent ae) {
@@ -55,7 +60,7 @@ public class OrderEditController implements Initializable {
 		
 		if(source == cancelButton) {
 			MasterController.getInstance().setEditObject(this.order);
-			MasterController.getInstance().changeView(PageTypes.ORDER_EDIT_PAGE);
+			MasterController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
 		} else if(source == saveButton) {
 			this.updateOrderObject();
 			this.order.save();
@@ -79,8 +84,20 @@ public class OrderEditController implements Initializable {
 			this.dateOrderedPicker.setValue(this.convertDateToLocalDate(this.order.getDateOrdered()));
 			this.targetShippingPicker.setValue(this.convertDateToLocalDate(this.order.getTargetShipping()));
 			this.actualShippingPicker.setValue(this.convertDateToLocalDate(this.order.getActualShipping()));
-			this.totalAmountField.setText(Double.toString(this.order.getTotalAmount()));
+			System.out.println("Total Amount " + this.order.getTotalAmount());
+			this.actualCostField.setText(this.formatAmount(this.order.getTotalAmount()));
 		}
+	}
+	
+	private String formatAmount(double amountToFormat) {
+		String formattedAmount = "";
+		DecimalFormat amountFormat = new DecimalFormat(".##");
+
+		amountFormat.setRoundingMode(RoundingMode.UP);
+		formattedAmount = amountFormat.format(amountToFormat);
+		System.out.print("Formatted amount " + formattedAmount);
+		return formattedAmount;
+		
 	}
 	
 	public void updateOrderObject() {
@@ -94,13 +111,20 @@ public class OrderEditController implements Initializable {
 								java.sql.Date.valueOf(this.targetShippingPicker.getValue()),
 								java.sql.Date.valueOf(this.actualShippingPicker.getValue()),
 								new Blueprint(0),
-								Double.parseDouble(this.totalAmountField.getText()));
+								Double.parseDouble(this.actualCostField.getText()));
 		
 		this.order = updatedOrder;
 	}
 	
 	public LocalDate convertDateToLocalDate(Date date) {
-		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date utilDate = null;
+		try {
+			utilDate = dateFormat.parse(date.toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		
 		return localDate;
 	}

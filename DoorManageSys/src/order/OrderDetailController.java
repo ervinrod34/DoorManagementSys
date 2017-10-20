@@ -1,6 +1,8 @@
 package order;
 
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -72,13 +74,12 @@ public class OrderDetailController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		if(this.order.getId() > 0) {
 			this.orderNumber.setText(Integer.toString(this.order.getId()));
-			this.quoteNumber.setText(this.order.getQuote().toString());
+			this.quoteNumber.setText(Integer.toString(this.order.getQuote().getId()));
 			this.blueprintNumber.setText(this.order.getBlueprint().toString());
 			this.customerPurchaseOrderNumber.setText(this.order.getCustomerPurchaseOrderNumber());
 			this.customerName.setText(this.order.getCustomerName());
 			this.productCode.setText(this.order.getProductCode());
 			this.status.setText(this.order.getStatus());
-			
 			this.dateOrdered.setValue(this.convertDateToLocalDate(this.order.getDateOrdered()));
 			this.targetShipping.setValue(this.convertDateToLocalDate(this.order.getTargetShipping()));
 			this.actualShipping.setValue(this.convertDateToLocalDate(this.order.getActualShipping()));
@@ -89,7 +90,14 @@ public class OrderDetailController implements Initializable {
 	}
 	
 	public LocalDate convertDateToLocalDate(Date date) {
-		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date utilDate = null;
+		try {
+			utilDate = dateFormat.parse(date.toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		LocalDate localDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		
 		return localDate;
 	}
