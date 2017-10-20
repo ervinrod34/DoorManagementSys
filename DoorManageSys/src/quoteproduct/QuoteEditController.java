@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 
 import application.MasterController;
 import application.PageTypes;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,6 +56,17 @@ public class QuoteEditController implements Initializable {
 	private Quote quote;
 	
 	private Order order;
+	
+	private ChangeListener<Product> selectionListener = new ChangeListener<Product>() {
+
+		@Override
+		public void changed(ObservableValue<? extends Product> arg0, Product arg1, Product arg2) {
+			MasterController.getInstance().setProductToDisplay(products.getSelectionModel().getSelectedItem());
+			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
+		}
+		
+	};
 
 	public QuoteEditController(Order order) {
 		this.order = order;
@@ -84,7 +97,6 @@ public class QuoteEditController implements Initializable {
 		} else if (source == createNewProductButton) {
 			Product newProduct = new Product();
 			products.getItems().add(newProduct);
-			products.getSelectionModel().selectLast();
 			MasterController.getInstance().setProductToDisplay(newProduct);
 			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
 			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
@@ -169,7 +181,9 @@ public class QuoteEditController implements Initializable {
 			customerName.setText(order.getCustomerName());
 			orderDate.setText(order.getDateOrdered().toString());
 			products.setItems(observableList);
-			products.getSelectionModel().selectFirst();
+			//TODO: fix on empty product list (new quotes)
+			products.getSelectionModel().select(MasterController.getInstance().getProductToDisplay());
+			products.getSelectionModel().selectedItemProperty().addListener(selectionListener);
 			totalPrice.setText(Double.toString(quote.getTotalCost()));
 		}
 	}

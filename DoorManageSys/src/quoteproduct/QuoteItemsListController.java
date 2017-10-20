@@ -50,7 +50,7 @@ public class QuoteItemsListController implements Initializable {
 	private void tryToRemoveInventory(Inventory selected) {
 		this.observableContents.remove(selected);
 		//TODO when getInventories is implemented
-		//this.selectedProduct.getInventories().remove(selected);
+		this.selectedProduct.getInventories().remove(selected);
 	}
 	
 	@FXML private void handleProductContents(MouseEvent mouseEvent) {
@@ -64,8 +64,8 @@ public class QuoteItemsListController implements Initializable {
 			Inventory selectedSearchedItem = this.searchResults.getSelectionModel().getSelectedItem();
 			
 			//TODO
-			//this.selectedProduct.getInventories().add(selectedSearchedItem);
-			//this.observableContents.add(selectedSearchedItem);
+			this.selectedProduct.getInventories().add(selectedSearchedItem);
+			this.observableContents.add(selectedSearchedItem);
 			
 			//Need to create an instance of the active "Right Pane" in MasterController to access
 			//and update the product in the quote

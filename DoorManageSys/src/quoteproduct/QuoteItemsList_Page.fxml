@@ -14,7 +14,7 @@
             <Font name="Times New Roman Bold" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="deleteItem" layoutX="608.0" layoutY="247.0" mnemonicParsing="false" onAction="#handleProductContents" text="Delete Item" />
+      <Button fx:id="deleteItem" layoutX="608.0" layoutY="247.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete Item" />
       <ListView fx:id="searchResults" layoutX="3.0" layoutY="299.0" onMouseClicked="#handleSearchResults" prefHeight="275.0" prefWidth="695.0" />
       <Label layoutX="10.0" layoutY="274.0" text="Search Results:">
          <font>

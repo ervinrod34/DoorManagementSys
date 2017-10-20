@@ -138,7 +138,8 @@ public class MasterController {
 		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || 
 				desiredPage == PageTypes.INVENTORY_LIST_PAGE || 
 				desiredPage == PageTypes.QORDER_LIST_PAGE || 
-				desiredPage == PageTypes.ORDER_LIST_PAGE) {
+				desiredPage == PageTypes.ORDER_LIST_PAGE ||
+				desiredPage == PageTypes.QUOTEITEMS_LIST_PAGE) {
 			mainPane.setCenter(view);
 			mainPane.setRight(this.getEmptyRightPane());
 		
@@ -358,6 +359,10 @@ public class MasterController {
 	
 	public void setProductToDisplay(Product product) {
 		this.productToDisplay = product;
+	}
+	
+	public Product getProductToDisplay() {
+		return this.productToDisplay;
 	}
 	
 	public AnchorPane getEmptyRightPane() {

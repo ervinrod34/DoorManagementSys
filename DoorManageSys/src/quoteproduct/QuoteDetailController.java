@@ -55,9 +55,13 @@ public class QuoteDetailController implements Initializable {
 		
 		if (source == editButton) {
 			MasterController.getInstance().setEditObject(this.order);
-			MasterController.getInstance().setProductToDisplay(this.quote.getProducts().get(0));
+			try {
+				MasterController.getInstance().setProductToDisplay(this.quote.getProducts().get(0));
+			} catch(IndexOutOfBoundsException e) {
+				MasterController.getInstance().setProductToDisplay(new Product());
+			}
 			MasterController.getInstance().setInventoryListToDisplay(
-					MasterController.getInstance().getInventoryGateway().getInventory());
+				MasterController.getInstance().getInventoryGateway().getInventory());
 			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
 			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == deleteButton) {
