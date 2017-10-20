@@ -51,13 +51,13 @@ public class Product {
 		this.inventories = inventories;
 	}
 
-//	public void save () {
-//		if (id == 0) {
-//			MasterController.getInstance().getProductGateway().addProduct(this);
-//		}else {
-//			MasterController.getInstance().getProductGateway().updateProduct(this);
-//		}
-//	}
+	public void save () {
+		if (id == 0) {
+			MasterController.getInstance().getProductGateway().insertNewProductRecord(this);
+		}else {
+			MasterController.getInstance().getProductGateway().updateProductRecord(this);
+		}
+	}
 	
 	public String toString () {
 		String returnValue = "Product ID: " + id + "\tProduct Cost: " + totalCost + "\nItems:";

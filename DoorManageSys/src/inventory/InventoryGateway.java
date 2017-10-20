@@ -329,14 +329,17 @@ public class InventoryGateway {
 			ps.setString(1, itemNo);
 			
 			rs = ps.executeQuery();
-			rs.next();
-			inventory = new Inventory(rs.getInt("id"), rs.getString("itemNo"), rs.getString("manufacturer"),
-					 rs.getString("manufacturerNo"), rs.getString("vendor"), rs.getString("size"),
-					 rs.getString("colorCode"), rs.getString("extra"), rs.getString("unitOfMeasure"),
-					 rs.getDouble("actualCost"), rs.getDouble("sellingPrice"), rs.getInt("quantity"),
-					 rs.getInt("minQuantity"), rs.getInt("maxQuantity"), rs.getString("category"),
-					 rs.getBoolean("taxable"), rs.getString("accountingCode"));
-			
+			if (!rs.isBeforeFirst())
+				System.out.println("NO DATA");
+			else {
+				rs.next();
+				inventory = new Inventory(rs.getInt("id"), rs.getString("itemNo"), rs.getString("manufacturer"),
+						 rs.getString("manufacturerNo"), rs.getString("vendor"), rs.getString("size"),
+						 rs.getString("colorCode"), rs.getString("extra"), rs.getString("unitOfMeasure"),
+						 rs.getDouble("actualCost"), rs.getDouble("sellingPrice"), rs.getInt("quantity"),
+						 rs.getInt("minQuantity"), rs.getInt("maxQuantity"), rs.getString("category"),
+						 rs.getBoolean("taxable"), rs.getString("accountingCode"));
+			}
 		} catch (SQLException sqlException){
 			sqlException.printStackTrace();
 		}

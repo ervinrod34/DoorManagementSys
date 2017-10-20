@@ -81,11 +81,14 @@ public class ProductGateway {
 			
 			rs = ps.executeQuery();
 			
-			rs.next();
-			product = new Product(rs.getInt("id"), 
-					this.parseCSVToInventory(rs.getString("idList")),
-					rs.getDouble("totalCost"));
-			
+			if (!rs.isBeforeFirst())
+				System.out.println("NO DATA");
+			else {
+				rs.next();
+				product = new Product(rs.getInt("id"), 
+						this.parseCSVToInventory(rs.getString("idList")),
+						rs.getDouble("totalCost"));
+			}
 		} catch (SQLException sqlException){
 			sqlException.printStackTrace();
 		}
@@ -108,27 +111,29 @@ public class ProductGateway {
 	
 	public void insertNewProductRecord(Product product) {
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
 		try {
-			ps = this.connection.prepareStatement("INSERT INTO Product (id, idList, totalCost, category) "
+			ps = this.connection.prepareStatement("INSERT INTO Product (id, idList, totalCost, category)"
 					+ "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, product.getId());
 			ps.setString(2, this.parseProductIDsToCSV(product.getInventories()));
 			ps.setDouble(3, product.getTotalCost());
 			ps.setString(4, "product");
-			ps.executeQuery();
+			ps.execute();
 			
+			ResultSet rs = ps.getGeneratedKeys();
+			rs.next();
+			product.setId(rs.getInt(1));
 		} catch(SQLException sqlException) {
 			sqlException.printStackTrace();
 		}
 	}
 	
-	public String parseProductIDsToCSV(List<Inventory> products) {
+	public String parseProductIDsToCSV(List<Inventory> items) {
 		String CSV = "";
 		
-		for(Inventory product : products) {
-			CSV += product.getId() + ",";
+		for(Inventory item : items) {
+			CSV += item.getItemNo() + ",";
 		}
 		
 		CSV = CSV.substring(0, CSV.length() - 1);
@@ -138,7 +143,6 @@ public class ProductGateway {
 	
 	public void updateProductRecord(Product product) {
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
 		try {
 			ps = this.connection.prepareStatement("UPDATE Product SET id=?, idList=?, "
@@ -148,9 +152,9 @@ public class ProductGateway {
 			ps.setInt(1, product.getId());
 			ps.setString(2, this.parseProductIDsToCSV(product.getInventories()));
 			ps.setDouble(3, product.getTotalCost());
-			ps.setString(4, "quote");
+			ps.setString(4, "product");
 			ps.setInt(5, product.getId());
-			ps.executeQuery();
+			ps.execute();
 			
 		} catch(SQLException sqlException) {
 			sqlException.printStackTrace();

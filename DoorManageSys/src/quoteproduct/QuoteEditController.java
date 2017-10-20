@@ -78,17 +78,19 @@ public class QuoteEditController implements Initializable {
 		Object source = ae.getSource();
 		
 		if (source == cancelQuoteButton) {
-			MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
 			for(int i = 0; i < products.getItems().size(); i++) {
 				if(products.getItems().get(i).getId() == 0) {
 					products.getItems().remove(i);
 					i--;
 				}
 			}
+			MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
 			MasterController.getInstance().setEditObject(this.order);
 			MasterController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
 		} else if (source == saveQuoteButton) {
 			this.updateQuoteObject();
+			this.quote.saveProducts();
+			this.quote.save();
 			this.order.save();
 			
 			MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
@@ -174,18 +176,18 @@ public class QuoteEditController implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		if (quote.getId() > 0) {
+		if (order.getId() > 0) {
 			quoteNumber.setText(Integer.toString(order.getQuote().getId()));
 			quoteStatus.setText(order.getStatus());
 			purchaseOrderNumber.setText(order.getCustomerPurchaseOrderNumber());
 			customerName.setText(order.getCustomerName());
 			orderDate.setText(order.getDateOrdered().toString());
-			products.setItems(observableList);
-			//TODO: fix on empty product list (new quotes)
-			products.getSelectionModel().select(MasterController.getInstance().getProductToDisplay());
-			products.getSelectionModel().selectedItemProperty().addListener(selectionListener);
 			totalPrice.setText(Double.toString(quote.getTotalCost()));
 		}
+		products.setItems(observableList);
+		//TODO: fix on empty product list (new quotes)
+		products.getSelectionModel().select(MasterController.getInstance().getProductToDisplay());
+		products.getSelectionModel().selectedItemProperty().addListener(selectionListener);
 	}
 
 }

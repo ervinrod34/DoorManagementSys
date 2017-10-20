@@ -3,6 +3,7 @@ package quoteproduct;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.MasterController;
 import quoteproduct.*;
 
 public class Quote {
@@ -49,11 +50,17 @@ public class Quote {
 		this.totalCost = totalCost;
 	}
 	
+	public void saveProducts() {
+		for(Product product : this.products) {
+			product.save();
+		}
+	}
+	
 	public void save() {
 		if(this.id == 0) {
-			//TODO: Insert to DB
+			MasterController.getInstance().getQuoteGateway().insertNewQuoteRecord(this);
 		} else {
-			//TODO: Update DB
+			MasterController.getInstance().getQuoteGateway().updateQuoteRecord(this);
 		}
 	}
 	
