@@ -166,7 +166,7 @@ public class QuoteGateway {
 			
 			try {
 				preparedStatement = this.connection.prepareStatement("DELETE FROM Product "
-						+ "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
+						+ "WHERE id=? AND category='quote'", PreparedStatement.RETURN_GENERATED_KEYS);
 				preparedStatement.setInt(1, id);
 				
 				preparedStatement.execute();

@@ -171,6 +171,14 @@ public class ProductGateway {
 		}
 	}
 	
+	public void deleteProducts(List<Product> products) {
+		if(products.size() > 0) {
+			for(Product product : products) {
+				this.deleteProductRecord(product.getId());
+			}
+		}
+	}
+	
 	public void closePSandRS(PreparedStatement ps, ResultSet rs) throws SQLException {
 		if(rs != null) {
 			rs.close();

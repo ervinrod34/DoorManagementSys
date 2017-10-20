@@ -61,6 +61,7 @@ public class QuoteDetailController implements Initializable {
 			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
 			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == deleteButton) {
+			MasterController.getInstance().getProductGateway().deleteProducts(quote.getProducts());
 			MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(quote.getId());
 			
 			//Go back to this later
@@ -70,7 +71,7 @@ public class QuoteDetailController implements Initializable {
 				public void run() {
 					MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
 				}
-			}, 5000);
+			}, 2000);
 		}
 	}
 
