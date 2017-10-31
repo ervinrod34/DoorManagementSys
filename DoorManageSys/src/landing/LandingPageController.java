@@ -30,17 +30,11 @@ import order.Order;
 public class LandingPageController implements Initializable {
 	
 	@FXML private Label inventory;
-	
 	@FXML private Label orders;
-	
 	@FXML private Label quote;
-	
 	@FXML private Label reports;
-	
 	@FXML private Label users;
-	
 	@FXML private Label logout;
-
 	@FXML private Label userIdentifierLabel;
 	
 	/**
@@ -70,29 +64,20 @@ public class LandingPageController implements Initializable {
 		
 		if(source == logout) {
 			MasterController.getInstance().logoutPressed();
-			MasterController.getInstance().changeView(PageTypes.LOGIN_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.LOGIN_PAGE);
 			
 		} else if(source == inventory) {
 			this.applyEffectOnMenuLabel(inventory);
-			
-			List<Inventory> allInventory = MasterController.getInstance().getInventoryGateway().getInventory();
-			MasterController.getInstance().setInventoryListToDisplay(allInventory);
-			
 			this.changeViewOnLabelClick(inventory, PageTypes.INVENTORY_LIST_PAGE);
+			
 		} else if(source == orders) {
 			this.applyEffectOnMenuLabel(orders);
-			
-			List<Order> allOrders = MasterController.getInstance().getOrderGateway().getOrders();
-			MasterController.getInstance().setOrderListToDisplay(allOrders);
-			
 			this.changeViewOnLabelClick(orders, PageTypes.ORDER_LIST_PAGE);
+			
 		} else if(source == quote) {
 			this.applyEffectOnMenuLabel(quote);
-			
-			List<Order> unfinishedOrders = MasterController.getInstance().getOrderGateway().searchOrders("Unfinished");
-			MasterController.getInstance().setOrderListToDisplay(unfinishedOrders);
-
 			this.changeViewOnLabelClick(quote, PageTypes.QORDER_LIST_PAGE);
+			
 		} else if(source == reports) { 
 			this.applyEffectOnMenuLabel(reports);
 			this.changeViewOnLabelClick(reports, PageTypes.REPORTS_EXPORT_PAGE);
@@ -111,7 +96,7 @@ public class LandingPageController implements Initializable {
 			List<Inventory> searchList = MasterController.getInstance().getInventoryGateway().searchInventory(searchKey);
 			MasterController.getInstance().setInventoryListToDisplay(searchList);
 		
-			MasterController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
 		}
 	}
 
@@ -141,7 +126,7 @@ public class LandingPageController implements Initializable {
 		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				MasterController.getInstance().changeView(pageType);
+				MasterViewController.getInstance().changeView(pageType);
 			}
 		});
 	}

@@ -1,8 +1,6 @@
 package order;
 
-import java.math.RoundingMode;
 import java.sql.Date;
-import java.text.DecimalFormat;
 
 import application.MasterController;
 import blueprint.Blueprint;

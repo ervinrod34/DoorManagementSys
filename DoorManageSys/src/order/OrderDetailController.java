@@ -5,24 +5,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import application.MasterController;
-import application.PageTypes;
-import javafx.collections.ObservableList;
+import application.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import quoteproduct.Product;
 
 public class OrderDetailController implements Initializable {
 
@@ -51,7 +46,7 @@ public class OrderDetailController implements Initializable {
 		
 		if(source == editButton) {
 			MasterController.getInstance().setEditObject(this.order);
-			MasterController.getInstance().changeView(PageTypes.ORDER_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.ORDER_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
 			MasterController.getInstance().getProductGateway().deleteProducts(this.order.getQuote().getProducts());
@@ -70,7 +65,7 @@ public class OrderDetailController implements Initializable {
 				public void run() {
 					List<Order> allOrders = MasterController.getInstance().getOrderGateway().getOrders();
 					MasterController.getInstance().setOrderListToDisplay(allOrders);
-					MasterController.getInstance().changeView(PageTypes.ORDER_LIST_PAGE);
+					MasterViewController.getInstance().changeView(PageTypes.ORDER_LIST_PAGE);
 					timer.cancel();
 				}
 			}, 1000, 1000);

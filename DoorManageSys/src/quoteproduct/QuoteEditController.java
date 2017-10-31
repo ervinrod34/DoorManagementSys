@@ -4,8 +4,7 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
-import application.MasterController;
-import application.PageTypes;
+import application.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,29 +21,18 @@ import order.Order;
 public class QuoteEditController implements Initializable {
 	
 	@FXML private TextField quoteNumber;
-	
 	@FXML private TextField quoteStatus;
-	
 	@FXML private TextField purchaseOrderNumber;
-	
 	@FXML private TextField customerName;
-	
 	@FXML private TextField orderDate;
 	
 	@FXML private Button createNewProductButton;
-	
 	@FXML private Button addDoorButton;
-	
 	@FXML private Button addFrameButton;
-	
 	@FXML private Button addHingeButton;
-	
 	@FXML private Button addLockButton;
-	
 	@FXML private Button addExtrasButton;
-	
 	@FXML private Button saveQuoteButton;
-	
 	@FXML private Button cancelQuoteButton;
 	
 	@FXML private Label totalPrice;
@@ -54,18 +42,15 @@ public class QuoteEditController implements Initializable {
 	private ObservableList<Product> observableList;
 	
 	private Quote quote;
-	
 	private Order order;
 	
 	private ChangeListener<Product> selectionListener = new ChangeListener<Product>() {
-
 		@Override
 		public void changed(ObservableValue<? extends Product> arg0, Product arg1, Product arg2) {
 			MasterController.getInstance().setProductToDisplay(products.getSelectionModel().getSelectedItem());
-			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		}
-		
 	};
 
 	public QuoteEditController(Order order) {
@@ -84,49 +69,49 @@ public class QuoteEditController implements Initializable {
 					i--;
 				}
 			}
-			MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
 			MasterController.getInstance().setEditObject(this.order);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
 		} else if (source == saveQuoteButton) {
 			this.updateQuoteObject();
 			this.quote.saveProducts();
 			this.quote.save();
 			this.order.save();
 			
-			MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
 			MasterController.getInstance().setEditObject(this.order);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
 		} else if (source == createNewProductButton) {
 			Product newProduct = new Product();
 			products.getItems().add(newProduct);
 			MasterController.getInstance().setProductToDisplay(newProduct);
-			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addDoorButton) {
 			MasterController.getInstance().setInventoryListToDisplay(
 					MasterController.getInstance().getInventoryGateway().searchInventory("category", "Door"));
-			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addFrameButton) {
 			MasterController.getInstance().setInventoryListToDisplay(
 					MasterController.getInstance().getInventoryGateway().searchInventory("category", "Frame"));
-			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addHingeButton) {
 			MasterController.getInstance().setInventoryListToDisplay(
 					MasterController.getInstance().getInventoryGateway().searchInventory("category", "Hinge"));
-			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addLockButton) {
 			MasterController.getInstance().setInventoryListToDisplay(
 					MasterController.getInstance().getInventoryGateway().searchInventory("category", "Lock"));
-			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == addExtrasButton) {
 			MasterController.getInstance().setInventoryListToDisplay(
 					MasterController.getInstance().getInventoryGateway().searchInventoryForExtras());
-			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		}
 	}
 	

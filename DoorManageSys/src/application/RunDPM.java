@@ -67,9 +67,6 @@ public class RunDPM extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		//Test
-		
 	}
 	
 	/**

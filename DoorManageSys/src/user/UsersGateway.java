@@ -7,50 +7,19 @@ package user;
  */
 
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+import application.*;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+public class UsersGateway extends MasterGateway{
 
-public class UsersGateway {
-
-	/**
-	 * A Connection object
-	 */
-	private Connection connect;
-	
 	/**
 	 * Initialize a UsersGateway object. Reads a file containing
 	 * the login properties or information to login into the database.
 	 */
 	public UsersGateway() {
-		this.connect = null;
-		
-		Properties properties = new Properties();
-		FileInputStream fileStream = null;
-		
-		try {
-			fileStream = new FileInputStream("database.properties");
-			properties.load(fileStream);
-			fileStream.close();
-			
-			MysqlDataSource info = new MysqlDataSource();
-			info.setURL(properties.getProperty("MYSQL_DPM_DB_URL"));
-			info.setUser(properties.getProperty("MYSQL_DPM_DB_UN"));
-			info.setPassword(properties.getProperty("MYSQL_DPM_DB_PW"));
-			
-			this.connect = info.getConnection();
-			
-		} catch(IOException | SQLException e) {
-			e.printStackTrace();
-		}
+		super();
 	}
 	
 	/**
@@ -59,19 +28,18 @@ public class UsersGateway {
 	 * @return A List containing the users
 	 */
 	public List<DPMUser> getUsers() {
+		resetPSandRS();
 		List<DPMUser> users = new ArrayList<DPMUser>();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
 		try {
-			ps = this.connect.prepareStatement("SELECT * FROM User"); //sql query
-			rs = ps.executeQuery();
+			preparedStatement = this.connection.prepareStatement("SELECT * FROM User"); //sql query
+			resultSet = preparedStatement.executeQuery();
 			
 			//Grabs the record and creates a temporary user to be added to the List
-			while(rs.next()) {
-				DPMUser user = new DPMUser(rs.getInt("id"), rs.getString("userType"),
-										   rs.getString("login"), rs.getString("password"),
-										   rs.getString("name"), rs.getString("email"));
+			while(resultSet.next()) {
+				DPMUser user = new DPMUser(resultSet.getInt("id"), resultSet.getString("userType"),
+										   resultSet.getString("login"), resultSet.getString("password"),
+										   resultSet.getString("name"), resultSet.getString("email"));
 				users.add(user);
 			}
 			
@@ -80,27 +48,12 @@ public class UsersGateway {
 			se.printStackTrace();
 		} finally {
 			try {
-				this.closePSandRS(ps, rs);
+				this.closePSandRS();
 			} catch(SQLException se) {
 				se.printStackTrace();
 			}
 		}
 		
 		return users;
-	}
-	
-	/**
-	 * Closes the PreparedStatement and ResultSet.
-	 * @param ps The prepared statement
-	 * @param rs The result set
-	 * @throws SQLException
-	 */
-	public void closePSandRS(PreparedStatement ps, ResultSet rs) throws SQLException {
-		if(rs != null) {
-			rs.close();
-		}
-		if(ps != null) {
-			ps.close();
-		}
 	}
 }

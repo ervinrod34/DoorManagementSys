@@ -12,8 +12,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import application.MasterController;
-import application.PageTypes;
+import application.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -82,7 +81,7 @@ public class LoginController implements Initializable {
 			}
 			if (user.getPassword().equals(password.getText().toString())) {
 				MasterController.getInstance().setUser(this.user);
-				MasterController.getInstance().changeView(PageTypes.LANDING_PAGE);
+				MasterViewController.getInstance().changeView(PageTypes.LANDING_PAGE);
 			}
 		}
 		this.notice.setText("Incorrect Username or Password");

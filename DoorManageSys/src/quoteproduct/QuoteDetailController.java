@@ -6,8 +6,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import application.MasterController;
-import application.PageTypes;
+import application.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import order.Order;
+import inventory.Inventory;
 
 public class QuoteDetailController implements Initializable {
 	
@@ -60,10 +60,12 @@ public class QuoteDetailController implements Initializable {
 			} catch(IndexOutOfBoundsException e) {
 				MasterController.getInstance().setProductToDisplay(new Product());
 			}
-			MasterController.getInstance().setInventoryListToDisplay(
-				MasterController.getInstance().getInventoryGateway().getInventory());
-			MasterController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
-			MasterController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
+			
+			List<Inventory> inventoryToDisplay = MasterController.getInstance().getInventoryGateway().getInventory();
+			MasterController.getInstance().setInventoryListToDisplay(inventoryToDisplay);
+			
+			MasterViewController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == deleteButton) {
 			MasterController.getInstance().getProductGateway().deleteProducts(quote.getProducts());
 			MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(quote.getId());
@@ -73,7 +75,7 @@ public class QuoteDetailController implements Initializable {
 					
 			timer.schedule(new TimerTask() {
 				public void run() {
-					MasterController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
+					MasterViewController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
 				}
 			}, 2000);
 		}

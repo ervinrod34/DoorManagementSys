@@ -1,10 +1,10 @@
 package application;
 
 /**
- * The MasterController class defines a controller that acts as a
+ * The MasterController class defines a class that acts as a
  * global access point for all of the classes in this Application.
- * It is single controller that handle the changing of screens, views,
- * or pages.
+ * It is mainly responsible for storing states, values, and instances
+ * for the application.
  * 
  * @author Team No Name Yet
  * @version 1.0
@@ -34,50 +34,16 @@ public class MasterController {
 	 */
 	private static MasterController instance = null;
 	
-	/**
-	 * The main pane of this application
-	 */
-	private BorderPane mainPane;
-	
-	/**
-	 * A reference to the Stage of this application
-	 */
-	private Stage stage;
-	
-	/**
-	 * The current logged in user of this application
-	 */
+	protected BorderPane mainPane;
+	protected Stage stage;
+	protected PageTypes desiredPage;
 	private DPMUser user;
 	
-	/**
-	 * The Gateway to the User table in the DB
-	 */
-	private UsersGateway usersGateway;
-	
-	/**
-	 * The Gateways table in the Database
-	 */
-	private InventoryGateway inventoryGateway;
-	
-	/**
-	 * The Gateway to the Product table in the Database
-	 */
-	private ProductGateway productGateway;
-	
-	/**
-	 * The Gateway to the Order table in the Database
-	 */
-	private OrderGateway orderGateway;
-	
-	/**
-	 * The Gateway to the Quote table in the Database
-	 */
-	private QuoteGateway quoteGateway;
-	
-	/**
-	 * The page that the user is trying to view
-	 */
-	private PageTypes desiredPage;
+	protected UsersGateway usersGateway;
+	protected InventoryGateway inventoryGateway;
+	protected ProductGateway productGateway;
+	protected OrderGateway orderGateway;
+	protected QuoteGateway quoteGateway;
 	
 	/**
 	 * Boolean whether user logged out
@@ -89,18 +55,16 @@ public class MasterController {
 	 * Mainly used when passing an object from a DetailController into a 
 	 * EditController
 	 */
-	private Object editObj;
+	protected Object editObj;
+	protected Product productToDisplay;
 	
-	private List<Inventory> inventoryToDisplay;
-	
-	private List<Order> orderToDisplay;
-	
-	private Product productToDisplay;
+	protected List<Inventory> inventoryToDisplay;
+	protected List<Order> orderToDisplay;
 	
 	/**
 	 * Initialize a MasterController object.
 	 */
-	private MasterController() {
+	public MasterController() {
 		try {
 			this.usersGateway = new UsersGateway();
 			this.inventoryGateway = new InventoryGateway();
@@ -113,168 +77,6 @@ public class MasterController {
 		}
 		
 		loggedOut = false;
-	}
-	
-	/**
-	 * This is the main function that is called when the user
-	 * wishes to change the current page.
-	 * @param pageType The type of page
-	 */
-	public boolean changeView(PageTypes pageType) {
-		desiredPage = pageType;
-		Parent view = null;
-		
-		view = this.loadView();
-		
-		//Switching between Login and Landing
-		if(desiredPage == PageTypes.LANDING_PAGE || 
-				desiredPage == PageTypes.LOGIN_PAGE) {
-			this.setMainPane((BorderPane) view);
-			Scene scene = new Scene(view);
-			this.stage.setScene(scene);
-			this.stage.show();
-		
-		//for List Page
-		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || 
-				desiredPage == PageTypes.INVENTORY_LIST_PAGE || 
-				desiredPage == PageTypes.QORDER_LIST_PAGE || 
-				desiredPage == PageTypes.ORDER_LIST_PAGE ||
-				desiredPage == PageTypes.QUOTEITEMS_LIST_PAGE) {
-			mainPane.setCenter(view);
-			mainPane.setRight(this.getEmptyRightPane());
-		
-		//for Detail Page
-		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE || 
-				desiredPage == PageTypes.QUOTE_DETAIL_PAGE ||
-				desiredPage == PageTypes.ORDER_DETAIL_PAGE) {
-			mainPane.setRight(view);
-			
-		//for Edit Page
-		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE || 
-				desiredPage == PageTypes.QUOTE_EDIT_PAGE ||
-				desiredPage == PageTypes.ORDER_EDIT_PAGE) {
-			mainPane.setRight(view);
-			
-		//for Pages with right pane, no center
-		} else if(desiredPage == PageTypes.REPORTS_EXPORT_PAGE) {
-			mainPane.setCenter(this.getEmptyCenterPane());
-			mainPane.setRight(view);
-		}
-		return true;
-	}
-	
-	/**
-	 * Loads the view by loading the requested page and assigning
-	 * a Controller for it.
-	 * @return A Parent object specifying a base class for all scene nodes
-	 */
-	public Parent loadView() {
-		Parent view = null;
-		FXMLLoader loader = null;
-		
-		
-		switch(desiredPage) {
-			case LANDING_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/landing/Landing_Page.fxml"));
-				loader.setController(new LandingPageController());
-				break;
-				
-			case LOGIN_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/login/Login_Page.fxml"));			
-				loader.setController(new LoginController(new DPMUser()));
-				break;
-				
-			case VIEW_USERS_PAGE:
-				List<DPMUser> users = this.usersGateway.getUsers();
-				loader = new FXMLLoader(getClass().getResource("/user/ViewUsers_Page.fxml"));
-				loader.setController(new ViewUsersController(users));
-				break;
-				
-			case INVENTORY_LIST_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryList_Page.fxml"));
-				loader.setController(new InventoryListController(this.inventoryToDisplay));
-				break;
-				
-			case INVENTORY_DETAIL_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryDetail_Page.fxml"));
-				loader.setController(new InventoryDetailController((Inventory)this.editObj));
-				break;
-				
-			case INVENTORY_EDIT_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryEdit_Page.fxml"));
-				Inventory editInventory = (Inventory)this.editObj;
-				
-				if(editInventory.getId() > 0) {
-					loader.setController(new InventoryEditController(editInventory));
-				} else if(editInventory.getId() == 0) {
-					loader.setController(new InventoryEditController(new Inventory()));
-				}
-				break;
-				
-			case ORDER_LIST_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/order/OrderList_Page.fxml"));
-				loader.setController(new OrderListController(this.orderToDisplay));
-				break;
-				
-			case ORDER_DETAIL_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/order/OrderDetail_Page.fxml"));
-				loader.setController(new OrderDetailController((Order)this.editObj));
-				break;
-				
-			case ORDER_EDIT_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/order/OrderEdit_Page.fxml"));
-				Order editOrder = (Order)this.editObj;
-				
-				if(editOrder.getId() > 0) {
-					loader.setController(new OrderEditController(editOrder));
-				} else if(editOrder.getId() == 0){
-					loader.setController(new OrderEditController(new Order()));
-				}
-				break;
-				
-			case QUOTE_DETAIL_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteDetail_Page.fxml"));
-				loader.setController(new QuoteDetailController((Order)this.editObj));
-				break;
-				
-			case QUOTE_EDIT_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteEdit_Page.fxml"));
-				editOrder = (Order)this.editObj;
-				
-				if (editOrder.getId() > 0) {
-					loader.setController(new QuoteEditController(editOrder));
-				} else if (editOrder.getId() == 0) {
-					loader.setController(new QuoteEditController(new Order()));
-				}
-				break;
-				
-			case QORDER_LIST_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
-				loader.setController(new QOrderListController(this.orderToDisplay));
-				break;
-				
-			case QUOTEITEMS_LIST_PAGE:
-				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteItemsList_Page.fxml"));
-				loader.setController(new QuoteItemsListController(this.productToDisplay, this.inventoryToDisplay));
-				break;
-				
-			case REPORTS_EXPORT_PAGE:	
-				loader = new FXMLLoader(getClass().getResource("/report/ReportsExport_Page.fxml"));
-				loader.setController(new ReportsExportController());
-				break;
-				
-			default:
-				break;
-			
-		}
-		
-		try {
-			view = loader.load();
-		} catch(IOException io) {
-			io.printStackTrace();
-		}
-		
-		return view;
 	}
 	
 	public boolean updateRightMenu(PageTypes pageType) {
@@ -301,6 +103,10 @@ public class MasterController {
 	
 	public void setMainPane(BorderPane mainPane) {
 		this.mainPane = mainPane;
+	}
+	
+	public Stage getStage() {
+		return this.stage;
 	}
 	
 	public void setStage(Stage stage) {
@@ -363,19 +169,5 @@ public class MasterController {
 	
 	public Product getProductToDisplay() {
 		return this.productToDisplay;
-	}
-	
-	public AnchorPane getEmptyRightPane() {
-		AnchorPane emptyRightAnchor = new AnchorPane();
-		emptyRightAnchor.setPrefSize(466.0, 580.0);
-		
-		return emptyRightAnchor;
-	}
-	
-	public AnchorPane getEmptyCenterPane() {
-		AnchorPane emptyCenterAnchor = new AnchorPane();
-		emptyCenterAnchor.setPrefSize(466.0, 580.0);
-		
-		return emptyCenterAnchor;
 	}
 }

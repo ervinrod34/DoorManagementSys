@@ -18,7 +18,7 @@ public class DPMUser {
 	/**
 	 * The user type
 	 */
-	private String userType;
+	private UserTypes userType;
 	
 	/**
 	 * The login of this user
@@ -39,13 +39,15 @@ public class DPMUser {
 	 * The email of this user
 	 */
 	private String email;
+	
+	private UserHelper helper = new UserHelper();
 
 	/**
 	 * Initialize a DPMUser object using default values.
 	 */
 	public DPMUser() {
 		this.id = 0;
-		this.userType = "";
+		this.userType = null;
 		this.login = "";
 		this.password = "";
 		this.name = "";
@@ -55,7 +57,7 @@ public class DPMUser {
 	/**
 	 * Initialize a DPMUser object using predefined values.
 	 * @param id An int representing an id
-	 * @param type A String representing a user type user type
+	 * @param type A UserTypes representing a user type user type
 	 * @param login A String representing a login information
 	 * @param pw A String representing a password
 	 * @param name A String representing a name
@@ -63,7 +65,7 @@ public class DPMUser {
 	 */
 	public DPMUser(int id, String type, String login, String pw, String name, String email) {
 		this.id = id;
-		this.userType = type;
+		this.userType = helper.parseStringToUserType(type);
 		this.login = login;
 		this.password = pw;
 		this.name = name;
@@ -72,17 +74,17 @@ public class DPMUser {
 	
 	/**
 	 * Returns the usertype.
-	 * @return A String specifying the userType
+	 * @return A UserTypes specifying the userType
 	 */
-	public String getUserType() {
+	public UserTypes getUserType() {
 		return this.userType;
 	}
 
 	/**
 	 * Changes the userType.
-	 * @param userType A String representing the new userType
+	 * @param userType A UserTypes representing the new userType
 	 */
-	public void setUserType(String userType) {
+	public void setUserType(UserTypes userType) {
 		this.userType = userType;
 	}
 
@@ -151,6 +153,7 @@ public class DPMUser {
 	}
 	
 	/**
+	 * TODO: move this to a class that will be extending DPMUser
 	 * Saves this DPMUser object into the MYSQL database.
 	 * Checks if the DPMUser contains valid values.
 	 * If the DPMUser is new, it inserts it into the database

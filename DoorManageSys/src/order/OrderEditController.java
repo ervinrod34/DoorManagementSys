@@ -10,8 +10,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import application.MasterController;
-import application.PageTypes;
+import application.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -60,16 +59,16 @@ public class OrderEditController implements Initializable {
 		
 		if(source == cancelButton) {
 			MasterController.getInstance().setEditObject(this.order);
-			MasterController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
 		} else if(source == saveButton) {
 			this.updateOrderObject();
 			this.order.save();
 			
 			//After saving, change the screen into detail of the updated inventory
-			MasterController.getInstance().changeView(PageTypes.ORDER_LIST_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.ORDER_LIST_PAGE);
 			
 			MasterController.getInstance().setEditObject(this.order);
-			MasterController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
 		}
 	}
 	

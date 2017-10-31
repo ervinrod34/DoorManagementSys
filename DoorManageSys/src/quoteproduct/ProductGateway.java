@@ -1,63 +1,37 @@
 package quoteproduct;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import application.MasterController;
-import inventory.Inventory;
-import quoteproduct.*;
 
-public class ProductGateway {
-	
-	private Connection connection;
-	
+import inventory.Inventory;
+import application.*;
+
+public class ProductGateway extends MasterGateway{
+
 	public ProductGateway(){
-		this.connection = null;
-		Properties prop = new Properties();
-		FileInputStream fileStream = null;
-		
-		try{
-			fileStream = new FileInputStream("database.properties");
-			prop.load(fileStream);
-			fileStream.close();
-			
-			MysqlDataSource info = new MysqlDataSource();
-			info.setURL(prop.getProperty("MYSQL_DPM_DB_URL"));
-			info.setUser(prop.getProperty("MYSQL_DPM_DB_UN"));
-			info.setPassword(prop.getProperty("MYSQL_DPM_DB_PW"));
-			
-			this.connection = info.getConnection();
-			
-		} catch(IOException | SQLException e) {
-			e.printStackTrace();
-		}
-		
-	}//End Constructor
+		super();
+	}
 	
 	public List<Product> importListOfProductsFromDB() {
+		resetPSandRS();
 		List<Product> products = new ArrayList<Product>();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
 		try {
-			ps = this.connection.prepareStatement("SELECT * FROM Product "
+			preparedStatement = this.connection.prepareStatement("SELECT * FROM Product "
 					+ "WHERE category=?", PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setString(1, "product");
+			preparedStatement.setString(1, "product");
 			
-			rs = ps.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			
-			while(rs.next()) {
-				Product product = new Product(rs.getInt("id"),
-						this.parseCSVToInventory(rs.getString("idList")),
-						rs.getDouble("totalCost"));
+			while(resultSet.next()) {
+				Product product = new Product(resultSet.getInt("id"),
+						this.parseCSVToInventory(resultSet.getString("idList")),
+						resultSet.getDouble("totalCost"));
 				
 				products.add(product);
 			}
@@ -67,27 +41,26 @@ public class ProductGateway {
 		}
 		
 		return products;
-	}//end importList
+	}
 	
 	public Product getProductByID(int productID) {
+		resetPSandRS();
 		Product product = new Product();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
 		try {
-			ps = this.connection.prepareStatement("SELECT * FROM Product "
+			preparedStatement = this.connection.prepareStatement("SELECT * FROM Product "
 					+ "WHERE id LIKE ? AND category='product'", PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setInt(1, productID);
+			preparedStatement.setInt(1, productID);
 			
-			rs = ps.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			
-			if (!rs.isBeforeFirst())
+			if (!resultSet.isBeforeFirst())
 				System.out.println("NO DATA");
 			else {
-				rs.next();
-				product = new Product(rs.getInt("id"), 
-						this.parseCSVToInventory(rs.getString("idList")),
-						rs.getDouble("totalCost"));
+				resultSet.next();
+				product = new Product(resultSet.getInt("id"), 
+						this.parseCSVToInventory(resultSet.getString("idList")),
+						resultSet.getDouble("totalCost"));
 			}
 		} catch (SQLException sqlException){
 			sqlException.printStackTrace();
@@ -110,20 +83,20 @@ public class ProductGateway {
 	}
 	
 	public void insertNewProductRecord(Product product) {
-		PreparedStatement ps = null;
+		resetPSandRS();
 		
 		try {
-			ps = this.connection.prepareStatement("INSERT INTO Product (id, idList, totalCost, category)"
+			preparedStatement = this.connection.prepareStatement("INSERT INTO Product (id, idList, totalCost, category)"
 					+ "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setInt(1, product.getId());
-			ps.setString(2, this.parseProductIDsToCSV(product.getInventories()));
-			ps.setDouble(3, product.getTotalCost());
-			ps.setString(4, "product");
-			ps.execute();
+			preparedStatement.setInt(1, product.getId());
+			preparedStatement.setString(2, this.parseProductIDsToCSV(product.getInventories()));
+			preparedStatement.setDouble(3, product.getTotalCost());
+			preparedStatement.setString(4, "product");
+			preparedStatement.execute();
 			
-			ResultSet rs = ps.getGeneratedKeys();
-			rs.next();
-			product.setId(rs.getInt(1));
+			ResultSet resultSet = preparedStatement.getGeneratedKeys();
+			resultSet.next();
+			product.setId(resultSet.getInt(1));
 		} catch(SQLException sqlException) {
 			sqlException.printStackTrace();
 		}
@@ -142,19 +115,19 @@ public class ProductGateway {
 	}
 	
 	public void updateProductRecord(Product product) {
-		PreparedStatement ps = null;
+		resetPSandRS();
 		
 		try {
-			ps = this.connection.prepareStatement("UPDATE Product SET id=?, idList=?, "
+			preparedStatement = this.connection.prepareStatement("UPDATE Product SET id=?, idList=?, "
 					+ "totalCost=?, category=? WHERE id=?", 
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			
-			ps.setInt(1, product.getId());
-			ps.setString(2, this.parseProductIDsToCSV(product.getInventories()));
-			ps.setDouble(3, product.getTotalCost());
-			ps.setString(4, "product");
-			ps.setInt(5, product.getId());
-			ps.execute();
+			preparedStatement.setInt(1, product.getId());
+			preparedStatement.setString(2, this.parseProductIDsToCSV(product.getInventories()));
+			preparedStatement.setDouble(3, product.getTotalCost());
+			preparedStatement.setString(4, "product");
+			preparedStatement.setInt(5, product.getId());
+			preparedStatement.execute();
 			
 		} catch(SQLException sqlException) {
 			sqlException.printStackTrace();
@@ -162,7 +135,7 @@ public class ProductGateway {
 	}
 	
 	public void deleteProductRecord(int id) {
-		PreparedStatement preparedStatement = null;
+		resetPSandRS();
 		
 		try {
 			preparedStatement = this.connection.prepareStatement("DELETE FROM Product "
@@ -182,14 +155,4 @@ public class ProductGateway {
 			}
 		}
 	}
-	
-	public void closePSandRS(PreparedStatement ps, ResultSet rs) throws SQLException {
-		if(rs != null) {
-			rs.close();
-		}
-		if(ps != null) {
-			ps.close();
-		}
-	}
-
 }

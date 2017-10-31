@@ -1,14 +1,10 @@
 package order;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.sun.media.jfxmedia.logging.Logger;
-
-import application.MasterController;
-import application.PageTypes;
+import application.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,7 +32,7 @@ public class OrderListController implements Initializable{
 		Object source = ae.getSource();
 		if(source == addButton){
 			MasterController.getInstance().setEditObject(new Order());
-			MasterController.getInstance().changeView(PageTypes.ORDER_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.ORDER_EDIT_PAGE);
 		}
 	}
 	
@@ -44,7 +40,7 @@ public class OrderListController implements Initializable{
 		if((mouseEvent.getButton() == MouseButton.PRIMARY) && (mouseEvent.getClickCount() == 2)) {
 			Order selected = orderListView.getSelectionModel().getSelectedItem();
 			MasterController.getInstance().setEditObject(selected);
-			MasterController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
 		}
 	}
 	

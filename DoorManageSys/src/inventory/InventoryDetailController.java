@@ -7,8 +7,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import application.MasterController;
-import application.PageTypes;
+import application.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,7 +50,7 @@ public class InventoryDetailController implements Initializable {
 		
 		if(source == editButton) {
 			MasterController.getInstance().setEditObject(this.inventory);
-			MasterController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
+			MasterViewController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
 			MasterController.getInstance().getInventoryGateway().deleteInventory(this.inventory.getId());
@@ -67,7 +66,7 @@ public class InventoryDetailController implements Initializable {
 				public void run() {
 					List<Inventory> allInventory = MasterController.getInstance().getInventoryGateway().getInventory();
 					MasterController.getInstance().setInventoryListToDisplay(allInventory);
-					MasterController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
+					MasterViewController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
 				}
 			}, 2000);
 	}
