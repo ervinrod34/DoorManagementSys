@@ -11,6 +11,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import customer.Customer;
 import inventory.Inventory;
@@ -32,19 +33,37 @@ public class QuoteReport {
 	private String fileName, customerName, poNumber;
 	private Date date;
 	private PDPageContentStream stream;
-	private PDPage currentPage;
+	private PDPage currentPage, tempPage;
 	private PDPageTree pages;
-	private int y, quantity, orderNumber;
+	private int y, quantity, orderNumber, pageNumber;
 	private double cost;
 	private final int ORDER_X = 380, ORDER_Y = 680;
-	private final int DATE_X = 375, DATE_Y = 644;
+	private final int DATE_X = 377, DATE_Y = 644;
 	private final int START_Y = 585;
 	private final int QTY_X = 90, PRICE_X = 490, DESC_X = 135;
-	private final int FINAL_Y = 67, PAGE_BOTTOM = 110;
+	private final int TOTAL_Y = 67, PAGE_BOTTOM = 110;
+	private final int FIRSTPAGE_X = 60, FIRSTPAGE_Y = 45, FIRSTPAGE_WIDTH = 500, FIRSTPAGE_HEIGHT = 710;
+	
+	
+	private PDImageXObject firstPage, nextPage;
 
 	public QuoteReport (Order order) {
 		
+		doc = new PDDocument ();
 		date = new Date ();
+		tempPage = new PDPage ();
+		
+		try {
+			firstPage = PDImageXObject.createFromFile("QuoteFirstPage.PNG", doc);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			nextPage = PDImageXObject.createFromFile("QuoteNextPage.PNG", doc);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		
 		quote = order.getQuote();
 		
@@ -54,23 +73,18 @@ public class QuoteReport {
 
 		stream = null;
 		
-		try {
-			doc = PDDocument.load(new File ("BlankQuote.pdf"));
-		} catch (InvalidPasswordException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
 		pages = doc.getPages();
-		currentPage = pages.get(0);
+		
+		currentPage = tempPage;
+		
+		pages.add(tempPage);
+		
+		tempPage = null;
 		
 		assignFileName ("");
 		
 		try {
 			stream = new PDPageContentStream (doc, currentPage, PDPageContentStream.AppendMode.APPEND, false);
-			System.out.println("stream set to first page");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,33 +95,89 @@ public class QuoteReport {
 			e.printStackTrace();
 		}
 		
+		try {
+			setUpFirstPage ();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	public void setUpFirstPage () throws IOException {
+		
+		pageNumber = 1;
+		
+		System.out.println("Setting up document...");
+		
+		try {
+			stream.drawImage(firstPage, FIRSTPAGE_X, FIRSTPAGE_Y, FIRSTPAGE_WIDTH, FIRSTPAGE_HEIGHT);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		setStreamFont (12);
+		stream.beginText();
+		stream.newLineAtOffset(490, 717);
+		stream.showText("Page " + pageNumber);
+		stream.endText();
+		
+		for (Product product : quote.getProducts()) {
+			cost += product.calculateTotalCost();
+			quantity++;
+		}
+		
+		setStreamFont (10);
+		
+		stream.beginText();
+		stream.newLineAtOffset(QTY_X, TOTAL_Y);
+		stream.showText(quantity + "");
+		stream.endText();
+		
+		stream.beginText();
+		stream.newLineAtOffset(PRICE_X, TOTAL_Y);
+		stream.showText(" " + cost);
+		stream.endText();
+
+		stream.beginText();
+		stream.newLineAtOffset(DATE_X, DATE_Y);
+		stream.showText(date.toString());
+		stream.endText();
+		
+		setStreamFont (14);
+		
+		stream.beginText();
+		stream.newLineAtOffset(ORDER_X, ORDER_Y);
+		stream.showText(orderNumber + "");
+		stream.endText();	
+		
+		setStreamFont (12);
+		
+		stream.beginText();
+		stream.newLineAtOffset(DESC_X + 10, ORDER_Y);
+		stream.showText(customerName);
+		stream.endText();
+		
+		stream.beginText();
+		stream.newLineAtOffset(DESC_X + 50, DATE_Y);
+		stream.showText(poNumber);
+		stream.endText();
+		
+		
 	}
 	
 	public void populateReport () throws IOException {
+		
+		System.out.println("Populating report...");
 		
 		StringBuffer price = null;
 		
 		quantity = 0;
 		cost = 0;
 		
-		stream.beginText();
-		stream.newLineAtOffset(ORDER_X, ORDER_Y);
-		stream.showText(orderNumber + "");
-		stream.endText();
-		
-		System.out.println("should have printed orderNumber.");
-		
-		stream.setFont(PDType1Font.HELVETICA, 10);
-		stream.beginText();
-		stream.newLineAtOffset(DATE_X, DATE_Y);
-		stream.showText(date.toString());
-		stream.endText();
-		
-		System.out.println("Should have printed Date.");
-		
 		y = START_Y;
 		
-		stream.setFont(PDType1Font.HELVETICA, 10);
+		setStreamFont (10);
 		
 		for (Product product : quote.getProducts()) {
 			
@@ -129,14 +199,14 @@ public class QuoteReport {
 			stream.showText(price.toString());
 			stream.endText();
 			
-			cost += product.calculateTotalCost();
-			
 			y -= 12;
 			
 			if (y < PAGE_BOTTOM) {
 				setCurrentPage (getNewPage());
 				setStreamPage (currentPage);
-				y = START_Y;
+				setUpNextPage ();
+				setStreamFont (10);
+				y = START_Y -10;
 			}
 			
 			for (Inventory inventory : product.getInventories()) {
@@ -156,24 +226,20 @@ public class QuoteReport {
 				
 				y -= 12;
 				
+				if (y < PAGE_BOTTOM) {
+					setCurrentPage (getNewPage());
+					setStreamPage (currentPage);
+					setUpNextPage ();
+					setStreamFont (10);
+					y = START_Y -10;
+				}
+				
 			}
 			
 			y -= 12;
 		}
-		
-		stream.beginText();
-		stream.newLineAtOffset(QTY_X, FINAL_Y);
-		stream.showText(quantity + "");
-		stream.endText();
-		
-		stream.beginText();
-		stream.newLineAtOffset(PRICE_X, FINAL_Y);
-		stream.showText(" " + cost);
-		stream.endText();
-		
-		
-		stream.close();
-		
+
+		stream.close();		
 	}
 	
 	public void save () throws IOException {
@@ -219,22 +285,37 @@ public class QuoteReport {
 		currentPage = page;
 	}
 	
-	public PDPage getNewPage () {
-		PDDocument tempDoc = null;
-		PDPage tempPage = null;
+	public void setUpNextPage () throws IOException {
 		
 		try {
-			tempDoc = PDDocument.load(new File ("QuoteNextPage.pdf"));
-		} catch (InvalidPasswordException e) {
-			e.printStackTrace();
+			stream.drawImage(nextPage, FIRSTPAGE_X, FIRSTPAGE_Y, FIRSTPAGE_WIDTH, FIRSTPAGE_HEIGHT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		tempPage = tempDoc.getPage(0);
-		doc.getPages().add(tempPage);
+		pageNumber ++;
+		
+		setStreamFont (12);
+		stream.beginText();
+		stream.newLineAtOffset(490, 717);
+		stream.showText("Page " + pageNumber);
+		stream.endText();
+		
+		
+		
+	}
+	
+	public PDPage getNewPage () {
+		
+		tempPage = new PDPage ();
+		pages.add(tempPage);
+		
 		
 		return tempPage;
+	}
+	
+	public void setStreamFont (int size) throws IOException {
+		stream.setFont(PDType1Font.HELVETICA, size);
 	}
 	
 	
