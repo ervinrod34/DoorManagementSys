@@ -78,7 +78,7 @@ public class Quote {
 	public String toString() {
 		String returnValue = "";
 		
-		returnValue += this.id + " Total Cost: " +  this.totalCost;
+		returnValue += this.id + " Total Cost: " +  calculateTotalCost();
 		
 		return returnValue;
 	}

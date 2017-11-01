@@ -8,11 +8,13 @@ import java.util.Date;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import customer.Customer;
 import inventory.Inventory;
+import order.Order;
 import quoteproduct.Product;
 import quoteproduct.Quote;
 
@@ -27,24 +29,29 @@ public class QuoteReport {
 	
 	private Quote quote;
 	private PDDocument doc;
-	private String fileName;
+	private String fileName, customerName, poNumber;
 	private Date date;
 	private PDPageContentStream stream;
-	private int x, y, quantity;
+	private PDPage currentPage;
+	private PDPageTree pages;
+	private int y, quantity, orderNumber;
 	private double cost;
-	private final int ID_X = 380, ID_Y = 680;
+	private final int ORDER_X = 380, ORDER_Y = 680;
 	private final int DATE_X = 375, DATE_Y = 644;
 	private final int START_Y = 585;
 	private final int QTY_X = 90, PRICE_X = 490, DESC_X = 135;
-	private final int FINAL_Y = 67;
-	
-	//Quote should have customer, this is temp
-	private Customer customer;
+	private final int FINAL_Y = 67, PAGE_BOTTOM = 110;
 
-	public QuoteReport (Quote quote) {
+	public QuoteReport (Order order) {
 		
-		this.quote = quote;
 		date = new Date ();
+		
+		quote = order.getQuote();
+		
+		orderNumber = order.getId();
+		poNumber = order.getCustomerPurchaseOrderNumber();
+		customerName = order.getCustomerName();
+
 		stream = null;
 		
 		try {
@@ -55,10 +62,15 @@ public class QuoteReport {
 			e.printStackTrace();
 		}
 		
+		
+		pages = doc.getPages();
+		currentPage = pages.get(0);
+		
 		assignFileName ("");
 		
 		try {
-			stream = new PDPageContentStream (doc, doc.getPage(0), PDPageContentStream.AppendMode.APPEND, false);
+			stream = new PDPageContentStream (doc, currentPage, PDPageContentStream.AppendMode.APPEND, false);
+			System.out.println("stream set to first page");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -79,15 +91,19 @@ public class QuoteReport {
 		cost = 0;
 		
 		stream.beginText();
-		stream.newLineAtOffset(ID_X, ID_Y);
-		stream.showText(quote.getId() + "");
+		stream.newLineAtOffset(ORDER_X, ORDER_Y);
+		stream.showText(orderNumber + "");
 		stream.endText();
+		
+		System.out.println("should have printed orderNumber.");
 		
 		stream.setFont(PDType1Font.HELVETICA, 10);
 		stream.beginText();
 		stream.newLineAtOffset(DATE_X, DATE_Y);
 		stream.showText(date.toString());
 		stream.endText();
+		
+		System.out.println("Should have printed Date.");
 		
 		y = START_Y;
 		
@@ -116,6 +132,12 @@ public class QuoteReport {
 			cost += product.calculateTotalCost();
 			
 			y -= 12;
+			
+			if (y < PAGE_BOTTOM) {
+				setCurrentPage (getNewPage());
+				setStreamPage (currentPage);
+				y = START_Y;
+			}
 			
 			for (Inventory inventory : product.getInventories()) {
 				
@@ -158,12 +180,14 @@ public class QuoteReport {
 		
 		try {
 			doc.save(System.getProperty("user.home") + "\\Desktop\\" + fileName);
+			System.out.println("Save successful.");
 		} catch(FileNotFoundException e) {
 			System.err.print("Save unsuccessful");
 		}
 	}
 	
 	public void close () throws IOException {
+		System.out.println("Closing document...");
 		doc.close();
 	}
 	
@@ -178,10 +202,40 @@ public class QuoteReport {
 		}
 	}
 	
-	public void setCustomer (Customer customer) {
-		this.customer = customer;
+	public void setStreamPage (PDPage page) {
+		try {
+			stream.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			stream = new PDPageContentStream (doc, page, PDPageContentStream.AppendMode.APPEND, false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
+	public void setCurrentPage (PDPage page) {
+		currentPage = page;
+	}
+	
+	public PDPage getNewPage () {
+		PDDocument tempDoc = null;
+		PDPage tempPage = null;
+		
+		try {
+			tempDoc = PDDocument.load(new File ("QuoteNextPage.pdf"));
+		} catch (InvalidPasswordException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		tempPage = tempDoc.getPage(0);
+		doc.getPages().add(tempPage);
+		
+		return tempPage;
+	}
 	
 	
 }

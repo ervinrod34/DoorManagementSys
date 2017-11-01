@@ -169,7 +169,7 @@ public class InventoryReport {
 			e1.printStackTrace();
 		}
 		try {
-			stream = new PDPageContentStream (doc, currentPage, PDPageContentStream.AppendMode.APPEND, false);
+			stream = new PDPageContentStream (doc, page, PDPageContentStream.AppendMode.APPEND, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
