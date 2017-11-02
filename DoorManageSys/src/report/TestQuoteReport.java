@@ -30,6 +30,14 @@ public class TestQuoteReport {
 			quote.getProducts().add(new Product (15, list, 45));
 		}
 		
+		for (int i = 0; i < 8; i++) {
+			quote.getProducts().add(new Product (190, list, 45));
+		}
+		
+		for (int i = 0; i < 25; i++) {
+			quote.getProducts().add(new Product (11, list, 45));
+		}
+		
 		QuoteReport report = new QuoteReport (order);
 		
 		report.populateReport();

@@ -1,19 +1,16 @@
 package report;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.HashMap;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageTree;
-import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-
-import customer.Customer;
 import inventory.Inventory;
 import order.Order;
 import quoteproduct.Product;
@@ -36,74 +33,47 @@ public class QuoteReport {
 	private PDPageContentStream stream;
 	private PDPage currentPage, tempPage;
 	private PDPageTree pages;
-	private int y, quantity, orderNumber, pageNumber, productQuantity;
-	private int newProductY, currentProductID;
-	private double cost;
+	private int y, totalQuantity, orderNumber, pageNumber;
+	private double totalCost;
 	private final int ORDER_X = 380, ORDER_Y = 680;
 	private final int DATE_X = 377, DATE_Y = 644;
 	private final int START_Y = 585;
 	private final int QTY_X = 90, PRICE_X = 490, DESC_X = 135;
 	private final int TOTAL_Y = 67, PAGE_BOTTOM = 110;
 	private final int FIRSTPAGE_X = 60, FIRSTPAGE_Y = 45, FIRSTPAGE_WIDTH = 500, FIRSTPAGE_HEIGHT = 710;
+	private StringBuffer price;
+	private HashMap <Integer, Integer> productQuantity;
+	private ArrayList <Product> differentProducts;
 	
 	
 	private PDImageXObject firstPage, nextPage;
 
-	public QuoteReport (Order order) {
+	public QuoteReport (Order order) throws IOException {
 		
 		this.order = order;
 		
 		doc = new PDDocument ();
 		date = new Date ();
 		tempPage = new PDPage ();
-		
-		try {
-			firstPage = PDImageXObject.createFromFile("QuoteFirstPage.PNG", doc);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
-		try {
-			nextPage = PDImageXObject.createFromFile("QuoteNextPage.PNG", doc);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
+		firstPage = PDImageXObject.createFromFile("QuoteFirstPage.PNG", doc);
+		nextPage = PDImageXObject.createFromFile("QuoteNextPage.PNG", doc);	
 		quote = order.getQuote();
-		
 		orderNumber = order.getId();
 		poNumber = order.getCustomerPurchaseOrderNumber();
 		customerName = order.getCustomerName();
-
+		differentProducts = new ArrayList <Product> ();
+		
 		stream = null;
-		
 		pages = doc.getPages();
-		
 		currentPage = tempPage;
-		
 		pages.add(tempPage);
-		
 		tempPage = null;
 		
 		assignFileName ("");
-		
-		try {
-			stream = new PDPageContentStream (doc, currentPage, PDPageContentStream.AppendMode.APPEND, false);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			stream.setFont(PDType1Font.HELVETICA, 16);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			setUpFirstPage ();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		productQuantity = new HashMap <Integer, Integer> ();
+		stream = new PDPageContentStream (doc, currentPage, PDPageContentStream.AppendMode.APPEND, false);
+		stream.setFont(PDType1Font.HELVETICA, 16);
+		setUpFirstPage ();
 		
 		
 	}
@@ -113,13 +83,7 @@ public class QuoteReport {
 		pageNumber = 1;
 		
 		System.out.println("Setting up document...");
-		
-		try {
-			stream.drawImage(firstPage, FIRSTPAGE_X, FIRSTPAGE_Y, FIRSTPAGE_WIDTH, FIRSTPAGE_HEIGHT);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		stream.drawImage(firstPage, FIRSTPAGE_X, FIRSTPAGE_Y, FIRSTPAGE_WIDTH, FIRSTPAGE_HEIGHT);
 		setStreamFont (12);
 		stream.beginText();
 		stream.newLineAtOffset(490, 717);
@@ -127,20 +91,30 @@ public class QuoteReport {
 		stream.endText();
 		
 		for (Product product : quote.getProducts()) {
-			cost += product.calculateTotalCost();
-			quantity++;
+			totalCost += product.calculateTotalCost();
+			totalQuantity++;
+			
+			if (productQuantity.containsKey(product.getId())) {
+				productQuantity.put(product.getId(), productQuantity.get(product.getId()) + 1);
+			}
+			else {
+				productQuantity.put(product.getId(), 1);
+				differentProducts.add(product);
+			}
 		}
 		
 		setStreamFont (10);
 		
 		stream.beginText();
 		stream.newLineAtOffset(QTY_X, TOTAL_Y);
-		stream.showText(quantity + "");
+		stream.showText(totalQuantity + "");
 		stream.endText();
 		
 		stream.beginText();
 		stream.newLineAtOffset(PRICE_X, TOTAL_Y);
-		stream.showText(" " + cost);
+		price = new StringBuffer ();
+		price.append(String.format("%,.2f", totalCost));
+		stream.showText(price.toString());
 		stream.endText();
 
 		stream.beginText();
@@ -166,62 +140,32 @@ public class QuoteReport {
 		stream.newLineAtOffset(DESC_X + 50, DATE_Y);
 		stream.showText(poNumber);
 		stream.endText();
-		
-		
 	}
 	
 	public void populateReport () throws IOException {
 		
 		System.out.println("Populating report...");
-		
-		StringBuffer price = null;
-		
 		y = START_Y;
-		
-		int items = 0;
-		
 		setStreamFont (10);
 		
-		boolean onNewProduct = true;
-		
-		for (Product product : quote.getProducts()) {
+		for (Product product : differentProducts) {
 			
-			items++;
-			
-			if (onNewProduct) {
-				currentProductID = product.getId();
-				productQuantity = 1;
-			}
-			
-			else if (currentProductID == product.getId()) {
-				productQuantity++;
-				break; //We're never getting to the write quantity part because of this break statement
-			}
-			
-			if (currentProductID != product.getId() || items == quote.getProducts().size()) {
-				stream.beginText();
-				stream.newLineAtOffset(QTY_X, newProductY);
-				stream.showText(productQuantity + "");
-				stream.endText();
-				
-				productQuantity = 1;
-				currentProductID = product.getId();
-				break;
-			}
+			stream.beginText();
+			stream.newLineAtOffset(QTY_X, y);
+			stream.showText(productQuantity.get(product.getId()) + "");
+			stream.endText();
 			
 			stream.beginText();
 			stream.newLineAtOffset(DESC_X, y);
-			stream.showText("**Product Details Listed Below");
+			stream.showText("***Product Details Below");
 			stream.endText();
 			
 			stream.beginText();
 			stream.newLineAtOffset(PRICE_X, y);
 			price = new StringBuffer ();
-			price.append(String.format("$%.2f", product.calculateTotalCost()));
+			price.append(String.format("$%,.2f", product.calculateTotalCost()));
 			stream.showText(price.toString());
 			stream.endText();
-			
-			newProductY = y;
 			
 			y -= 12;
 			
@@ -257,13 +201,12 @@ public class QuoteReport {
 					setStreamFont (10);
 					y = START_Y -10;
 				}
-				
 			}
 			
 			y -= 12;
-			onNewProduct = false;
+			
 		}
-
+		
 		stream.close();		
 	}
 	
@@ -293,17 +236,10 @@ public class QuoteReport {
 		}
 	}
 	
-	public void setStreamPage (PDPage page) {
-		try {
-			stream.close();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			stream = new PDPageContentStream (doc, page, PDPageContentStream.AppendMode.APPEND, false);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void setStreamPage (PDPage page) throws IOException {
+
+		stream.close();
+		stream = new PDPageContentStream (doc, page, PDPageContentStream.AppendMode.APPEND, false);
 	}
 	
 	public void setCurrentPage (PDPage page) {
@@ -311,37 +247,25 @@ public class QuoteReport {
 	}
 	
 	public void setUpNextPage () throws IOException {
-		
-		try {
-			stream.drawImage(nextPage, FIRSTPAGE_X, FIRSTPAGE_Y, FIRSTPAGE_WIDTH, FIRSTPAGE_HEIGHT);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+
+		stream.drawImage(nextPage, FIRSTPAGE_X, FIRSTPAGE_Y, FIRSTPAGE_WIDTH, FIRSTPAGE_HEIGHT);
 		pageNumber ++;
-		
 		setStreamFont (12);
 		stream.beginText();
 		stream.newLineAtOffset(490, 717);
 		stream.showText("Page " + pageNumber);
 		stream.endText();
-		
-		
-		
 	}
 	
 	public PDPage getNewPage () {
-		
+
 		tempPage = new PDPage ();
 		pages.add(tempPage);
-		
-		
 		return tempPage;
 	}
 	
 	public void setStreamFont (int size) throws IOException {
 		stream.setFont(PDType1Font.HELVETICA, size);
 	}
-	
 	
 }

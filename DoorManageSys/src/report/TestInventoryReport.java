@@ -9,7 +9,7 @@ import inventory.Inventory;
  * This is a class that tests the InventoryReport. When we use the InventoryReport object, we
  * must call populateReport(), save(), and close(). We can pass it the arrayList from getInventory()
  * from the InventoryGateway
- * @author Richard Salcedo
+ * @author Team No Name Yet
  *
  */
 public class TestInventoryReport {
