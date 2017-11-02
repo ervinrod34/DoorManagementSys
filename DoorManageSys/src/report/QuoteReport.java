@@ -29,13 +29,15 @@ import quoteproduct.Quote;
 public class QuoteReport {
 	
 	private Quote quote;
+	private Order order;
 	private PDDocument doc;
 	private String fileName, customerName, poNumber;
 	private Date date;
 	private PDPageContentStream stream;
 	private PDPage currentPage, tempPage;
 	private PDPageTree pages;
-	private int y, quantity, orderNumber, pageNumber;
+	private int y, quantity, orderNumber, pageNumber, productQuantity;
+	private int newProductY, currentProductID;
 	private double cost;
 	private final int ORDER_X = 380, ORDER_Y = 680;
 	private final int DATE_X = 377, DATE_Y = 644;
@@ -48,6 +50,8 @@ public class QuoteReport {
 	private PDImageXObject firstPage, nextPage;
 
 	public QuoteReport (Order order) {
+		
+		this.order = order;
 		
 		doc = new PDDocument ();
 		date = new Date ();
@@ -172,20 +176,38 @@ public class QuoteReport {
 		
 		StringBuffer price = null;
 		
-		quantity = 0;
-		cost = 0;
-		
 		y = START_Y;
+		
+		int items = 0;
 		
 		setStreamFont (10);
 		
+		boolean onNewProduct = true;
+		
 		for (Product product : quote.getProducts()) {
 			
-			quantity++;
-			stream.beginText();
-			stream.newLineAtOffset(QTY_X, y);
-			stream.showText("1");
-			stream.endText();
+			items++;
+			
+			if (onNewProduct) {
+				currentProductID = product.getId();
+				productQuantity = 1;
+			}
+			
+			else if (currentProductID == product.getId()) {
+				productQuantity++;
+				break; //We're never getting to the write quantity part because of this break statement
+			}
+			
+			if (currentProductID != product.getId() || items == quote.getProducts().size()) {
+				stream.beginText();
+				stream.newLineAtOffset(QTY_X, newProductY);
+				stream.showText(productQuantity + "");
+				stream.endText();
+				
+				productQuantity = 1;
+				currentProductID = product.getId();
+				break;
+			}
 			
 			stream.beginText();
 			stream.newLineAtOffset(DESC_X, y);
@@ -198,6 +220,8 @@ public class QuoteReport {
 			price.append(String.format("$%.2f", product.calculateTotalCost()));
 			stream.showText(price.toString());
 			stream.endText();
+			
+			newProductY = y;
 			
 			y -= 12;
 			
@@ -237,6 +261,7 @@ public class QuoteReport {
 			}
 			
 			y -= 12;
+			onNewProduct = false;
 		}
 
 		stream.close();		
@@ -261,7 +286,7 @@ public class QuoteReport {
 		
 		if (inputtedName.length() == 0) {
 			fileName = "Quote Number ";
-			fileName += quote.getId() + "";
+			fileName += order.getId() + "";
 			fileName += ".pdf";
 		} else {
 			fileName = inputtedName + ".pdf";
