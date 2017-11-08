@@ -12,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.*;
+import applicationhelper.PageTypes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,7 +50,6 @@ public class OrderDetailController implements Initializable {
 			MasterViewController.getInstance().changeView(PageTypes.ORDER_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
-			MasterController.getInstance().getProductGateway().deleteProducts(this.order.getQuote().getProducts());
 			MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(this.order.getQuote().getId());
 			MasterController.getInstance().getOrderGateway().deleteOrder(this.order.getId());
 			
@@ -73,6 +73,9 @@ public class OrderDetailController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		MasterController.getInstance().getRestriction().applyChangeOrderRestriction(this.editButton);
+		MasterController.getInstance().getRestriction().applyOrderDeleteRestriction(this.deleteButton);
+		
 		if(this.order.getId() > 0) {
 			this.orderNumber.setText(Integer.toString(this.order.getId()));
 			this.quoteNumber.setText(Integer.toString(this.order.getQuote().getId()));
@@ -86,7 +89,6 @@ public class OrderDetailController implements Initializable {
 			this.actualShipping.setValue(this.convertDateToLocalDate(this.order.getActualShipping()));
 			
 			this.actualCost.setText(Double.toString(this.order.getTotalAmount()));
-			
 		}
 	}
 	

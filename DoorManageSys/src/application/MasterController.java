@@ -11,19 +11,13 @@ package application;
  */
 
 import user.*;
-import landing.*;
 import inventory.*;
-import login.*;
 import order.*;
 import quoteproduct.*;
-import report.*;
 
-import java.io.IOException;
 import java.util.List;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+
+import applicationhelper.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -49,6 +43,8 @@ public class MasterController {
 	 * Boolean whether user logged out
 	 */
 	private boolean loggedOut;
+	
+	private UserRestrictor restriction;
 	
 	/**
 	 * A Object holder for an object the user wishes to edit
@@ -80,8 +76,6 @@ public class MasterController {
 	}
 	
 	public boolean updateRightMenu(PageTypes pageType) {
-		
-		
 		return true;
 	}
 	
@@ -119,6 +113,11 @@ public class MasterController {
 	
 	public void setUser(DPMUser user) {
 		this.user = user;
+	}
+	
+	public UserRestrictor getRestriction() {
+		this.restriction = new UserRestrictor(this.user.getUserType());
+		return this.restriction;
 	}
 	
 	public void logoutPressed() {

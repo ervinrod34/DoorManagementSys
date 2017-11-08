@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 import java.util.List;
 
+import applicationhelper.PageTypes;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

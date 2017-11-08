@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.*;
+import applicationhelper.*;
 import inventory.*;
 
 import javafx.application.Platform;
@@ -24,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import order.Order;
 
@@ -72,11 +74,21 @@ public class LandingPageController implements Initializable {
 			
 		} else if(source == orders) {
 			this.applyEffectOnMenuLabel(orders);
-			this.changeViewOnLabelClick(orders, PageTypes.ORDER_LIST_PAGE);
+			
+			if(me.getButton() == MouseButton.PRIMARY) {
+				if(MasterController.getInstance().getRestriction().applyOrdersTabRestriction()) {
+					this.changeViewOnLabelClick(orders, PageTypes.ORDER_LIST_PAGE);
+				}
+			}
 			
 		} else if(source == quote) {
 			this.applyEffectOnMenuLabel(quote);
-			this.changeViewOnLabelClick(quote, PageTypes.QORDER_LIST_PAGE);
+			
+			if(me.getButton() == MouseButton.PRIMARY) {
+				if(MasterController.getInstance().getRestriction().applyQuotesTabRestriction()) {
+					this.changeViewOnLabelClick(quote, PageTypes.QORDER_LIST_PAGE);
+				}
+			}
 			
 		} else if(source == reports) { 
 			this.applyEffectOnMenuLabel(reports);
@@ -101,7 +113,10 @@ public class LandingPageController implements Initializable {
 	}
 
 	public void initialize(URL location, ResourceBundle resources) {
+		MasterController.getInstance().getRestriction().applyUsersTabRestriction(this.users);
+		
 		this.userIdentifierLabel.setText("Welcome " + MasterController.getInstance().getUser().getName());
+		
 	}
 	
 	private void applyEffectOnMenuLabel(Label label) {
