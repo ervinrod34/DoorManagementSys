@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import application.*;
+import applicationhelper.PageTypes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.*;
+import applicationhelper.PageTypes;
 import inventory.Inventory;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

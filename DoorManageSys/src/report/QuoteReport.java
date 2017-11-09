@@ -44,8 +44,6 @@ public class QuoteReport {
 	private StringBuffer price;
 	private HashMap <Integer, Integer> productQuantity;
 	private ArrayList <Product> differentProducts;
-	
-	
 	private PDImageXObject firstPage, nextPage;
 
 	public QuoteReport (Order order) throws IOException {

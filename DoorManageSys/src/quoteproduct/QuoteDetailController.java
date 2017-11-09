@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.*;
+import applicationhelper.PageTypes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -85,6 +86,9 @@ public class QuoteDetailController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		MasterController.getInstance().getRestriction().applyChangeOrderRestriction(this.editButton);
+		MasterController.getInstance().getRestriction().applyOrderDeleteRestriction(this.deleteButton);
+		
 		if (order.getId() > 0) {
 			dbID.setText(Integer.toString(quote.getId()));
 			quoteNumber.setText(Integer.toString(order.getQuote().getId()));

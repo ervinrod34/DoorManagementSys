@@ -19,7 +19,7 @@ public class UserHelper{
 				break;
 				
 			case "Sales":
-				userType = UserTypes.ADMIN;
+				userType = UserTypes.SALES;
 				break;
 				
 			case "Accounting":
@@ -30,8 +30,8 @@ public class UserHelper{
 				userType = UserTypes.PURCHASING;
 				break;
 				
-			case "Engineering":
-				userType = UserTypes.ENGINEERING;
+			case "Engineer":
+				userType = UserTypes.ENGINEER;
 				break;
 				
 			case "InventoryManager":

@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.*;
+import applicationhelper.PageTypes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -73,6 +74,9 @@ public class InventoryDetailController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		MasterController.getInstance().getRestriction().applyChangeInventoryRestriction(this.editButton);
+		MasterController.getInstance().getRestriction().applyDeleteRestriction(this.deleteButton);
+		
 		if(this.inventory.getId() > 0) {
 			this.dbID.setText(Integer.toString(this.inventory.getId()));
 			this.itemNumber.setText(this.inventory.getItemNo());

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.*;
+import applicationhelper.PageTypes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +47,8 @@ public class QOrderListController implements Initializable {
 	}
 	
 	public void initialize(URL loc, ResourceBundle rsc) {
+		MasterController.getInstance().getRestriction().applyChangeOrderRestriction(this.addButton);
+		
 		this.observableList = this.orderListView.getItems();
 		for(Order order : this.orders) {
 			this.observableList.add(order);

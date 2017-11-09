@@ -43,11 +43,7 @@ public class OrderGateway extends MasterGateway {
 		} catch(SQLException sqlException){
 			sqlException.printStackTrace();
 		} finally {
-			try{
-				closePSandRS();
-			} catch(SQLException sqlException){
-				sqlException.printStackTrace();
-			}
+			tryToClosePSandRS();
 		}
 		return searchResults;
 	}
@@ -108,11 +104,7 @@ public class OrderGateway extends MasterGateway {
 		} catch (SQLException se) {
 			se.printStackTrace();
 		} finally {
-			try {
-				this.closePSandRS();
-			} catch (SQLException se){
-				se.printStackTrace();
-			}
+			tryToClosePSandRS();
 		}
 		return fullOrders;
 	}

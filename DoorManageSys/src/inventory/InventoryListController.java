@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.*;
+import applicationhelper.PageTypes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,9 +46,12 @@ public class InventoryListController implements Initializable {
 	}
 	
 	public void initialize(URL loc, ResourceBundle rsc) {
+		MasterController.getInstance().getRestriction().applyChangeInventoryRestriction(this.addButton);
+			
 		this.observableList = this.inventoryListView.getItems();
 		for(Inventory inventory : this.inventories) {
 			this.observableList.add(inventory);
 		}
+		
 	}
 }

@@ -11,19 +11,14 @@ package application;
  */
 
 import user.*;
-import landing.*;
 import inventory.*;
-import login.*;
 import order.*;
 import quoteproduct.*;
-import report.*;
+import blueprint.*;
 
-import java.io.IOException;
 import java.util.List;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+
+import applicationhelper.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -44,11 +39,14 @@ public class MasterController {
 	protected ProductGateway productGateway;
 	protected OrderGateway orderGateway;
 	protected QuoteGateway quoteGateway;
+	protected BlueprintGateway blueprintGateway;
 	
 	/**
 	 * Boolean whether user logged out
 	 */
 	private boolean loggedOut;
+	
+	private UserRestrictor restriction;
 	
 	/**
 	 * A Object holder for an object the user wishes to edit
@@ -71,6 +69,7 @@ public class MasterController {
 			this.productGateway = new ProductGateway();
 			this.orderGateway = new OrderGateway();
 			this.quoteGateway = new QuoteGateway();
+			this.blueprintGateway = new BlueprintGateway();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -80,8 +79,6 @@ public class MasterController {
 	}
 	
 	public boolean updateRightMenu(PageTypes pageType) {
-		
-		
 		return true;
 	}
 	
@@ -121,6 +118,11 @@ public class MasterController {
 		this.user = user;
 	}
 	
+	public UserRestrictor getRestriction() {
+		this.restriction = new UserRestrictor(this.user.getUserType());
+		return this.restriction;
+	}
+	
 	public void logoutPressed() {
 		if(this.loggedOut == false) {
 			this.loggedOut = true;
@@ -149,6 +151,10 @@ public class MasterController {
 	
 	public QuoteGateway getQuoteGateway() {
 		return this.quoteGateway;
+	}
+	
+	public BlueprintGateway getBlueprintGateway() {
+		return this.blueprintGateway;
 	}
 
 	public void setEditObject(Object obj) {

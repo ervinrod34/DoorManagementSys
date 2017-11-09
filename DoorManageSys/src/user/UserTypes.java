@@ -11,11 +11,20 @@ package user;
 
 public enum UserTypes {
 
-	SALES,
-	ACCOUNTING,
-	PURCHASING,
-	ENGINEERING,
-	INVENTORYMANAGER,
-	ADMIN;
+	SALES("Sales"),
+	ACCOUNTING("Accounting"),
+	PURCHASING("Purchasing"),
+	ENGINEER("Engineer"),
+	INVENTORYMANAGER("Inventory Manager"),
+	ADMIN("Administrator");
 	
+	private final String type;
+	
+	private UserTypes(String type) {
+		this.type = type;
+	}
+	
+	public String getType() {
+		return this.type;
+	}
 }

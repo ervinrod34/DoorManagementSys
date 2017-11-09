@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.*;
+import applicationhelper.PageTypes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

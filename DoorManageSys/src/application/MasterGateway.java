@@ -68,7 +68,15 @@ public abstract class MasterGateway {
 		this.resultSet = null;
 	}
 	
-	protected void closePSandRS() throws SQLException{
+	protected void tryToClosePSandRS(){
+		try {
+			this.closePSandRS();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void closePSandRS() throws SQLException{
 		if(this.resultSet != null) {
 			this.resultSet.close();
 		}

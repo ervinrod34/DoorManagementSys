@@ -46,12 +46,7 @@ public class InventoryGateway extends MasterGateway{
 		} catch(SQLException sqlException) {
 			sqlException.printStackTrace();
 		} finally {
-			try {
-				closePSandRS();
-			}
-			catch (SQLException sqlException) {
-				sqlException.printStackTrace();
-			}
+			tryToClosePSandRS();
 		}
 		
 		return searchResults;
@@ -85,12 +80,7 @@ public class InventoryGateway extends MasterGateway{
 		}
 		
 		finally {
-			try {
-				closePSandRS();
-			}
-			catch (SQLException sqlException) {
-				sqlException.printStackTrace();
-			}
+			tryToClosePSandRS();
 		}
 		
 		return matches;
@@ -120,12 +110,7 @@ public class InventoryGateway extends MasterGateway{
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();
 		} finally {
-			try {
-				closePSandRS();
-			}
-			catch (SQLException sqlException) {
-				sqlException.printStackTrace();
-			}
+			tryToClosePSandRS();
 		}
 		
 		return matches;
@@ -189,11 +174,7 @@ public class InventoryGateway extends MasterGateway{
 		} catch (SQLException se) {
 			se.printStackTrace();
 		} finally {
-			try {
-				closePSandRS();
-			} catch (SQLException se){
-				se.printStackTrace();
-			}
+			tryToClosePSandRS();
 		}
 		return fullInventory;
 	}
