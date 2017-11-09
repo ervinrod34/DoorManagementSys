@@ -41,7 +41,7 @@ public class ProductDetailController implements Initializable {
 			MasterViewController.getInstance().changeView(PageTypes.PRODUCT_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
-			MasterController.getInstance().getInventoryGateway().deleteInventory(this.product.getId());
+			MasterController.getInstance().getProductGateway().deleteProductRecord(this.product.getId());
 			
 		}
 	}

@@ -1,20 +1,20 @@
 package quoteproduct;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import application.*;
 import applicationhelper.PageTypes;
+import inventory.Inventory;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class ProductEditController implements Initializable {
@@ -58,7 +58,7 @@ public class ProductEditController implements Initializable {
 		if(this.product.getId() > 0) {
 			this.productNumberField.setText(Integer.toString(this.product.getId()));
 			this.totalCostField.setText(Double.toString(this.product.getTotalCost()));
-			//this.inventoryItemsField.setText(this.product.getInventories());
+			this.inventoryItemsField.setText(parseProductIDsToCSV(this.product.getInventories()));
 		}
 	}
 	
@@ -67,11 +67,11 @@ public class ProductEditController implements Initializable {
 		
 		updatedProduct.setId(this.product.getId());
 		
-		/*if(this.inventoryItemsField.getText().length() == 0) {
-			updatedProduct.setInventories("");
+		if(this.inventoryItemsField.getText().length() == 0) {
+			updatedProduct.setInventories(null);
 		} else {
-			updatedProduct.setInventories(this.inventoryItemsField.getText());
-		}*/
+			updatedProduct.setInventories(parseCSVToInventory(this.inventoryItemsField.getText()));
+		}
 		
 		if(this.totalCostField.getText().length() == 0) {
 			updatedProduct.setTotalCost(0.0);
@@ -82,4 +82,28 @@ public class ProductEditController implements Initializable {
 		this.product = updatedProduct;
 	}
 	
+	public String parseProductIDsToCSV(List<Inventory> items) {
+		String CSV = "";
+		
+		for(Inventory item : items) {
+			CSV += item.getItemNo() + ",";
+		}
+		
+		CSV = CSV.substring(0, CSV.length() - 1);
+		
+		return CSV;
+	}
+	
+	public List<Inventory> parseCSVToInventory(String CSVid) {
+		List<String> ids = new ArrayList<>();
+		List<Inventory> items = new ArrayList<Inventory>();
+		
+		ids = Arrays.asList(CSVid.split(","));
+		
+		for(String id : ids) {
+			items.add(MasterController.getInstance().getInventoryGateway().getInventoryByID(id));
+		}
+		
+		return items;
+	}
 }
