@@ -42,7 +42,6 @@ public class Product {
 		this.id = id;
 	}
 
-
 	public double getTotalCost() {
 		if(this.totalCost == 0) {
 			this.totalCost = calculateTotalCost();

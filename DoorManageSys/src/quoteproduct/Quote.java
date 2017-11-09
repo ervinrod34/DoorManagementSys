@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.MasterController;
+import inventory.Inventory;
 import quoteproduct.*;
 
 public class Quote {
@@ -81,5 +82,21 @@ public class Quote {
 		returnValue += this.id + " Total Cost: " +  calculateTotalCost();
 		
 		return returnValue;
+	}
+	
+	public void subtractQuantity(){
+		for(Product product : this.products){
+			for(Inventory inventory : product.getInventories()){
+				inventory.subtract();
+			}
+		}
+	}
+	
+	public void addQuantity(){
+		for(Product product : this.products){
+			for(Inventory inventory : product.getInventories()){
+				inventory.add();
+			}
+		}
 	}
 }

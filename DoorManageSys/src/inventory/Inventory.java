@@ -196,4 +196,12 @@ public class Inventory {
 		return stringBuffer.toString();
 	}
 	
+	public int subtract(){
+		return this.quantity -= 1;
+	}
+	
+	public int add(){
+		return this.quantity += 1;
+	}
+	
 }

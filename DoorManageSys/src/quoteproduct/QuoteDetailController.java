@@ -70,6 +70,8 @@ public class QuoteDetailController implements Initializable {
 			MasterController.getInstance().getProductGateway().deleteProducts(quote.getProducts());
 			MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(quote.getId());
 			
+			this.quote.addQuantity();
+			
 			//Go back to this later
 			Timer timer = new Timer();
 					

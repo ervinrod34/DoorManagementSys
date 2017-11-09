@@ -43,12 +43,17 @@
                   <Font name="Times New Roman" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="quote" layoutX="296.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Quote" textFill="WHITE">
+            <Label fx:id="quote" layoutX="296.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Quotes" textFill="WHITE">
                <font>
                   <Font name="Times New Roman" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="users" layoutX="517.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Users" textFill="WHITE">
+            <Label fx:id="products" layoutX="403.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Products" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="users" layoutX="631.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Users" textFill="WHITE">
                <font>
                   <Font name="Times New Roman" size="20.0" />
                </font>
@@ -58,7 +63,7 @@
                   <Font name="Times New Roman" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="reports" layoutX="403.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Reports" textFill="WHITE">
+            <Label fx:id="reports" layoutX="517.0" layoutY="150.0" onMouseClicked="#handleMenu" onMouseEntered="#handleMenu" onMouseExited="#handleMenu" text="Reports" textFill="WHITE">
                <font>
                   <Font name="Times New Roman" size="20.0" />
                </font>

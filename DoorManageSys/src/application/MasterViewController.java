@@ -56,6 +56,7 @@ public class MasterViewController extends MasterController{
 				desiredPage == PageTypes.INVENTORY_LIST_PAGE || 
 				desiredPage == PageTypes.QORDER_LIST_PAGE || 
 				desiredPage == PageTypes.ORDER_LIST_PAGE ||
+				desiredPage == PageTypes.PRODUCT_LIST_PAGE || 
 				desiredPage == PageTypes.QUOTEITEMS_LIST_PAGE) {
 			MasterController.getInstance().mainPane.setCenter(view);
 			MasterController.getInstance().mainPane.setRight(this.getEmptyRightPane());
@@ -63,12 +64,14 @@ public class MasterViewController extends MasterController{
 		//for Detail Page
 		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE || 
 				desiredPage == PageTypes.QUOTE_DETAIL_PAGE ||
+				desiredPage == PageTypes.PRODUCT_DETAIL_PAGE || 
 				desiredPage == PageTypes.ORDER_DETAIL_PAGE) {
 			MasterController.getInstance().mainPane.setRight(view);
 			
 		//for Edit Page
 		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE || 
 				desiredPage == PageTypes.QUOTE_EDIT_PAGE ||
+				desiredPage == PageTypes.PRODUCT_EDIT_PAGE || 
 				desiredPage == PageTypes.ORDER_EDIT_PAGE) {
 			MasterController.getInstance().mainPane.setRight(view);
 			
@@ -190,6 +193,32 @@ public class MasterViewController extends MasterController{
 				loader.setController(new QuoteItemsListController(
 						MasterController.getInstance().productToDisplay, 
 						MasterController.getInstance().inventoryToDisplay));
+				break;
+				
+			case PRODUCT_LIST_PAGE:
+				List<Product> allProducts = MasterController.getInstance().productGateway.importListOfProductsFromDB();
+				
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/ProductList_Page.fxml"));
+				loader.setController(new ProductListController(allProducts));
+				break;
+				
+			case PRODUCT_DETAIL_PAGE:
+				Product viewProduct = (Product)MasterController.getInstance().editObj;
+				
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/ProductDetail_Page.fxml"));
+				loader.setController(new ProductDetailController(viewProduct));
+				break;
+				
+			case PRODUCT_EDIT_PAGE:
+				Product editProduct = (Product)MasterController.getInstance().editObj;
+				
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/ProductEdit_Page.fxml"));
+				
+				if(editProduct.getId() > 0) {
+					loader.setController(new ProductEditController(editProduct));
+				} else if(editProduct.getId() == 0){
+					loader.setController(new ProductEditController(new Product()));
+				}
 				break;
 				
 			case REPORTS_EXPORT_PAGE:	

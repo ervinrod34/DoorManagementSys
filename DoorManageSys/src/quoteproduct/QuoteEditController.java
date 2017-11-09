@@ -77,6 +77,7 @@ public class QuoteEditController implements Initializable {
 			this.quote.saveProducts();
 			this.quote.save();
 			this.order.save();
+			this.quote.subtractQuantity();
 			
 			MasterViewController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
 			MasterController.getInstance().setEditObject(this.order);
