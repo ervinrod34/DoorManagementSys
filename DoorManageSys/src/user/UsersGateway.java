@@ -47,11 +47,7 @@ public class UsersGateway extends MasterGateway{
 		} catch(SQLException se) {
 			se.printStackTrace();
 		} finally {
-			try {
-				this.closePSandRS();
-			} catch(SQLException se) {
-				se.printStackTrace();
-			}
+			tryToClosePSandRS();
 		}
 		
 		return users;

@@ -14,6 +14,7 @@ import user.*;
 import inventory.*;
 import order.*;
 import quoteproduct.*;
+import blueprint.*;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class MasterController {
 	protected ProductGateway productGateway;
 	protected OrderGateway orderGateway;
 	protected QuoteGateway quoteGateway;
+	protected BlueprintGateway blueprintGateway;
 	
 	/**
 	 * Boolean whether user logged out
@@ -67,6 +69,7 @@ public class MasterController {
 			this.productGateway = new ProductGateway();
 			this.orderGateway = new OrderGateway();
 			this.quoteGateway = new QuoteGateway();
+			this.blueprintGateway = new BlueprintGateway();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -148,6 +151,10 @@ public class MasterController {
 	
 	public QuoteGateway getQuoteGateway() {
 		return this.quoteGateway;
+	}
+	
+	public BlueprintGateway getBlueprintGateway() {
+		return this.blueprintGateway;
 	}
 
 	public void setEditObject(Object obj) {

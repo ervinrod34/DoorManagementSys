@@ -82,6 +82,7 @@ public class UserRestrictor {
 			button.setVisible(false);
 		}
 	}
+	
 	public void applyChangeOrderRestriction(Button button) {
 		if((this.userType == UserTypes.ACCOUNTING) ||
 				(this.userType == UserTypes.ENGINEER) ||
