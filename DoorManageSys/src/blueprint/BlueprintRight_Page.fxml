@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ChoiceBox fx:id="productChoices" layoutX="17.0" layoutY="66.0" prefHeight="25.0" prefWidth="324.0" />
+      <ListView fx:id="inventoryList" layoutX="14.0" layoutY="101.0" prefHeight="320.0" prefWidth="438.0" />
+      <Button fx:id="switchTemplate" layoutX="17.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleButtons" text="Switch Template" />
+      <Button fx:id="openBlueprint" layoutX="348.0" layoutY="66.0" mnemonicParsing="false" onAction="#handleButtons" text="Open Blueprint" />
+      <Label layoutX="17.0" layoutY="39.0" text="Select a product below:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

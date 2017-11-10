@@ -1,8 +1,10 @@
 package blueprint;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import application.*;
+import quoteproduct.Product;
 
 public class BlueprintGateway extends MasterGateway{
 
@@ -80,6 +82,19 @@ public class BlueprintGateway extends MasterGateway{
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void deleteBlueprint(Blueprint blueprint) {
+		resetPSandRS();
+		
+		try {
+			preparedStatement = this.connection.prepareStatement("DELETE FROM Blueprint WHERE id=?",
+					PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, blueprint.getId());
+			preparedStatement.execute();
+		} catch(SQLException sqlException) {
+			sqlException.printStackTrace();
 		}
 	}
 }

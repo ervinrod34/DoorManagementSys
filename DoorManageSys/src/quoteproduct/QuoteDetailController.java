@@ -38,6 +38,8 @@ public class QuoteDetailController implements Initializable {
 	
 	@FXML private Button deleteButton;
 	
+	@FXML private Button manageBlueprints;
+	
 	@FXML private ListView<String> productsList;
 	
 	private ObservableList<String> observableList;
@@ -81,6 +83,9 @@ public class QuoteDetailController implements Initializable {
 					MasterViewController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
 				}
 			}, 2000);
+		} else if(source == manageBlueprints) {
+			MasterController.getInstance().setEditObject(this.order);
+			MasterViewController.getInstance().changeView(PageTypes.BLUEPRINT_CENTER_PAGE);
 		}
 	}
 

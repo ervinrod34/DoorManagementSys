@@ -1,5 +1,7 @@
 package blueprint;
 
+import application.MasterController;
+
 public class Blueprint {
 	
 	private int id;
@@ -14,11 +16,25 @@ public class Blueprint {
 	private String inventoryNotes;
 	
 	public Blueprint() {
-		
+		this.id = 0;
+		this.productID = 0;
+		this.dimension = "";
+		this.strikeHeight = "";
+		this.frame = "";
+		this.hingeSpaces = "";
+		this.notes = "";
+		this.inventoryNotes = "";
 	}
 	
 	public Blueprint(int id){
 		this.id = id;
+		this.productID = 0;
+		this.dimension = "";
+		this.strikeHeight = "";
+		this.frame = "";
+		this.hingeSpaces = "";
+		this.notes = "";
+		this.inventoryNotes = "";
 	}
 	
 	public Blueprint(int id, int productID, String dimension, 
@@ -96,6 +112,18 @@ public class Blueprint {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void save() {
+		if(this.id == 0) {
+			MasterController.getInstance().getBlueprintGateway().insertBlueprint(this);
+		} else {
+			MasterController.getInstance().getBlueprintGateway().updateBlueprint(this);
+		}
+	}
+	
+	public void delete() {
+		MasterController.getInstance().getBlueprintGateway().deleteBlueprint(this);
 	}
 
 	public String toString() {

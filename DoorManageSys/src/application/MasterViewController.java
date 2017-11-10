@@ -16,13 +16,19 @@ import order.*;
 import quoteproduct.*;
 import report.ReportsExportController;
 import user.*;
+import blueprint.*;
 
 public class MasterViewController extends MasterController{
 
 	private static MasterViewController instance = null;
 	
+	private boolean blueprintRightsIsOpen;
+	
+	private boolean switchTemplate;
+	
 	private MasterViewController() {
-
+		this.blueprintRightsIsOpen = false;
+		this.switchTemplate = false;
 	}
 	
 	public static MasterViewController getInstance() {
@@ -68,19 +74,33 @@ public class MasterViewController extends MasterController{
 				desiredPage == PageTypes.PRODUCT_DETAIL_PAGE || 
 				desiredPage == PageTypes.ORDER_DETAIL_PAGE) {
 			MasterController.getInstance().mainPane.setRight(view);
+			this.blueprintRightsIsOpen = false;
 			
 		//for Edit Page
 		} else if(desiredPage == PageTypes.INVENTORY_EDIT_PAGE || 
 				desiredPage == PageTypes.QUOTE_EDIT_PAGE ||
 				desiredPage == PageTypes.PRODUCT_EDIT_PAGE || 
-				desiredPage == PageTypes.ORDER_EDIT_PAGE) {
+				desiredPage == PageTypes.ORDER_EDIT_PAGE || 
+				desiredPage == PageTypes.BLUEPRINT_RIGHT_PAGE) {
 			MasterController.getInstance().mainPane.setRight(view);
+			this.blueprintRightsIsOpen = false;
 			
 		//for Pages with right pane, no center
 		} else if(desiredPage == PageTypes.REPORTS_EXPORT_PAGE) {
 			MasterController.getInstance().mainPane.setCenter(this.getEmptyCenterPane());
 			MasterController.getInstance().mainPane.setRight(view);
+			this.blueprintRightsIsOpen = false;
+			
+		} else if(desiredPage == PageTypes.BLUEPRINT_CENTER_PAGE) {
+			if(this.blueprintRightsIsOpen == false) {
+				MasterController.getInstance().mainPane.setRight(openBlueprintRightPage());
+				this.blueprintRightsIsOpen = true;
+				MasterController.getInstance().mainPane.setCenter(view);
+			} else {
+				MasterController.getInstance().mainPane.setCenter(view);
+			}
 		}
+		
 		return true;
 	}
 	
@@ -227,6 +247,27 @@ public class MasterViewController extends MasterController{
 				loader.setController(new ReportsExportController());
 				break;
 				
+			case BLUEPRINT_CENTER_PAGE:
+				Blueprint editBlueprint = new Blueprint();
+				
+				if(MasterController.getInstance().editObj instanceof Order) {
+					Order order = (Order)MasterController.getInstance().editObj;
+					int productID = order.getQuote().getProducts().get(0).getId();
+					editBlueprint = MasterController.getInstance().getBlueprintGateway()
+							.getBlueprintByProductID(productID);
+				} else if(MasterController.getInstance().editObj instanceof Product) {
+					Product product = (Product)MasterController.getInstance().editObj;
+					editBlueprint = MasterController.getInstance().getBlueprintGateway()
+							.getBlueprintByProductID(product.getId());
+				}
+				
+				if(this.switchTemplate == false) {
+					loader = new FXMLLoader(getClass().getResource("/blueprint/BlueprintOneDoor_Page.fxml"));
+				} else {
+					loader = new FXMLLoader(getClass().getResource("/blueprint/BlueprintTwoDoor_Page.fxml"));
+				}
+				loader.setController(new BlueprintDoorController(editBlueprint));
+				
 			default:
 				break;
 			
@@ -239,6 +280,29 @@ public class MasterViewController extends MasterController{
 		}
 		
 		return view;
+	}
+	
+	private Parent openBlueprintRightPage() {
+		Parent view = null;
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/blueprint/BlueprintRight_Page.fxml"));
+		Order order = (Order)MasterController.getInstance().editObj;
+		loader.setController(new BlueprintRightController(order));
+		
+		try {
+			view = loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return view;
+	}
+	
+	public void switchTemplateIsPressed() {
+		if(this.switchTemplate == true) {
+			this.switchTemplate = false;
+		} else {
+			this.switchTemplate = true;
+		}
 	}
 	
 	
