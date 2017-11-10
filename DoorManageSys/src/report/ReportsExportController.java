@@ -31,21 +31,19 @@ public class ReportsExportController implements Initializable{
 		ReportTypes reportType = this.reportsSelection.getSelectionModel().getSelectedItem();
 		this.fileName = this.fileNameField.getText();
 		
-		if(source == export) {
-			this.exportSelectedReport(reportType);
+		if((source == export) && (reportType == ReportTypes.INVENTORY)) {
+			this.exportInventoryReport();
 		}
 	}
 	
-	private void exportSelectedReport(ReportTypes reportType) {
-		if(reportType == ReportTypes.INVENTORY) {
-			try {
-				InventoryReport inventoryReport = new InventoryReport(this.getInventoryRecords(), this.fileName);
-				inventoryReport.populateReport();
-				inventoryReport.save();
-				inventoryReport.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public void exportInventoryReport() {
+		try {
+			InventoryReport inventoryReport = new InventoryReport(this.getInventoryRecords(), this.fileName);
+			inventoryReport.populateReport();
+			inventoryReport.save();
+			inventoryReport.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

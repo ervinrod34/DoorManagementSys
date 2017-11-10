@@ -1,5 +1,6 @@
 package quoteproduct;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -16,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import order.Order;
+import report.QuoteReport;
 import inventory.Inventory;
 
 public class QuoteDetailController implements Initializable {
@@ -39,6 +41,8 @@ public class QuoteDetailController implements Initializable {
 	@FXML private Button deleteButton;
 	
 	@FXML private Button manageBlueprints;
+	
+	@FXML private Button createReport;
 	
 	@FXML private ListView<String> productsList;
 	
@@ -78,14 +82,20 @@ public class QuoteDetailController implements Initializable {
 			//Go back to this later
 			Timer timer = new Timer();
 					
-			timer.schedule(new TimerTask() {
-				public void run() {
-					MasterViewController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
-				}
-			}, 2000);
 		} else if(source == manageBlueprints) {
 			MasterController.getInstance().setEditObject(this.order);
 			MasterViewController.getInstance().changeView(PageTypes.BLUEPRINT_CENTER_PAGE);
+			
+		} else if(source == createReport) {
+			try {
+				QuoteReport quoteReport = new QuoteReport(this.order);
+				quoteReport.populateReport();
+				quoteReport.save();
+				quoteReport.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

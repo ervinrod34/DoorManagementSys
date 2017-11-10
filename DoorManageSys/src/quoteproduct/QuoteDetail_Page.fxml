@@ -20,7 +20,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <ListView fx:id="productsList" layoutX="16.0" layoutY="175.0" prefHeight="345.0" prefWidth="435.0" />
+      <ListView fx:id="productsList" layoutX="16.0" layoutY="175.0" prefHeight="325.0" prefWidth="435.0" />
       <Label layoutX="16.0" layoutY="14.0" text="Quote #">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -76,13 +76,14 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="editButton" layoutX="274.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleQuoteDetail" prefHeight="25.0" prefWidth="85.0" text="Edit Quote" />
-      <Button fx:id="deleteButton" layoutX="366.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleQuoteDetail" prefHeight="25.0" prefWidth="85.0" text="Delete" textFill="RED" />
+      <Button fx:id="editButton" layoutX="274.0" layoutY="515.0" mnemonicParsing="false" onAction="#handleQuoteDetail" prefHeight="25.0" prefWidth="85.0" text="Edit Quote" />
+      <Button fx:id="deleteButton" layoutX="366.0" layoutY="515.0" mnemonicParsing="false" onAction="#handleQuoteDetail" prefHeight="25.0" prefWidth="85.0" text="Delete" textFill="RED" />
       <Label fx:id="dbID" layoutX="18.0" layoutY="559.0" text="db0">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
       <Button fx:id="manageBlueprints" layoutX="339.0" layoutY="144.0" mnemonicParsing="false" onAction="#handleQuoteDetail" text="Manage Blueprints" />
+      <Button fx:id="createReport" layoutX="274.0" layoutY="542.0" mnemonicParsing="false" onAction="#handleQuoteDetail" prefHeight="25.0" prefWidth="123.0" text="Create Report" />
    </children>
 </AnchorPane>
