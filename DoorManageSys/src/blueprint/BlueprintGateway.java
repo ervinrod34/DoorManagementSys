@@ -69,7 +69,7 @@ public class BlueprintGateway extends MasterGateway{
 			preparedStatement = this.connection.prepareStatement(
 					"UPDATE Blueprint SET productID=?, dimension=?, "
 					+ "strikeheight=?, frame=?, hingespaces=?, notes=?,"
-					+ "inventorynotes=?");
+					+ "inventorynotes=? WHERE blueprintID=?");
 			
 			preparedStatement.setInt(1, blueprint.getProductID());
 			preparedStatement.setString(2, blueprint.getDimension());
@@ -78,6 +78,7 @@ public class BlueprintGateway extends MasterGateway{
 			preparedStatement.setString(5, blueprint.getHingeSpaces());
 			preparedStatement.setString(6, blueprint.getNotes());
 			preparedStatement.setString(7, blueprint.getInventoryNotes());
+			preparedStatement.setInt(8, blueprint.getId());
 			
 			preparedStatement.execute();
 		} catch(SQLException e) {
