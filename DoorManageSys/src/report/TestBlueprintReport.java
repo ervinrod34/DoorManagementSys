@@ -3,6 +3,7 @@ package report;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import blueprint.Blueprint;
 import inventory.Inventory;
 import order.Order;
 import quoteproduct.Product;
@@ -20,6 +21,17 @@ public class TestBlueprintReport {
 		order.setCustomerPurchaseOrderNumber("0004473R");
 		order.setId(44553);
 		order.setCustomerName("Richard Salcedo");
+		
+		Blueprint blueprint = new Blueprint ();
+		
+		blueprint.setDimension("36,84");
+		blueprint.setFrame("3,3,3");
+		blueprint.setHingeSpaces("12,30,30");
+		blueprint.setStrikeHeight("42");
+		blueprint.setInventoryNotes("Start");
+		blueprint.setNotes("Start");
+		
+		order.setBlueprint(blueprint);
 		
 		ArrayList <Inventory> list = new ArrayList <Inventory> ();
 		
