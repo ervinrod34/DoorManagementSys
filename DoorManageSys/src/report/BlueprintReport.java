@@ -23,7 +23,8 @@ public class BlueprintReport extends PDFReport {
 	private PDRectangle mediaBox;
 	private String width, height, frameLeft, frameRight, frameTop;
 	private String hingeSpaceTop, hingeSpaceMid, hingeSpaceBottom;
-	private String strikeHeight;
+	private String strikeHeight, formattedDate;
+	private int numHinges;
 	private HashMap <String, XYCoordinate> coordinate;
 	
 	public BlueprintReport (Order order) throws IOException {
@@ -47,11 +48,14 @@ public class BlueprintReport extends PDFReport {
 		coordinate.put("height", new XYCoordinate (191, 322));
 		coordinate.put("frameLeft", new XYCoordinate (255,448));
 		coordinate.put("frameRight", new XYCoordinate (410, 448));
-		coordinate.put("frameTop", new XYCoordinate (425, 416));
+		coordinate.put("frameTop", new XYCoordinate (427, 416));
 		coordinate.put("hingeSpaceTop", new XYCoordinate (230, 416));
 		coordinate.put("hingeSpaceMid", new XYCoordinate (230, 367));
 		coordinate.put("hingeSpaceBottom", new XYCoordinate (230, 281));
 		coordinate.put("strikeHeight", new XYCoordinate (455, 257));
+		coordinate.put("formattedDate", new XYCoordinate (309, 113));
+		coordinate.put("customerName", new XYCoordinate (410, 85));
+		coordinate.put("numHinges", new XYCoordinate (575, 107));
 		
 		setStream (new PDPageContentStream (getDoc(), getCurrentPage(), PDPageContentStream.AppendMode.APPEND, false));
 		
@@ -59,7 +63,7 @@ public class BlueprintReport extends PDFReport {
 		
 		assignFileName ("Blueprint.pdf");
 		
-		firstPage = PDImageXObject.createFromFile("SingleDoorSide.PNG", getDoc());
+		firstPage = PDImageXObject.createFromFile("SingleDoorSide2.PNG", getDoc());
 		
 		setUpFirstPage();
 	}
@@ -82,18 +86,26 @@ public class BlueprintReport extends PDFReport {
 		hingeSpaceTop = sliced[0];
 		hingeSpaceMid = sliced[1];
 		hingeSpaceBottom = sliced[2];
+		numHinges = sliced.length;
 		
 		sliced = null;
 		
 		strikeHeight = blueprint.getStrikeHeight();
+		
+		StringBuilder sb = new StringBuilder ();
+		
+		sb.append(date.toString().substring(4, 7) + " ");
+		sb.append(date.toString().substring(8, 10) + ", ");
+		sb.append(date.toString().substring(24, 28));
+		
+		formattedDate = sb.toString();		
 	}
 	
 	@Override
 	public void setUpFirstPage() throws IOException {
 		
 		System.out.println("Setting up Blueprint...");
-		
-		setStreamFont(10);
+		setTextSize(10);
 		stream.drawImage(firstPage, mediaBox.getLowerLeftX(), mediaBox.getLowerLeftY(), 465, 710);
 	}
 	
@@ -103,11 +115,6 @@ public class BlueprintReport extends PDFReport {
 		System.out.println("Populating Blueprint...");
 
 		getValues();
-		
-		//Rotating the page goes clockwise
-		//rotating this text matrix uses an angle. Think of the unit circle
-		//must call setTextMatrix every fucking time. pretty dumb. Not sure 
-		//how to set the stream to treat a rotated page as not rotated
 		
 		stream.beginText();		
 		stream.setTextMatrix(Matrix.getRotateInstance(Math.PI/2, PDRectangle.A4.getWidth(), 0));		
@@ -161,6 +168,26 @@ public class BlueprintReport extends PDFReport {
 		stream.setTextMatrix(Matrix.getRotateInstance(Math.PI/2, PDRectangle.A4.getWidth(), 0));		
 		stream.newLineAtOffset(coordinate.get("strikeHeight").getX(), coordinate.get("strikeHeight").getY());
 		stream.showText(strikeHeight + "\"");
+		stream.endText();
+		
+		stream.beginText();		
+		stream.setTextMatrix(Matrix.getRotateInstance(Math.PI/2, PDRectangle.A4.getWidth(), 0));		
+		stream.newLineAtOffset(coordinate.get("numHinges").getX(), coordinate.get("numHinges").getY());
+		stream.showText(numHinges + "");
+		stream.endText();
+		
+		setTextSize (9);
+		stream.beginText();		
+		stream.setTextMatrix(Matrix.getRotateInstance(Math.PI/2, PDRectangle.A4.getWidth(), 0));		
+		stream.newLineAtOffset(coordinate.get("formattedDate").getX(), coordinate.get("formattedDate").getY());
+		stream.showText(formattedDate);
+		stream.endText();
+		
+		setTextSize (10);
+		stream.beginText();		
+		stream.setTextMatrix(Matrix.getRotateInstance(Math.PI/2, PDRectangle.A4.getWidth(), 0));		
+		stream.newLineAtOffset(coordinate.get("customerName").getX(), coordinate.get("customerName").getY());
+		stream.showText(order.getCustomerName());
 		stream.endText();
 		
 		getStream().close();

@@ -49,7 +49,7 @@ public abstract class PDFReport implements Report {
 		return tempPage;
 	}
 	
-	public void setStreamFont (int size) throws IOException {
+	public void setTextSize (int size) throws IOException {
 		stream.setFont(PDType1Font.HELVETICA, size);
 	}
 	
