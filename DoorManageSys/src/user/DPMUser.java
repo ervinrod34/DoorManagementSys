@@ -73,6 +73,14 @@ public class DPMUser {
 	}
 	
 	/**
+	 * Returns the id of this User.
+	 * @return An int specifying the id
+	 */
+	public int getId() {
+		return this.id;
+	}
+	
+	/**
 	 * Returns the usertype.
 	 * @return A UserTypes specifying the userType
 	 */
