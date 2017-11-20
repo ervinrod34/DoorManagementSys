@@ -3,14 +3,12 @@ package report;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.util.Matrix;
-
 import blueprint.Blueprint;
 import order.Order;
 

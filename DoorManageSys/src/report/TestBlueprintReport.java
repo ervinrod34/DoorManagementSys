@@ -2,7 +2,6 @@ package report;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import blueprint.Blueprint;
 import inventory.Inventory;
 import order.Order;
