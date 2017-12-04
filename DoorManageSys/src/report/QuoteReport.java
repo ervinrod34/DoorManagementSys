@@ -39,11 +39,13 @@ public class QuoteReport {
 	private final int DATE_X = 377, DATE_Y = 644;
 	private final int START_Y = 585;
 	private final int QTY_X = 90, PRICE_X = 490, DESC_X = 135;
-	private final int TOTAL_Y = 67, PAGE_BOTTOM = 110;
+	private final int TOTAL_Y = 67, PAGE_BOTTOM = 120;
 	private final int FIRSTPAGE_X = 60, FIRSTPAGE_Y = 45, FIRSTPAGE_WIDTH = 500, FIRSTPAGE_HEIGHT = 710;
 	private StringBuffer price;
 	private HashMap <Integer, Integer> productQuantity;
+	private HashMap <Integer, Integer> inventoryQuantity;
 	private ArrayList <Product> differentProducts;
+	private ArrayList <Inventory> differentInventory;
 	private PDImageXObject firstPage, nextPage;
 
 	public QuoteReport (Order order) throws IOException {
@@ -102,18 +104,6 @@ public class QuoteReport {
 		}
 		
 		setStreamFont (10);
-		
-		stream.beginText();
-		stream.newLineAtOffset(QTY_X, TOTAL_Y);
-		stream.showText(totalQuantity + "");
-		stream.endText();
-		
-		stream.beginText();
-		stream.newLineAtOffset(PRICE_X, TOTAL_Y);
-		price = new StringBuffer ();
-		price.append(String.format("%,.2f", totalCost));
-		stream.showText(price.toString());
-		stream.endText();
 
 		stream.beginText();
 		stream.newLineAtOffset(DATE_X, DATE_Y);
@@ -145,37 +135,38 @@ public class QuoteReport {
 		System.out.println("Populating report...");
 		y = START_Y;
 		setStreamFont (10);
+		int unit = 0;
 		
 		for (Product product : differentProducts) {
 			
-			stream.beginText();
-			stream.newLineAtOffset(QTY_X, y);
-			stream.showText(productQuantity.get(product.getId()) + "");
-			stream.endText();
+			inventoryQuantity = new HashMap <Integer, Integer> ();
+			differentInventory = new ArrayList <Inventory> ();
+			unit++;
+			
+			for (Inventory inventory : product.getInventories()) {
+				if (inventoryQuantity.containsKey(inventory.getId()))
+					inventoryQuantity.put(inventory.getId(), inventoryQuantity.get(inventory.getId()) + 1);
+				else {
+					inventoryQuantity.put(inventory.getId(), 1);
+					differentInventory.add(inventory);
+				}
+			}
+			
+			skipLine();
 			
 			stream.beginText();
 			stream.newLineAtOffset(DESC_X, y);
-			stream.showText("***Product Details Below");
+			stream.showText("Unit # " + unit);
 			stream.endText();
 			
-			stream.beginText();
-			stream.newLineAtOffset(PRICE_X, y);
-			price = new StringBuffer ();
-			price.append(String.format("$%,.2f", product.calculateTotalCost()));
-			stream.showText(price.toString());
-			stream.endText();
+			skipLine();
 			
-			y -= 12;
-			
-			if (y < PAGE_BOTTOM) {
-				setCurrentPage (getNewPage());
-				setStreamPage (currentPage);
-				setUpNextPage ();
-				setStreamFont (10);
-				y = START_Y -10;
-			}
-			
-			for (Inventory inventory : product.getInventories()) {
+			for (Inventory inventory : differentInventory) {
+				
+				stream.beginText();
+				stream.newLineAtOffset(QTY_X, y);
+				stream.showText(inventoryQuantity.get(inventory.getId()) + "");
+				stream.endText();
 				
 				stream.beginText();
 				stream.newLineAtOffset(DESC_X, y);
@@ -190,20 +181,94 @@ public class QuoteReport {
 				stream.showText(price.toString());
 				stream.endText();
 				
-				y -= 12;
-				
-				if (y < PAGE_BOTTOM) {
-					setCurrentPage (getNewPage());
-					setStreamPage (currentPage);
-					setUpNextPage ();
-					setStreamFont (10);
-					y = START_Y -10;
-				}
+				skipLine();
 			}
 			
+			stream.beginText();
+			stream.newLineAtOffset(DESC_X, y);
+			stream.showText("PRICE PER UNIT # " + unit);
+			stream.endText();
+			
+			stream.beginText();
+			stream.newLineAtOffset(PRICE_X, y);
+			price = new StringBuffer ();
+			price.append(String.format("$%,.2f", product.calculateTotalCost()));
+			stream.showText(price.toString());
+			stream.endText();
+			
+			skipLine();
+			
+			stream.beginText();
+			stream.newLineAtOffset(QTY_X, y);
+			stream.showText(productQuantity.get(product.getId()) + "");
+			stream.endText();
+			
+			stream.beginText();
+			stream.newLineAtOffset(PRICE_X, y);
+			stream.showText("       x" + productQuantity.get(product.getId()));
+			stream.endText();
+			
+			stream.beginText();
+			stream.newLineAtOffset(DESC_X, y);
+			stream.showText("QUANTITY OF UNIT # " + unit);
+			stream.endText();
+			
+			skipLine();
+			
+			stream.beginText();
+			stream.newLineAtOffset(PRICE_X, y);
+			stream.showText("-------------");
+			stream.endText();
+			
+			skipLine();
+			
+			stream.beginText();
+			stream.newLineAtOffset(DESC_X, y);
+			stream.showText("TOTAL");
+			stream.endText();
+			
+			stream.beginText();
+			stream.newLineAtOffset(PRICE_X, y);
+			price = new StringBuffer ();
+			price.append(String.format("$%,.2f", product.calculateTotalCost()*productQuantity.get(product.getId())));
+			stream.showText(price.toString());
+			stream.endText();
+			
+			skipLine();
+			
+			stream.beginText();
+			stream.newLineAtOffset(DESC_X, y);
+			stream.showText("------------------------------------------------------------------------------------------------------");
+			stream.endText();
+			
 			y -= 12;
+			skipLine();
 			
 		}
+		
+		stream.beginText();
+		stream.newLineAtOffset(DESC_X, y);
+		stream.showText("OTHER CHARGES: FREIGHT");
+		stream.endText();
+		
+		stream.beginText();
+		stream.newLineAtOffset(PRICE_X, y);
+		stream.showText("$0.00");
+		stream.endText();
+
+		skipLine();
+		
+		stream.beginText();
+		stream.newLineAtOffset(DESC_X, y);
+		stream.showText("GRAND TOTAL");
+		stream.endText();
+		
+		stream.beginText();
+		stream.newLineAtOffset(PRICE_X, y);
+		price = new StringBuffer ();
+		price.append(String.format("$%,.2f", totalCost));
+		stream.showText(price.toString());
+		stream.endText();
 		
 		stream.close();		
 	}
@@ -264,6 +329,17 @@ public class QuoteReport {
 	
 	public void setStreamFont (int size) throws IOException {
 		stream.setFont(PDType1Font.HELVETICA, size);
+	}
+	
+	public void skipLine () throws IOException {
+		y -= 12;
+		if (y < PAGE_BOTTOM) {
+			setCurrentPage (getNewPage());
+			setStreamPage (currentPage);
+			setUpNextPage ();
+			setStreamFont (10);
+			y = START_Y -10;
+		}
 	}
 	
 }
