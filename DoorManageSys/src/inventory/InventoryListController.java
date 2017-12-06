@@ -4,22 +4,20 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import application.*;
+import application.MasterController;
+import application.MasterViewController;
 import applicationhelper.PageTypes;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import user.UserTableDisplay;
 
 public class InventoryListController implements Initializable {
 
@@ -59,8 +57,10 @@ public class InventoryListController implements Initializable {
 				(mouseEvent.getClickCount() == 2)) {
 			Object selectedObject = inventoryTable.getSelectionModel().selectedItemProperty().get();
 			InventoryTableDisplay selectedItem = (InventoryTableDisplay)selectedObject;
-			MasterController.getInstance().setEditObject(selectedItem.getInventoryItem());
-			MasterViewController.getInstance().changeView(PageTypes.INVENTORY_DETAIL_PAGE);
+			if (selectedItem != null) {
+				MasterController.getInstance().setEditObject(selectedItem.getInventoryItem());
+				MasterViewController.getInstance().changeView(PageTypes.INVENTORY_DETAIL_PAGE);
+			}
 		}
 	}
 	
