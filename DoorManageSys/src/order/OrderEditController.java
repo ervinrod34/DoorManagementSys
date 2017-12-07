@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import application.*;
+import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,14 +63,18 @@ public class OrderEditController implements Initializable {
 			MasterController.getInstance().setEditObject(this.order);
 			MasterViewController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
 		} else if(source == saveButton) {
-			this.updateOrderObject();
-			this.order.save();
-			
-			//After saving, change the screen into detail of the updated inventory
-			MasterViewController.getInstance().changeView(PageTypes.ORDER_LIST_PAGE);
-			
-			MasterController.getInstance().setEditObject(this.order);
-			MasterViewController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
+			InfoDialogs dug = new InfoDialogs();
+			int d = dug.displaySaveConfirmation();
+			if(d == 1) {
+				this.updateOrderObject();
+				this.order.save();
+				
+				//After saving, change the screen into detail of the updated inventory
+				MasterViewController.getInstance().changeView(PageTypes.ORDER_LIST_PAGE);
+				
+				MasterController.getInstance().setEditObject(this.order);
+				MasterViewController.getInstance().changeView(PageTypes.ORDER_DETAIL_PAGE);
+			}
 		}
 	}
 	

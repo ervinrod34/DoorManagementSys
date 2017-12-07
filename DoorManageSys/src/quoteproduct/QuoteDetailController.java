@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.*;
+import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -74,11 +75,14 @@ public class QuoteDetailController implements Initializable {
 			MasterViewController.getInstance().changeView(PageTypes.QUOTEITEMS_LIST_PAGE);
 			MasterViewController.getInstance().changeView(PageTypes.QUOTE_EDIT_PAGE);
 		} else if (source == deleteButton) {
-			MasterController.getInstance().getProductGateway().deleteProducts(quote.getProducts());
-			MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(quote.getId());
+			InfoDialogs dug = new InfoDialogs();
+			int d = dug.displayDeleteConfirmation();
+			if(d == 1) {
+				MasterController.getInstance().getProductGateway().deleteProducts(quote.getProducts());
+				MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(quote.getId());
 			
-			this.quote.addQuantity();
-			
+				this.quote.addQuantity();
+			}
 			//Go back to this later
 			Timer timer = new Timer();
 					

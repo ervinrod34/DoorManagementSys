@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import applicationdialogs.InfoDialogs;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,7 +44,11 @@ public class QuoteItemsListController implements Initializable {
 	@FXML private void handleDelete(ActionEvent action) {
 		Object source = action.getSource();
 		if(source == deleteItem) {
-			this.tryToRemoveInventory(this.selectedContent);
+			InfoDialogs dug = new InfoDialogs();
+			int d = dug.displayDeleteConfirmation();
+			if(d == 1) {
+				this.tryToRemoveInventory(this.selectedContent);
+			}
 		}
 	}
 	

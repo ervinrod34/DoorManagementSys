@@ -1,7 +1,10 @@
 package applicationdialogs;
 
+import java.util.Optional;
+
 import application.MasterController;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import user.*;
 
 public class InfoDialogs extends Alert {
@@ -39,5 +42,27 @@ public class InfoDialogs extends Alert {
 		this.setContentText(message);
 		
 		this.showAndWait();
+	}
+	
+	public int displaySaveConfirmation() {
+		this.setHeaderText("You are about to save this product.");
+		this.setContentText("Do you want to continue?");
+		Optional<ButtonType> result = this.showAndWait();
+		if(result.get() == ButtonType.OK) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+	
+	public int displayDeleteConfirmation() {
+		this.setHeaderText("You are about to delete this product.");
+		this.setContentText("Do you want to continue?");
+		Optional<ButtonType> result = this.showAndWait();
+		if(result.get() == ButtonType.OK) {
+			return 1;
+		}else {
+			return 0;
+		}
 	}
 }

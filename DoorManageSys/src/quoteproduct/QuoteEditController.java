@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 
 import application.*;
+import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -74,11 +75,15 @@ public class QuoteEditController implements Initializable {
 			MasterController.getInstance().setEditObject(this.order);
 			MasterViewController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
 		} else if (source == saveQuoteButton) {
-			this.updateQuoteObject();
-			this.quote.saveProducts();
-			this.quote.save();
-			this.order.save();
-			this.quote.subtractQuantity();
+			InfoDialogs dug = new InfoDialogs();
+			int d = dug.displaySaveConfirmation();
+			if(d == 1) {
+				this.updateQuoteObject();
+				this.quote.saveProducts();
+				this.quote.save();
+				this.order.save();
+				this.quote.subtractQuantity();
+			}
 			
 			MasterViewController.getInstance().changeView(PageTypes.QORDER_LIST_PAGE);
 			MasterController.getInstance().setEditObject(this.order);

@@ -12,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.*;
+import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,9 +51,12 @@ public class OrderDetailController implements Initializable {
 			MasterViewController.getInstance().changeView(PageTypes.ORDER_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
-			MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(this.order.getQuote().getId());
-			MasterController.getInstance().getOrderGateway().deleteOrder(this.order.getId());
-			
+			InfoDialogs dug = new InfoDialogs();
+			int d = dug.displayDeleteConfirmation();
+			if(d == 1) {
+				MasterController.getInstance().getQuoteGateway().deleteQuoteRecord(this.order.getQuote().getId());
+				MasterController.getInstance().getOrderGateway().deleteOrder(this.order.getId());
+			}
 			//Go back to this later
 			this.scheduleRefresh();
 		}
