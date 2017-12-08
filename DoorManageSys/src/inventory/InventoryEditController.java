@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.*;
+import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -53,14 +54,18 @@ public class InventoryEditController implements Initializable {
 			MasterViewController.getInstance().changeView(PageTypes.INVENTORY_DETAIL_PAGE);
 			
 		} else if(source == saveButton) {
-			this.updateInventoryObject();
-			this.inventory.save();
-			
-			//After saving, change the screen into detail of the updated inventory
-			MasterViewController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
-			
-			MasterController.getInstance().setEditObject(this.inventory);
-			MasterViewController.getInstance().changeView(PageTypes.INVENTORY_DETAIL_PAGE);
+			InfoDialogs dug = new InfoDialogs();
+			int d = dug.displaySaveConfirmation();
+			if(d == 1) {
+				this.updateInventoryObject();
+				this.inventory.save();
+				
+				//After saving, change the screen into detail of the updated inventory
+				MasterViewController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
+				
+				MasterController.getInstance().setEditObject(this.inventory);
+				MasterViewController.getInstance().changeView(PageTypes.INVENTORY_DETAIL_PAGE);
+			}
 		}
 	}
 	

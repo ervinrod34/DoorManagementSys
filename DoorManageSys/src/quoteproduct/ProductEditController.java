@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.*;
+import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import inventory.Inventory;
 import javafx.collections.ObservableList;
@@ -43,14 +44,18 @@ public class ProductEditController implements Initializable {
 			MasterViewController.getInstance().changeView(PageTypes.PRODUCT_DETAIL_PAGE);
 			
 		} else if(source == saveButton) {
-			this.updateProductObject();
-			this.product.save();
-			
-			//After saving, change the screen into detail of the updated inventory
-			MasterViewController.getInstance().changeView(PageTypes.PRODUCT_LIST_PAGE);
-			
-			MasterController.getInstance().setEditObject(this.product);
-			MasterViewController.getInstance().changeView(PageTypes.PRODUCT_DETAIL_PAGE);
+			InfoDialogs dug = new InfoDialogs();
+			int d = dug.displaySaveConfirmation();
+			if(d == 1) {
+				this.updateProductObject();
+				this.product.save();
+				
+				//After saving, change the screen into detail of the updated inventory
+				MasterViewController.getInstance().changeView(PageTypes.PRODUCT_LIST_PAGE);
+				
+				MasterController.getInstance().setEditObject(this.product);
+				MasterViewController.getInstance().changeView(PageTypes.PRODUCT_DETAIL_PAGE);
+			}
 		}
 	}
 	

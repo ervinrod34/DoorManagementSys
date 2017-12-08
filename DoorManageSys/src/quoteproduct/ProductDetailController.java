@@ -7,7 +7,10 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JOptionPane;
+
 import application.*;
+import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import inventory.Inventory;
 import javafx.collections.ObservableList;
@@ -34,6 +37,7 @@ public class ProductDetailController implements Initializable {
 	}
 	
 	@FXML private void handleProductDetail(ActionEvent ae) {
+		
 		Object source = ae.getSource();
 		
 		if(source == editButton) {
@@ -41,10 +45,16 @@ public class ProductDetailController implements Initializable {
 			MasterViewController.getInstance().changeView(PageTypes.PRODUCT_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
-			MasterController.getInstance().getProductGateway().deleteProductRecord(this.product.getId());
 			
+			InfoDialogs dug = new InfoDialogs();
+			int d = dug.displayDeleteConfirmation();
+			if(d == 1) {
+				MasterController.getInstance().getProductGateway().deleteProductRecord(this.product.getId());
+			
+			}
 		}
 	}
+	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

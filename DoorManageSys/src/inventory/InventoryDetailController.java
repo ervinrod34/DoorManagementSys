@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.*;
+import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,8 +55,11 @@ public class InventoryDetailController implements Initializable {
 			MasterViewController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
 			
 		} else if(source == deleteButton) {
-			MasterController.getInstance().getInventoryGateway().deleteInventory(this.inventory.getId());
-			
+			InfoDialogs dug = new InfoDialogs();
+			int d = dug.displayDeleteConfirmation();
+			if(d == 1) {
+				MasterController.getInstance().getInventoryGateway().deleteInventory(this.inventory.getId());
+			}
 			this.scheduleRefresh();
 		}
 	}

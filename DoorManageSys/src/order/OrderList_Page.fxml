@@ -2,18 +2,34 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView fx:id="orderListView" layoutX="3.0" layoutY="38.0" onMouseClicked="#handleOrderList" prefHeight="540.0" prefWidth="695.0" />
       <Label layoutX="10.0" layoutY="8.0" text="Orders">
          <font>
             <Font name="Times New Roman Bold" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="addButton" layoutX="600.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleOrder" onMouseClicked="#handleOrderList" text="Add New Order" />
+      <Button fx:id="addButton" layoutX="594.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleOrder" onMouseClicked="#handleOrderTable" text="Add New Order" />
+      <TableView fx:id="orderTable" layoutY="35.0" onMouseClicked="#handleOrderTable" prefHeight="545.0" prefWidth="700.0">
+        <columns>
+          <TableColumn fx:id="orderIDCol" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Order ID" />
+          <TableColumn minWidth="-1.0" prefWidth="-1.0" resizable="false" text="Customer">
+               <columns>
+                  <TableColumn fx:id="orderCustomerNameCol" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Name" />
+                  <TableColumn fx:id="orderPurchaseNumCol" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Purchase Order #" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="orderDateCol" minWidth="-Infinity" prefWidth="130.0" resizable="false" text="Date Ordered" />
+            <TableColumn fx:id="orderTargetShippingCol" minWidth="-Infinity" prefWidth="130.0" resizable="false" text="Target Shipping Date" />
+            <TableColumn fx:id="orderStatusCol" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="Status" />
+            <TableColumn fx:id="orderProductCodeCol" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Product Code" />
+            <TableColumn fx:id="orderTotalCol" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Total Amount" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
