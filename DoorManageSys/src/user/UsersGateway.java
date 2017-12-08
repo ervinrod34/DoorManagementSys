@@ -127,6 +127,7 @@ public class UsersGateway extends MasterGateway{
 		
 		try {
 			preparedStatement = this.connection.prepareStatement("DELETE FROM User id=?");
+			preparedStatement.setInt(1, user.getId());
 			preparedStatement.execute();
 		} catch(SQLException sqlException) {
 			sqlException.printStackTrace();

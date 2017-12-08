@@ -51,13 +51,14 @@ public class UserEditController implements Initializable {
 			
 			if(this.checkIfUserSelectedAType()) {
 				this.user.save();
+				
+				MasterViewController.getInstance().changeView(PageTypes.VIEW_USERS_PAGE);
+				MasterController.getInstance().setEditObject(this.user);
+				MasterViewController.getInstance().changeView(PageTypes.USER_DETAIL_PAGE);
 			} else {
 				InfoDialogs info = new InfoDialogs();
 				info.displayInformationDialog("Please select a User type.");
 			}
-			
-			MasterController.getInstance().setEditObject(this.user);
-			MasterViewController.getInstance().changeView(PageTypes.USER_DETAIL_PAGE);
 		}
 	}
 	
@@ -72,13 +73,17 @@ public class UserEditController implements Initializable {
 	}
 	
 	public void initialize(URL location, ResourceBundle resources) {
+		this.observableTypes = this.usertypeChoice.getItems();
+		this.populateChoicesWithUserTypes();
+		this.usertypeChoice.setTooltip(new Tooltip("Select a user type."));
+		this.usertypeChoice.setValue(this.user.getUserType());
+		
 		if(this.user.getId() > 0) {
 			this.splitName();
 			this.username.setText(this.user.getLogin());
 			this.password.setText(this.user.getPassword());
 			this.email.setText(this.user.getEmail());
-			this.usertypeChoice.setTooltip(new Tooltip("Select a user type."));
-			this.usertypeChoice.setValue(this.user.getUserType());
+			
 		}
 	}
 	
@@ -86,6 +91,14 @@ public class UserEditController implements Initializable {
 		String[] names = this.user.getName().split(" ");
 		this.firstName.setText(names[0]);
 		this.lastName.setText(names[1]);
+	}
+	
+	private void populateChoicesWithUserTypes() {
+		for(UserTypes type : UserTypes.values()) {
+			this.observableTypes.add(type);
+		}
+		
+		this.observableTypes.remove(0);
 	}
 	
 	private void updateUserObject() {
@@ -97,5 +110,7 @@ public class UserEditController implements Initializable {
 		updatedUser.setPassword(this.password.getText());
 		updatedUser.setEmail(this.email.getText());
 		updatedUser.setUserType(this.usertypeChoice.getSelectionModel().getSelectedItem());
+		
+		this.user = updatedUser;
 	}
 }

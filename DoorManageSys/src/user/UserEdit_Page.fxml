@@ -45,10 +45,10 @@
          </font>
       </Label>
       <TextField fx:id="username" layoutX="102.0" layoutY="76.0" prefHeight="25.0" prefWidth="177.0" />
+      <PasswordField fx:id="password" layoutX="102.0" layoutY="106.0" prefHeight="25.0" prefWidth="177.0" />
       <TextField fx:id="email" layoutX="102.0" layoutY="136.0" prefHeight="25.0" prefWidth="177.0" />
       <TextField fx:id="firstName" layoutX="102.0" layoutY="166.0" prefHeight="25.0" prefWidth="146.0" promptText="First Name" />
       <TextField fx:id="lastName" layoutX="251.0" layoutY="166.0" prefHeight="25.0" prefWidth="177.0" promptText="Last Name" />
       <ChoiceBox fx:id="usertypeChoice" layoutX="100.0" layoutY="196.0" prefHeight="25.0" prefWidth="329.0" />
-      <PasswordField fx:id="password" layoutX="102.0" layoutY="106.0" prefHeight="25.0" prefWidth="177.0" />
    </children>
 </AnchorPane>

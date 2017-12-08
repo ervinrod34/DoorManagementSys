@@ -64,7 +64,10 @@ public class ViewUsersController implements Initializable {
 				(mouseEvent.getClickCount() == 2)) {
 			Object selectedObject = usersTable.getSelectionModel().selectedItemProperty().get();
 			UserTableDisplay selectedUser = (UserTableDisplay)selectedObject;
-			System.out.print(selectedUser.getUserData());
+			if(selectedUser != null) {
+				MasterController.getInstance().setEditObject(selectedUser.getUserData());
+				MasterViewController.getInstance().changeView(PageTypes.USER_DETAIL_PAGE);
+			}
 		}
 	}
 	

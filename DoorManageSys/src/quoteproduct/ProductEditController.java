@@ -21,13 +21,10 @@ import javafx.scene.control.TextField;
 public class ProductEditController implements Initializable {
 
 	@FXML private TextField productNumberField;
-	
 	@FXML private TextField totalCostField;
-	
 	@FXML private TextField inventoryItemsField;
 
 	@FXML private Button saveButton;
-	
 	@FXML private Button cancelButton;
 	
 	private Product product;

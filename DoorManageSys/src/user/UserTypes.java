@@ -16,8 +16,8 @@ public enum UserTypes {
 	ACCOUNTING("Accounting"),
 	PURCHASING("Purchasing"),
 	ENGINEER("Engineer"),
-	INVENTORYMANAGER("Inventory Manager"),
-	ADMIN("Administrator");
+	INVENTORYMANAGER("InventoryManager"),
+	ADMIN("Admin");
 	
 	private final String type;
 	
