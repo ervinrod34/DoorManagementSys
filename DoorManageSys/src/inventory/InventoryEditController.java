@@ -20,39 +20,23 @@ import javafx.scene.control.TextField;
 public class InventoryEditController implements Initializable {
 
 	@FXML private TextField itemNumberField;
-	
 	@FXML private TextField manufacturerField;
-	
 	@FXML private TextField partNumberField;
-	
 	@FXML private TextField sizesField;
-	
 	@FXML private TextField colorCodeField;
-	
 	@FXML private TextArea otherInfoField;
-	
 	@FXML private TextField unitOfMeasureField;
-	
 	@FXML private TextField actualCostField;
-	
 	@FXML private TextField sellingPriceField;
-	
 	@FXML private TextField accountingCodeField;
-	
 	@FXML private TextField vendorsField;
-
 	@FXML private TextField quantityField;
-	
 	@FXML private TextField minQuantityField;
-	
 	@FXML private TextField maxQuantityField;
-	
 	@FXML private TextField categoryField;
 	
 	@FXML private Button saveButton;
-	
 	@FXML private Button cancelButton;
-	
 	@FXML private CheckBox taxable;
 	
 	private Inventory inventory;

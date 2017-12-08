@@ -11,6 +11,7 @@ package user;
 
 public enum UserTypes {
 
+	NEW("New"),
 	SALES("Sales"),
 	ACCOUNTING("Accounting"),
 	PURCHASING("Purchasing"),

@@ -1,5 +1,7 @@
 package user;
 
+import application.MasterController;
+
 /**
  * The DPMUSer class defines a DPMUser object which
  * represents a user for this Door Production Manager application.
@@ -47,7 +49,7 @@ public class DPMUser {
 	 */
 	public DPMUser() {
 		this.id = 0;
-		this.userType = null;
+		this.userType = UserTypes.NEW;
 		this.login = "";
 		this.password = "";
 		this.name = "";
@@ -78,6 +80,10 @@ public class DPMUser {
 	 */
 	public int getId() {
 		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	/**
@@ -160,16 +166,12 @@ public class DPMUser {
 		this.email = email;
 	}
 	
-	/**
-	 * TODO: move this to a class that will be extending DPMUser
-	 * Saves this DPMUser object into the MYSQL database.
-	 * Checks if the DPMUser contains valid values.
-	 * If the DPMUser is new, it inserts it into the database
-	 * as a new record. If the user is an existing user in the
-	 * database, update the record in the database.
-	 */
 	public void save() {
-		
+		if(id == 0) {
+			MasterController.getInstance().getUsersGateway().insertUser(this);
+		} else {
+			MasterController.getInstance().getUsersGateway().updateUser(this);
+		}
 	}
 	
 	/**

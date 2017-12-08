@@ -12,11 +12,15 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import application.MasterController;
+import application.MasterViewController;
+import applicationhelper.PageTypes;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,16 +30,12 @@ import javafx.scene.input.MouseEvent;
 
 public class ViewUsersController implements Initializable {
 	
-	/**
-	 * The ListView in the ViewUsers_Page
-	 */
-	//@FXML private ListView<DPMUser> usersListView;
-	
 	@FXML private TableView<UserTableDisplay> usersTable;
 	@FXML private TableColumn<UserTableDisplay, String> nameCol;
 	@FXML private TableColumn<UserTableDisplay, String> usernameCol;
 	@FXML private TableColumn<UserTableDisplay, String> emailCol;
 	@FXML private TableColumn<UserTableDisplay, String> usertypeCol;
+	@FXML private Button addButton;
 	
 	/**
 	 * An observable list which allows the users to be displayed
@@ -58,7 +58,6 @@ public class ViewUsersController implements Initializable {
 	/**
 	 * Handles the user interaction with the GUI components in the
 	 * view users page.
-	 * @param ae An ActionEvent
 	 */
 	@FXML private void handleViewUsers(MouseEvent mouseEvent) {
 		if((mouseEvent.getButton() == MouseButton.PRIMARY) && 
@@ -66,6 +65,14 @@ public class ViewUsersController implements Initializable {
 			Object selectedObject = usersTable.getSelectionModel().selectedItemProperty().get();
 			UserTableDisplay selectedUser = (UserTableDisplay)selectedObject;
 			System.out.print(selectedUser.getUserData());
+		}
+	}
+	
+	@FXML private void handleAddUser(ActionEvent action) {
+		Object source = action.getSource();
+		if(source == addButton) {
+			MasterController.getInstance().setEditObject(new DPMUser());
+			MasterViewController.getInstance().changeView(PageTypes.USER_EDIT_PAGE);
 		}
 	}
 	

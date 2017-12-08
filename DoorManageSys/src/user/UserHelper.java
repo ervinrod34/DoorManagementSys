@@ -14,6 +14,10 @@ public class UserHelper{
 		UserTypes userType = null;
 		
 		switch(type) {
+			case "New":
+				userType = UserTypes.NEW;
+				break;
+		
 			case "Admin":
 				userType = UserTypes.ADMIN;
 				break;

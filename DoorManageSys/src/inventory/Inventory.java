@@ -57,27 +57,21 @@ public class Inventory {
 	public int getMinQuantity () {
 		return minQuantity;
 	}
-	
 	public void setMinQuantity (int minQuantity) {
 		this.minQuantity = minQuantity;
 	}
-	
 	public String getItemNo() {
 		return itemNo;
 	}
-
 	public void setItemNo(String itemNo) {
 		this.itemNo = itemNo;
 	}
-
 	public String getManufacturerNo() {
 		return manufacturerNo;
 	}
-
 	public void setManufacturerNo(String manufacturerNo) {
 		this.manufacturerNo = manufacturerNo;
 	}
-
 	public int getId() {
 		return id;
 	}

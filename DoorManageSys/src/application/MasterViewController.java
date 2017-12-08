@@ -72,7 +72,8 @@ public class MasterViewController extends MasterController{
 		} else if(desiredPage == PageTypes.INVENTORY_DETAIL_PAGE || 
 				desiredPage == PageTypes.QUOTE_DETAIL_PAGE ||
 				desiredPage == PageTypes.PRODUCT_DETAIL_PAGE || 
-				desiredPage == PageTypes.ORDER_DETAIL_PAGE) {
+				desiredPage == PageTypes.ORDER_DETAIL_PAGE ||
+				desiredPage == PageTypes.USER_DETAIL_PAGE) {
 			MasterController.getInstance().mainPane.setRight(view);
 			this.blueprintRightsIsOpen = false;
 			
@@ -81,6 +82,7 @@ public class MasterViewController extends MasterController{
 				desiredPage == PageTypes.QUOTE_EDIT_PAGE ||
 				desiredPage == PageTypes.PRODUCT_EDIT_PAGE || 
 				desiredPage == PageTypes.ORDER_EDIT_PAGE || 
+				desiredPage == PageTypes.USER_EDIT_PAGE ||
 				desiredPage == PageTypes.BLUEPRINT_RIGHT_PAGE) {
 			MasterController.getInstance().mainPane.setRight(view);
 			this.blueprintRightsIsOpen = false;
@@ -131,6 +133,24 @@ public class MasterViewController extends MasterController{
 				loader.setController(new ViewUsersController(users));
 				break;
 				
+			case USER_DETAIL_PAGE:
+				DPMUser viewUser = (DPMUser)MasterController.getInstance().editObj;
+				
+				loader = new FXMLLoader(getClass().getResource("/user/UserDetail_Page.fxml"));
+				loader.setController(new UserDetailController(viewUser));
+				break;
+				
+			case USER_EDIT_PAGE:
+				DPMUser editUser = (DPMUser)MasterController.getInstance().editObj;
+				loader = new FXMLLoader(getClass().getResource("/user/UserEdit_Page.fxml"));
+				
+				if(editUser.getId() > 0) {
+					loader.setController(new UserEditController(editUser));
+				} else if(editUser.getId() == 0) {
+					loader.setController(new UserEditController(new DPMUser()));
+				}
+				break;
+				
 			case INVENTORY_LIST_PAGE:
 				List<Inventory> allInventory = MasterController.getInstance().inventoryGateway.getInventory();
 				
@@ -147,7 +167,6 @@ public class MasterViewController extends MasterController{
 				
 			case INVENTORY_EDIT_PAGE:
 				Inventory editItem = (Inventory)MasterController.getInstance().editObj;
-				
 				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryEdit_Page.fxml"));
 				
 				if(editItem.getId() > 0) {
@@ -173,7 +192,6 @@ public class MasterViewController extends MasterController{
 				
 			case ORDER_EDIT_PAGE:
 				Order editOrder = (Order)MasterController.getInstance().editObj;
-				
 				loader = new FXMLLoader(getClass().getResource("/order/OrderEdit_Page.fxml"));
 				
 				if(editOrder.getId() > 0) {
@@ -192,7 +210,6 @@ public class MasterViewController extends MasterController{
 				
 			case QUOTE_EDIT_PAGE:
 				Order quoteEdit = (Order)MasterController.getInstance().editObj;
-				
 				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QuoteEdit_Page.fxml"));
 				
 				if (quoteEdit.getId() > 0) {
@@ -232,7 +249,6 @@ public class MasterViewController extends MasterController{
 				
 			case PRODUCT_EDIT_PAGE:
 				Product editProduct = (Product)MasterController.getInstance().editObj;
-				
 				loader = new FXMLLoader(getClass().getResource("/quoteproduct/ProductEdit_Page.fxml"));
 				
 				if(editProduct.getId() > 0) {
