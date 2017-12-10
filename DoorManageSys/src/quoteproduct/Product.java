@@ -72,10 +72,18 @@ public class Product {
 	public String toString () {
 		String returnValue = "Product ID: " + id + "\tProduct Cost: " + totalCost + "\nItems:";
 		for (Inventory item : inventories) {
-			returnValue += ("\n"+item);
+			returnValue += ("\n"+item.toStringShorter());
 		}
 		return returnValue;
 		
+	}
+	
+	public String itemsToString() {
+		String returnValue = "";
+		for (Inventory item : inventories) {
+			returnValue += (item.toStringShorter()+"\n");
+		}
+		return returnValue;
 	}
 	
 }

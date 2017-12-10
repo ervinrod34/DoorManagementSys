@@ -53,7 +53,7 @@ public class QuoteGateway extends MasterGateway{
 				resultSet = preparedStatement.executeQuery();
 				
 				if (!resultSet.isBeforeFirst())
-					System.out.println("NO DATA");
+					System.out.println("NO DATA FOR QUOTE ID: '"+quoteID+"'");
 				else {
 					resultSet.next();
 					quote = new Quote(resultSet.getInt("id"), 

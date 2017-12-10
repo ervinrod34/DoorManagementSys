@@ -55,7 +55,7 @@ public class ProductGateway extends MasterGateway{
 			resultSet = preparedStatement.executeQuery();
 			
 			if (!resultSet.isBeforeFirst())
-				System.out.println("NO DATA");
+				System.out.println("NO DATA FOR PRODUCT ID: '"+productID+"'");
 			else {
 				resultSet.next();
 				product = new Product(resultSet.getInt("id"), 

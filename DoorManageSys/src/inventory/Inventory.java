@@ -190,6 +190,12 @@ public class Inventory {
 		return stringBuffer.toString();
 	}
 	
+	public String toStringShorter() {
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer.append(String.format("%-14s\t%-12s  %s  %s", itemNo, manufacturer, manufacturerNo, colorCode));
+		return stringBuffer.toString();
+	}
+	
 	public int subtract(){
 		return this.quantity -= 1;
 	}
