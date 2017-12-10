@@ -10,6 +10,8 @@ import application.*;
 import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import inventory.Inventory;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,6 +64,16 @@ public class ProductEditController implements Initializable {
 			this.totalCostField.setText(Double.toString(this.product.getTotalCost()));
 			this.inventoryItemsField.setText(parseProductIDsToCSV(this.product.getInventories()));
 		}
+		
+		productNumberField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\w*)")) {
+		        	productNumberField.setText(newValue.replaceAll("[^\\w]", ""));
+		        }
+		    }
+		});
 	}
 	
 	public void updateProductObject() {

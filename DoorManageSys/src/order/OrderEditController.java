@@ -13,6 +13,8 @@ import java.util.ResourceBundle;
 import application.*;
 import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -92,6 +94,75 @@ public class OrderEditController implements Initializable {
 			System.out.println("Total Amount " + this.order.getTotalAmount());
 			this.actualCostField.setText(this.formatAmount(this.order.getTotalAmount()));
 		}
+		customerNameField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[a-zA-Z]*")) {
+		        	customerNameField.setText(newValue.replaceAll("[^a-zA-Z]", ""));
+		        }
+		    }
+		});
+		
+		statusField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[a-zA-Z]*")) {
+		        	statusField.setText(newValue.replaceAll("[^a-zA-Z]", ""));
+		        }
+		    }
+		});
+		
+		customerPurchaseOrderNumberField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\w*)")) {
+		        	customerPurchaseOrderNumberField.setText(newValue.replaceAll("[^\\w]", ""));
+		        }
+		    }
+		});
+		
+		productCodeField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\w*)")) {
+		        	productCodeField.setText(newValue.replaceAll("[^\\w]", ""));
+		        }
+		    }
+		});
+		
+		blueprintNumberField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\d*)")) {
+		        	blueprintNumberField.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
+		
+		quoteNumberField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\d*)")) {
+		        	quoteNumberField.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
+		
+		actualCostField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[0-9\\-\\.\\'\"\\$]*")) {
+		        	actualCostField.setText(newValue.replaceAll("[^0-9\\-\\.\\'\"\\$]", ""));
+		        }
+		    }
+		});
 	}
 	
 	private String formatAmount(double amountToFormat) {

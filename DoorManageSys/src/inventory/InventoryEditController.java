@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 import application.*;
 import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -84,6 +86,139 @@ public class InventoryEditController implements Initializable {
 			this.vendorsField.setText(this.inventory.getVendor());
 			this.categoryField.setText(this.inventory.getCategory());
 		}
+		minQuantityField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\d*)")) {
+		        	minQuantityField.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
+		
+		maxQuantityField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\d*)")) {
+		        	maxQuantityField.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
+		quantityField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\d*)")) {
+		        	quantityField.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
+		
+		itemNumberField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\w*)")) {
+		        	itemNumberField.setText(newValue.replaceAll("[^\\w]", ""));
+		        }
+		    }
+		});
+		
+		manufacturerField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\w*)")) {
+		        	manufacturerField.setText(newValue.replaceAll("[^\\w]", ""));
+		        }
+		    }
+		});
+		
+		partNumberField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\d*)")) {
+		        	partNumberField.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
+		
+		
+		colorCodeField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\w*)")) {
+		        	colorCodeField.setText(newValue.replaceAll("[^\\w]", ""));
+		        }
+		    }
+		});
+		
+		sizesField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[a-zA-Z0-9\\-\\.\\'\"]*")) {
+		        	sizesField.setText(newValue.replaceAll("[^a-zA-Z0-9\\-\\.\\'\"]", ""));
+		        }
+		    }
+		});
+		
+		unitOfMeasureField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[a-zA-Z\\-\\.\\'\"]*")) {
+		        	unitOfMeasureField.setText(newValue.replaceAll("[^a-zA-Z\\-\\.\\'\"]", ""));
+		        }
+		    }
+		});
+		
+		categoryField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\w*)")) {
+		        	categoryField.setText(newValue.replaceAll("[^\\w]", ""));
+		        }
+		    }
+		});
+		
+		accountingCodeField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\w*)")) {
+		        	accountingCodeField.setText(newValue.replaceAll("[^\\w]", ""));
+		        }
+		    }
+		});
+		
+		actualCostField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[0-9\\-\\.\\'\"\\$]*")) {
+		        	actualCostField.setText(newValue.replaceAll("[^0-9\\-\\.\\'\"\\$]", ""));
+		        }
+		    }
+		});
+		
+		sellingPriceField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[0-9\\-\\.\\'\"\\$]*")) {
+		        	sellingPriceField.setText(newValue.replaceAll("[^0-9\\-\\.\\'\"\\$]", ""));
+		        }
+		    }
+		});
+		
+		
+		
+		
 	}
 	
 	public void updateInventoryObject() {

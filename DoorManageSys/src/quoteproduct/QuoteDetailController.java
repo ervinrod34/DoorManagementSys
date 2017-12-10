@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 import application.*;
 import applicationdialogs.InfoDialogs;
@@ -17,6 +18,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextFormatter;
+import javafx.util.converter.IntegerStringConverter;
 import order.Order;
 import report.QuoteReport;
 import inventory.Inventory;
@@ -102,6 +105,8 @@ public class QuoteDetailController implements Initializable {
 			}
 		}
 	}
+	
+	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

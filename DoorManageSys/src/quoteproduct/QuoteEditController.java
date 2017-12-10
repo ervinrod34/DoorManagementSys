@@ -3,6 +3,13 @@ package quoteproduct;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
+import javax.print.attribute.AttributeSet;
+import javax.swing.JFormattedTextField;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 import application.*;
 import applicationdialogs.InfoDialogs;
@@ -18,7 +25,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.util.converter.IntegerStringConverter;
 import order.Order;
+
+import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import java.awt.*;
 
 public class QuoteEditController implements Initializable {
 	
@@ -168,8 +181,12 @@ public class QuoteEditController implements Initializable {
 		quote = updatedOrder.getQuote();
 	}
 	
+	private Pattern validDoubleText = Pattern.compile("-?((\\d*)|(\\d+\\.\\d*))");
+	
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		 
 		if (order.getId() > 0) {
 			quoteNumber.setText(Integer.toString(order.getQuote().getId()));
 			quoteStatus.setText(order.getStatus());
@@ -178,11 +195,55 @@ public class QuoteEditController implements Initializable {
 			orderDate.setText(order.getDateOrdered().toString());
 			quote.setTotalCost(quote.calculateTotalCost());
 			totalPrice.setText(Double.toString(quote.getTotalCost()));
+			
 		}
+		customerName.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[a-zA-Z]*")) {
+		        	customerName.setText(newValue.replaceAll("[^a-zA-Z]", ""));
+		        }
+		    }
+		});
+		
+		quoteStatus.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[a-zA-Z]*")) {
+		        	quoteStatus.setText(newValue.replaceAll("[^a-zA-Z]", ""));
+		        }
+		    }
+		});
+		
+		purchaseOrderNumber.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("(\\w*)")) {
+		        	purchaseOrderNumber.setText(newValue.replaceAll("[^\\w]", ""));
+		        }
+		    }
+		});
+		
+		orderDate.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("[\\w\\-\\.\\'\"]*")) {
+		        	orderDate.setText(newValue.replaceAll("[^\\w\\-\\.\\'\"]", ""));
+		        }
+		    }
+		});
+		
+		
 		products.setItems(observableList);
 		//TODO: fix on empty product list (new quotes)
 		products.getSelectionModel().select(MasterController.getInstance().getProductToDisplay());
 		products.getSelectionModel().selectedItemProperty().addListener(selectionListener);
+		
 	}
 
 }
+
