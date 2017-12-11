@@ -59,6 +59,10 @@ public class MasterController {
 	protected List<Inventory> inventoryToDisplay;
 	protected List<Order> orderToDisplay;
 	
+	protected List <Inventory> searchedInventory;
+	protected List <Order> searchedOrders;
+	protected List <Order> searchedQuotes;
+	
 	/**
 	 * Initialize a MasterController object.
 	 */
@@ -176,4 +180,38 @@ public class MasterController {
 	public Product getProductToDisplay() {
 		return this.productToDisplay;
 	}
+	
+	public PageTypes getCurrentPage () {
+		return desiredPage;
+	}
+	
+	public List<Inventory> getInventoryToDisplay () {
+		return inventoryToDisplay;
+	}
+
+	public List<Inventory> getSearchedInventory() {
+		return searchedInventory;
+	}
+
+	public void setSearchedInventory(List<Inventory> searchedInventory) {
+		this.searchedInventory = searchedInventory;
+	}
+
+	public List<Order> getSearchedOrders() {
+		return searchedOrders;
+	}
+
+	public void setSearchedOrders(List<Order> searchedOrders) {
+		this.searchedOrders = searchedOrders;
+	}
+
+	public List<Order> getSearchedQuotes() {
+		return searchedQuotes;
+	}
+
+	public void setSearchedQuotes(List<Order> searchedQuotes) {
+		this.searchedQuotes = searchedQuotes;
+	}
+	
+	
 }

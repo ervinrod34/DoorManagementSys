@@ -64,6 +64,7 @@ public class RunDPM extends Application {
 			primaryStage.setTitle("Deansteel DPM v1.0");
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
