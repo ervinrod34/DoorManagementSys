@@ -2,24 +2,69 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView fx:id="productContents" layoutX="3.0" layoutY="32.0" onMouseClicked="#handleProductContents" prefHeight="211.0" prefWidth="695.0" />
       <Label layoutX="10.0" layoutY="8.0" text="Product Contents:">
          <font>
             <Font name="Times New Roman Bold" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="deleteItem" layoutX="608.0" layoutY="247.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete Item" />
-      <ListView fx:id="searchResults" layoutX="3.0" layoutY="299.0" onMouseClicked="#handleSearchResults" prefHeight="275.0" prefWidth="695.0" />
-      <Label layoutX="10.0" layoutY="274.0" text="Search Results:">
+      <Button fx:id="deleteItem" layoutX="620.0" layoutY="255.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete Item" />
+      <Label layoutX="8.0" layoutY="261.0" text="Search Results:">
          <font>
             <Font name="Times New Roman Bold" size="20.0" />
          </font>
       </Label>
+      <TableView fx:id="inventoryTable" layoutY="290.0" onMouseClicked="#handleInventoryTable" prefHeight="290.0" prefWidth="700.0">
+        <columns>
+            <TableColumn fx:id="itemIDCol" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Item ID" />
+          <TableColumn minWidth="-1.0" prefWidth="-1.0" resizable="false" text="Item Description">
+               <columns>
+                  <TableColumn fx:id="itemCategoryCol" minWidth="-Infinity" prefWidth="75.0" resizable="false" text="Category" />
+                  <TableColumn fx:id="itemManufacturerCol" minWidth="-Infinity" prefWidth="90.0" resizable="false" text="Manufacturer" />
+                  <TableColumn fx:id="itemManufacturerNumCol" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="Manufacturer ID" />
+                  <TableColumn fx:id="itemUoMCol" minWidth="-Infinity" prefWidth="40.0" resizable="false" text="U.M." />
+                <TableColumn fx:id="itemSizeCol" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Size" />
+                  <TableColumn fx:id="itemColorCol" minWidth="-Infinity" prefWidth="75.0" resizable="false" text="Color Code" />
+                  <TableColumn fx:id="itemExtraInfoCol" minWidth="-Infinity" prefWidth="200.0" resizable="false" text="Extra Information" />
+               </columns>
+            </TableColumn>
+            <TableColumn minWidth="-1.0" prefWidth="-1.0" resizable="false" text="Quantities">
+               <columns>
+                  <TableColumn fx:id="itemCurrQuantityCol" minWidth="-Infinity" prefWidth="40.0" resizable="false" text="CUR" />
+                  <TableColumn fx:id="itemMinQuantityCol" minWidth="-Infinity" prefWidth="40.0" resizable="false" text="MIN" />
+                  <TableColumn fx:id="itemMaxQuantityCol" minWidth="-Infinity" prefWidth="40.0" resizable="false" text="MAX" />
+               </columns>
+            </TableColumn>
+        </columns>
+      </TableView>
+      <TableView fx:id="productItemTable" layoutY="31.0" onMouseClicked="#handleProductTable" prefHeight="220.0" prefWidth="700.0">
+        <columns>
+            <TableColumn fx:id="prodItemIDCol" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Item ID" />
+            <TableColumn minWidth="-1.0" prefWidth="-1.0" resizable="false" text="Item Description">
+               <columns>
+                  <TableColumn fx:id="prodItemCategoryCol" minWidth="-Infinity" prefWidth="75.0" resizable="false" text="Category" />
+                  <TableColumn fx:id="prodItemManufacturerCol" minWidth="-Infinity" prefWidth="90.0" resizable="false" text="Manufacturer" />
+                  <TableColumn fx:id="prodItemManufacturerNumCol" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="Manufacturer ID" />
+                  <TableColumn fx:id="prodItemUoMCol" minWidth="-Infinity" prefWidth="40.0" resizable="false" text="U.M." />
+                  <TableColumn fx:id="prodItemSizeCol" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Size" />
+                  <TableColumn fx:id="prodItemColorCol" minWidth="-Infinity" prefWidth="75.0" resizable="false" text="Color Code" />
+                  <TableColumn fx:id="prodItemExtraInfoCol" minWidth="-Infinity" prefWidth="200.0" resizable="false" text="Extra Information" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="invItemCategoryCol1" minWidth="-Infinity" prefWidth="75.0" resizable="false" text="Category" />
+            <TableColumn fx:id="invItemManufacturerCol1" minWidth="-Infinity" prefWidth="90.0" resizable="false" text="Manufacturer" />
+            <TableColumn fx:id="invItemManufacturerNumCol1" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="Manufacturer ID" />
+            <TableColumn fx:id="invItemUoMCol1" minWidth="-Infinity" prefWidth="40.0" resizable="false" text="U.M." />
+            <TableColumn fx:id="invItemSizeCol1" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Size" />
+            <TableColumn fx:id="invItemColorCol1" minWidth="-Infinity" prefWidth="75.0" resizable="false" text="Color Code" />
+            <TableColumn fx:id="invItemExtraInfoCol1" minWidth="-Infinity" prefWidth="200.0" resizable="false" text="Extra Information" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

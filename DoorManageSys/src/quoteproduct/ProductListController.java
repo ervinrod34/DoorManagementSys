@@ -12,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,7 +20,6 @@ import javafx.scene.input.MouseEvent;
 
 public class ProductListController implements Initializable {
 
-	@FXML private ListView<Product> productListView;
 	@FXML private TableView<ProductTableDisplay> productTable;
 	@FXML private TableColumn<ProductTableDisplay, String> productIDCol;
 	@FXML private TableColumn<ProductTableDisplay, String> productTotalCol;
@@ -49,9 +47,10 @@ public class ProductListController implements Initializable {
 		if((mouseEvent.getButton() == MouseButton.PRIMARY) &&
 				(mouseEvent.getClickCount() == 2)) {
 			Object selectedObject = productTable.getSelectionModel().selectedItemProperty().get();
-			ProductTableDisplay selectedProduct = (ProductTableDisplay)selectedObject;
-			if (selectedProduct != null) {
-				MasterController.getInstance().setEditObject(selectedProduct);
+			ProductTableDisplay selectedTableProduct = (ProductTableDisplay)selectedObject;
+			if (selectedTableProduct != null) {
+				Product selectedEditProduct = selectedTableProduct.getProduct();
+				MasterController.getInstance().setEditObject(selectedEditProduct);
 				MasterViewController.getInstance().changeView(PageTypes.PRODUCT_DETAIL_PAGE);
 			}
 		}
