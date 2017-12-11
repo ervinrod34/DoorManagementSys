@@ -30,9 +30,12 @@ public class OrderDetailController implements Initializable {
 	@FXML private Label customerName;
 	@FXML private Label productCode;
 	@FXML private Label status;
-	@FXML private DatePicker dateOrdered;
-	@FXML private DatePicker targetShipping;
-	@FXML private DatePicker actualShipping;
+	//@FXML private DatePicker dateOrdered;
+	//@FXML private DatePicker targetShipping;
+	//@FXML private DatePicker actualShipping;
+	@FXML private Label dateOrdered;
+	@FXML private Label targetShipping;
+	@FXML private Label actualShipping;
 	@FXML private Label actualCost;
 	@FXML private Button editButton;
 	@FXML private Button deleteButton;
@@ -92,9 +95,9 @@ public class OrderDetailController implements Initializable {
 			this.customerName.setText(this.order.getCustomerName());
 			this.productCode.setText(this.order.getProductCode());
 			this.status.setText(this.order.getStatus());
-			this.dateOrdered.setValue(this.convertDateToLocalDate(this.order.getDateOrdered()));
-			this.targetShipping.setValue(this.convertDateToLocalDate(this.order.getTargetShipping()));
-			this.actualShipping.setValue(this.convertDateToLocalDate(this.order.getActualShipping()));
+			this.dateOrdered.setText(this.order.getDateOrdered().toString());
+			this.targetShipping.setText(this.order.getTargetShipping().toString());
+			this.actualShipping.setText(this.order.getActualShipping().toString());
 			
 			this.actualCost.setText(Double.toString(this.order.getTotalAmount()));
 		}
