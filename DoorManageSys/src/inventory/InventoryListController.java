@@ -39,6 +39,7 @@ public class InventoryListController implements Initializable {
 	private List<Inventory> inventory;
 	
 	@FXML private Button addButton;
+	@FXML private Button productsButton;
 	
 	public InventoryListController(List<Inventory> inventory) {
 		this.inventory = inventory;
@@ -49,6 +50,8 @@ public class InventoryListController implements Initializable {
 		if(source == addButton) {
 			MasterController.getInstance().setEditObject(new Inventory());
 			MasterViewController.getInstance().changeView(PageTypes.INVENTORY_EDIT_PAGE);
+		} else if(source == productsButton) {
+			MasterViewController.getInstance().changeView(PageTypes.PRODUCT_LIST_PAGE);
 		}
 	}
 	

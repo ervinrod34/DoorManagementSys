@@ -15,6 +15,8 @@
          </font>
       </Label>
       <Button fx:id="addButton" layoutX="584.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleProduct" onMouseClicked="#handleProductTable" text="Add New Product" />
+      <Button fx:id="inventoryButton" layoutX="300.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleProduct" prefHeight="25.0" text="View Inventory" />
+      
       <TableView fx:id="productTable" layoutY="35.0" onMouseClicked="#handleProductTable" prefHeight="545.0" prefWidth="700.0">
         <columns>
           <TableColumn fx:id="productIDCol" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Product ID" />

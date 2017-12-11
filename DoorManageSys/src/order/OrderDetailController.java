@@ -36,6 +36,7 @@ public class OrderDetailController implements Initializable {
 	@FXML private Label actualCost;
 	@FXML private Button editButton;
 	@FXML private Button deleteButton;
+	@FXML private Button quoteButton;
 	
 	private Order order;
 	
@@ -59,6 +60,9 @@ public class OrderDetailController implements Initializable {
 			}
 			//Go back to this later
 			this.scheduleRefresh();
+		} else if(source == quoteButton) {
+			MasterController.getInstance().setEditObject(this.order);
+			MasterViewController.getInstance().changeView(PageTypes.QUOTE_DETAIL_PAGE);
 		}
 	}
 	
