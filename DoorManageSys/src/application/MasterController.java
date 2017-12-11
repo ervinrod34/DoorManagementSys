@@ -54,8 +54,8 @@ public class MasterController {
 	 * EditController
 	 */
 	protected Object editObj;
-	protected Product productToDisplay;
 	
+	protected Product productToDisplay;
 	protected List<Inventory> inventoryToDisplay;
 	protected List<Order> orderToDisplay;
 	

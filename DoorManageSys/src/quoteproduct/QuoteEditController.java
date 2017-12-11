@@ -5,13 +5,8 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-import javax.print.attribute.AttributeSet;
-import javax.swing.JFormattedTextField;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
-
-import application.*;
+import application.MasterController;
+import application.MasterViewController;
 import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import javafx.beans.value.ChangeListener;
@@ -25,13 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.util.converter.IntegerStringConverter;
 import order.Order;
-
-import javax.swing.*;
-import javax.swing.text.AbstractDocument;
-import java.awt.*;
 
 public class QuoteEditController implements Initializable {
 	
