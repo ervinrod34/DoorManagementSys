@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.MasterController;
+import application.MasterViewController;
+import applicationhelper.PageTypes;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +38,14 @@ public class ReportsExportController implements Initializable{
 		if((source == export) && (reportType == ReportTypes.INVENTORY)) {
 			this.exportInventoryReport();
 		}
+		
+		else if (source == export && (reportType == ReportTypes.QUOTE)) {
+			this.exportQuoteReport();
+		}
+		
+		else if (source == export && (reportType == ReportTypes.BLUEPRINT)) {
+			this.exportBlueprintReport();
+		}
 	}
 	
 	public void exportInventoryReport() {
@@ -45,6 +57,34 @@ public class ReportsExportController implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void exportQuoteReport () {
+		
+		try {
+			QuoteReport quoteReport = new QuoteReport (MasterController.getInstance().getSelectedOrder());
+			quoteReport.assignFileName(fileName);
+			quoteReport.populateReport();
+			quoteReport.save();
+			quoteReport.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	public void exportBlueprintReport () {
+
+		try {
+			BlueprintReport blueprintReport = new BlueprintReport (MasterController.getInstance().getSelectedOrder());
+			blueprintReport.assignFileName(fileName);
+			blueprintReport.populateReport();
+			blueprintReport.save();
+			blueprintReport.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	private List<Inventory> getInventoryRecords() {
@@ -59,5 +99,25 @@ public class ReportsExportController implements Initializable{
 		this.observableReports.add(ReportTypes.INVENTORY);
 		this.observableReports.add(ReportTypes.QUOTE);
 		this.observableReports.add(ReportTypes.BLUEPRINT);
+		reportsSelection.getSelectionModel().selectedIndexProperty().addListener(new ReportTypeSelectionListener ());
+	}
+	
+	private class ReportTypeSelectionListener implements ChangeListener <Number> {
+
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			
+			switch (newValue.intValue()) {
+				
+			case 1:
+				MasterViewController.getInstance().changeView(PageTypes.QUOTE_REPORT_PAGE);
+				break;
+				
+			case 2:
+				MasterViewController.getInstance().changeView(PageTypes.BLUEPRINT_REPORT_PAGE);
+				break;
+			}
+			
+		}		
 	}
 }

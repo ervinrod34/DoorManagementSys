@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import order.Order;
 
 public class LandingPageController implements Initializable {
 	
@@ -97,15 +98,43 @@ public class LandingPageController implements Initializable {
 	}
 	
 	@FXML private void handleSearch(ActionEvent ae) {
+		
+		PageTypes currentPage = MasterViewController.getInstance().getCurrentPage();
+		String searchKey = this.searchTextField.getText();
 		Object source = ae.getSource();
 		
 		if(source == searchButton) {
-			String searchKey = this.searchTextField.getText();
-			List<Inventory> searchList = MasterController.getInstance().getInventoryGateway().searchInventory(searchKey);
-			MasterController.getInstance().setInventoryListToDisplay(searchList);
-		
-			MasterViewController.getInstance().changeView(PageTypes.INVENTORY_LIST_PAGE);
-		}
+			
+			switch (currentPage) {
+			
+			case INVENTORY_LIST_PAGE:
+				
+				List<Inventory> inventorySearch = MasterController.getInstance().getInventoryGateway().searchInventory(searchKey);
+				MasterController.getInstance().setSearchedInventory(inventorySearch);
+				MasterViewController.getInstance().changeView(PageTypes.INVENTORY_SEARCH_PAGE);
+				MasterViewController.getInstance().setDesiredPage(PageTypes.INVENTORY_LIST_PAGE);
+				break;
+				
+			case ORDER_LIST_PAGE:
+				
+				List <Order> orderSeach = MasterController.getInstance().getOrderGateway().searchOrderByName(searchKey);
+				MasterController.getInstance().setSearchedOrders(orderSeach);
+				MasterViewController.getInstance().changeView(PageTypes.ORDER_SEARCH_PAGE);
+				MasterViewController.getInstance().setDesiredPage(PageTypes.ORDER_LIST_PAGE);
+				break;
+				
+			case QORDER_LIST_PAGE:
+				
+				List <Order> quoteSearch = MasterController.getInstance().getOrderGateway().searchQuoteByName(searchKey);
+				MasterController.getInstance().setSearchedQuotes(quoteSearch);
+				MasterViewController.getInstance().changeView(PageTypes.QORDER_SEARCH_PAGE);
+				MasterViewController.getInstance().setDesiredPage(PageTypes.QORDER_LIST_PAGE);
+				break;
+
+			default:
+				break;	
+			}			
+		}	
 	}
 
 	public void initialize(URL location, ResourceBundle resources) {

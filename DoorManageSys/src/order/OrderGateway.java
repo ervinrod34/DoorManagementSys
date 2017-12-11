@@ -47,6 +47,79 @@ public class OrderGateway extends MasterGateway {
 		}
 		return searchResults;
 	}
+	
+	public List <Order> searchQuoteByName (String name) {
+		
+		resetPSandRS();
+		List <Order> found = new ArrayList <Order> ();
+		
+		try{
+			String query = "SELECT * FROM `Order` WHERE status LIKE ? AND customerName LIKE ?";
+			preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+			name = "%" + name + "%";
+			preparedStatement.setString(1, "Unfinished");
+			preparedStatement.setString(2, name);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()){
+				Quote quoteForOrder = MasterController.getInstance().getQuoteGateway().getQuoteByID(resultSet.getInt("quoteID"));
+				Order order = new Order(resultSet.getInt("id"), quoteForOrder, 
+						resultSet.getString("customerPurchaseOrderNumber"), 
+						resultSet.getString("customerName"), 
+						resultSet.getString("productCode"), 
+						resultSet.getString("status"), 
+						resultSet.getDate("dateOrdered"), 
+						resultSet.getDate("targetShipping"), 
+						resultSet.getDate("actualShipping"),
+						new Blueprint(0),
+						resultSet.getDouble("totalAmount"));
+				
+				found.add(order);
+			}
+		} catch(SQLException sqlException){
+			sqlException.printStackTrace();
+		} finally {
+			tryToClosePSandRS();
+		}	
+		return found;		
+	}
+	
+	public List <Order> searchOrderByName (String name) {
+		
+		resetPSandRS();
+		List <Order> found = new ArrayList <Order> ();
+		
+		try{
+			String query = "SELECT * FROM `Order` WHERE customerName LIKE ?";
+			preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+			name = "%" + name + "%";
+			preparedStatement.setString(1, name);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()){
+				Quote quoteForOrder = MasterController.getInstance().getQuoteGateway().getQuoteByID(resultSet.getInt("quoteID"));
+				Order order = new Order(resultSet.getInt("id"), quoteForOrder, 
+						resultSet.getString("customerPurchaseOrderNumber"), 
+						resultSet.getString("customerName"), 
+						resultSet.getString("productCode"), 
+						resultSet.getString("status"), 
+						resultSet.getDate("dateOrdered"), 
+						resultSet.getDate("targetShipping"), 
+						resultSet.getDate("actualShipping"),
+						new Blueprint(0),
+						resultSet.getDouble("totalAmount"));
+				
+				found.add(order);
+			}
+		} catch(SQLException sqlException){
+			sqlException.printStackTrace();
+		} finally {
+			tryToClosePSandRS();
+		}	
+		return found;		
+	}
 
 	public void addOrder(Order order) {
 		resetPSandRS();

@@ -57,14 +57,17 @@ public class MasterViewController extends MasterController{
 			Scene scene = new Scene(view);
 			MasterController.getInstance().stage.setScene(scene);
 			MasterController.getInstance().stage.show();
-		
+			
 		//for List Page
 		} else if(desiredPage == PageTypes.VIEW_USERS_PAGE || 
 				desiredPage == PageTypes.INVENTORY_LIST_PAGE || 
 				desiredPage == PageTypes.QORDER_LIST_PAGE || 
 				desiredPage == PageTypes.ORDER_LIST_PAGE ||
 				desiredPage == PageTypes.PRODUCT_LIST_PAGE || 
-				desiredPage == PageTypes.QUOTEITEMS_LIST_PAGE) {
+				desiredPage == PageTypes.QUOTEITEMS_LIST_PAGE ||
+				desiredPage == PageTypes.INVENTORY_SEARCH_PAGE ||
+				desiredPage == PageTypes.ORDER_SEARCH_PAGE ||
+				desiredPage == PageTypes.QORDER_SEARCH_PAGE) {
 			MasterController.getInstance().mainPane.setCenter(view);
 			MasterController.getInstance().mainPane.setRight(this.getEmptyRightPane());
 		
@@ -101,6 +104,11 @@ public class MasterViewController extends MasterController{
 			} else {
 				MasterController.getInstance().mainPane.setCenter(view);
 			}
+		}
+		else if (desiredPage == PageTypes.INVENTORY_REPORT_PAGE ||
+				 desiredPage == PageTypes.QUOTE_REPORT_PAGE ||
+				 desiredPage == PageTypes.BLUEPRINT_REPORT_PAGE) {
+			MasterController.getInstance().mainPane.setCenter(view);
 		}
 		
 		return true;
@@ -165,6 +173,12 @@ public class MasterViewController extends MasterController{
 				loader.setController(new InventoryDetailController(viewItem));
 				break;
 				
+			case INVENTORY_SEARCH_PAGE:
+				
+				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryList_Page.fxml"));
+				loader.setController(new InventoryListController(MasterController.getInstance().getSearchedInventory()));
+				break;
+				
 			case INVENTORY_EDIT_PAGE:
 				Inventory editItem = (Inventory)MasterController.getInstance().editObj;
 				loader = new FXMLLoader(getClass().getResource("/inventory/InventoryEdit_Page.fxml"));
@@ -201,6 +215,11 @@ public class MasterViewController extends MasterController{
 				}
 				break;
 				
+			case ORDER_SEARCH_PAGE:
+				loader = new FXMLLoader(getClass().getResource("/order/OrderList_Page.fxml"));
+				loader.setController(new OrderListController(MasterController.getInstance().getSearchedOrders()));
+				break;
+				
 			case QUOTE_DETAIL_PAGE:
 				Order quoteDetail = (Order)MasterController.getInstance().editObj;
 				
@@ -224,6 +243,11 @@ public class MasterViewController extends MasterController{
 				
 				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
 				loader.setController(new QOrderListController(unfinishedOrders));
+				break;
+				
+			case QORDER_SEARCH_PAGE:				
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
+				loader.setController(new QOrderListController(MasterController.getInstance().getSearchedQuotes()));
 				break;
 				
 			case QUOTEITEMS_LIST_PAGE:
@@ -283,6 +307,21 @@ public class MasterViewController extends MasterController{
 					loader = new FXMLLoader(getClass().getResource("/blueprint/BlueprintTwoDoor_Page.fxml"));
 				}
 				loader.setController(new BlueprintDoorController(editBlueprint));
+				break;
+				
+			case QUOTE_REPORT_PAGE:
+				unfinishedOrders = MasterController.getInstance().orderGateway.searchOrders("Unfinished");
+				
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
+				loader.setController(new QOrderListController(unfinishedOrders));
+				break;
+				
+			case BLUEPRINT_REPORT_PAGE:
+				unfinishedOrders = MasterController.getInstance().orderGateway.searchOrders("Unfinished");
+				
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
+				loader.setController(new QOrderListController(unfinishedOrders));
+				break;
 				
 			default:
 				break;
@@ -334,5 +373,9 @@ public class MasterViewController extends MasterController{
 		emptyCenterAnchor.setPrefSize(466.0, 580.0);
 		
 		return emptyCenterAnchor;
+	}
+	
+	public void setDesiredPage (PageTypes page) {
+		desiredPage = page;
 	}
 }
