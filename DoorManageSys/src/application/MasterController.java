@@ -62,6 +62,7 @@ public class MasterController {
 	protected List <Inventory> searchedInventory;
 	protected List <Order> searchedOrders;
 	protected List <Order> searchedQuotes;
+	protected Order selectedOrder;
 	
 	/**
 	 * Initialize a MasterController object.
@@ -212,6 +213,16 @@ public class MasterController {
 	public void setSearchedQuotes(List<Order> searchedQuotes) {
 		this.searchedQuotes = searchedQuotes;
 	}
+
+	public Order getSelectedOrder() {
+		return selectedOrder;
+	}
+
+	public void setSelectedOrder(Order selectedOrder) {
+		this.selectedOrder = selectedOrder;
+	}
+	
+	
 	
 	
 }

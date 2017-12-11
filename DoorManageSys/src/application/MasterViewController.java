@@ -105,6 +105,11 @@ public class MasterViewController extends MasterController{
 				MasterController.getInstance().mainPane.setCenter(view);
 			}
 		}
+		else if (desiredPage == PageTypes.INVENTORY_REPORT_PAGE ||
+				 desiredPage == PageTypes.QUOTE_REPORT_PAGE ||
+				 desiredPage == PageTypes.BLUEPRINT_REPORT_PAGE) {
+			MasterController.getInstance().mainPane.setCenter(view);
+		}
 		
 		return true;
 	}
@@ -302,6 +307,21 @@ public class MasterViewController extends MasterController{
 					loader = new FXMLLoader(getClass().getResource("/blueprint/BlueprintTwoDoor_Page.fxml"));
 				}
 				loader.setController(new BlueprintDoorController(editBlueprint));
+				break;
+				
+			case QUOTE_REPORT_PAGE:
+				unfinishedOrders = MasterController.getInstance().orderGateway.searchOrders("Unfinished");
+				
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
+				loader.setController(new QOrderListController(unfinishedOrders));
+				break;
+				
+			case BLUEPRINT_REPORT_PAGE:
+				unfinishedOrders = MasterController.getInstance().orderGateway.searchOrders("Unfinished");
+				
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
+				loader.setController(new QOrderListController(unfinishedOrders));
+				break;
 				
 			default:
 				break;

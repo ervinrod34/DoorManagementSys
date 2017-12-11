@@ -49,6 +49,15 @@ public class QOrderListController implements Initializable {
 	
 	@FXML private void handleOrderTable(MouseEvent mouseEvent) {
 		if((mouseEvent.getButton() == MouseButton.PRIMARY) &&
+				(mouseEvent.getClickCount() == 1)) {
+			Object selectedObject = quoteTable.getSelectionModel().selectedItemProperty().get();
+			QuoteTableDisplay selectedQuote = (QuoteTableDisplay)selectedObject;
+			if (selectedQuote != null) {
+				MasterController.getInstance().setSelectedOrder(selectedQuote.getOrder());
+			}
+		}
+		
+		else if((mouseEvent.getButton() == MouseButton.PRIMARY) &&
 				(mouseEvent.getClickCount() == 2)) {
 			Object selectedObject = quoteTable.getSelectionModel().selectedItemProperty().get();
 			QuoteTableDisplay selectedQuote = (QuoteTableDisplay)selectedObject;
