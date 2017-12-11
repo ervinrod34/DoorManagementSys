@@ -54,10 +54,15 @@ public class MasterController {
 	 * EditController
 	 */
 	protected Object editObj;
+	protected Object prevEditObj;
 	
 	protected Product productToDisplay;
 	protected List<Inventory> inventoryToDisplay;
 	protected List<Order> orderToDisplay;
+	
+	protected Product prevProductToDisplay;
+	protected List<Inventory> prevInventoryToDisplay;
+	protected List<Order> prevOrderToDisplay;
 	
 	/**
 	 * Initialize a MasterController object.
@@ -158,18 +163,22 @@ public class MasterController {
 	}
 
 	public void setEditObject(Object obj) {
+		this.prevEditObj = this.editObj;
 		this.editObj = obj;
 	}
 	
 	public void setInventoryListToDisplay(List<Inventory> objects) {
+		this.prevInventoryToDisplay = this.inventoryToDisplay;
 		this.inventoryToDisplay = objects;
 	}
 	
 	public void setOrderListToDisplay(List<Order> objects) {
+		this.prevOrderToDisplay = this.orderToDisplay;
 		this.orderToDisplay = objects;
 	}
 	
 	public void setProductToDisplay(Product product) {
+		this.prevProductToDisplay = this.productToDisplay;
 		this.productToDisplay = product;
 	}
 	
