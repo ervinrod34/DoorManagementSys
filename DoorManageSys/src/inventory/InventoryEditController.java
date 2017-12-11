@@ -139,8 +139,8 @@ public class InventoryEditController implements Initializable {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
 		        String newValue) {
-		        if (!newValue.matches("(\\d*)")) {
-		        	partNumberField.setText(newValue.replaceAll("[^\\d]", ""));
+		        if (!newValue.matches("(\\w*)")) {
+		        	partNumberField.setText(newValue.replaceAll("[^\\w]", ""));
 		        }
 		    }
 		});

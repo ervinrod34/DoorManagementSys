@@ -14,7 +14,8 @@
             <Font name="Times New Roman Bold" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="addButton" layoutX="600.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleInventory" onMouseClicked="#handleInventoryTable" prefHeight="25.0" prefWidth="94.0" text="Add New Item" />
+      <Button fx:id="addButton" layoutX="600.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleInventory" onMouseClicked="#handleInventoryTable" prefHeight="25.0" text="Add New Item" />
+      <Button fx:id="productsButton" layoutX="300.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleInventory" prefHeight="25.0" text="View Products" />
       <TableView fx:id="inventoryTable" layoutY="36.0" onMouseClicked="#handleInventoryTable" prefHeight="545.0" prefWidth="700.0">
         <columns>
           <TableColumn fx:id="itemIDCol" minWidth="50.0" prefWidth="100.0" resizable="false" text="Item ID" />

@@ -30,7 +30,6 @@ public class LandingPageController implements Initializable {
 	@FXML private Label inventory;
 	@FXML private Label orders;
 	@FXML private Label quote;
-	@FXML private Label products;
 	@FXML private Label reports;
 	@FXML private Label users;
 	@FXML private Label logout;
@@ -87,10 +86,6 @@ public class LandingPageController implements Initializable {
 				}
 			}
 			
-		} else if(source == products) {
-			this.applyEffectOnMenuLabel(products);
-			this.changeViewOnLabelClick(products, PageTypes.PRODUCT_LIST_PAGE);
-		
 		} else if(source == reports) { 
 			this.applyEffectOnMenuLabel(reports);
 			this.changeViewOnLabelClick(reports, PageTypes.REPORTS_EXPORT_PAGE);
