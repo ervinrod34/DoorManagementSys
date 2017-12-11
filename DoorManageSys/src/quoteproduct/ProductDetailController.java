@@ -1,15 +1,11 @@
 package quoteproduct;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import javax.swing.JOptionPane;
-
-import application.*;
+import application.MasterController;
+import application.MasterViewController;
 import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
 import inventory.Inventory;
@@ -21,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;

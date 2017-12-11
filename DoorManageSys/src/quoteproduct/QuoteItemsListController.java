@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import applicationdialogs.InfoDialogs;
+import inventory.Inventory;
+import inventory.InventoryTableDisplay;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import inventory.*;
 
 public class QuoteItemsListController implements Initializable {
 
