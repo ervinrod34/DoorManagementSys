@@ -126,7 +126,7 @@ public class UsersGateway extends MasterGateway{
 		resetPSandRS();
 		
 		try {
-			preparedStatement = this.connection.prepareStatement("DELETE FROM User id=?");
+			preparedStatement = this.connection.prepareStatement("DELETE FROM User WHERE id=?");
 			preparedStatement.setInt(1, user.getId());
 			preparedStatement.execute();
 		} catch(SQLException sqlException) {

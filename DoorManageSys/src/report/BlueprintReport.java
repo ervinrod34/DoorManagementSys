@@ -64,7 +64,7 @@ public class BlueprintReport extends PDFReport {
 		
 		assignFileName ("Blueprint.pdf");
 		
-		firstPage = PDImageXObject.createFromFile("SingleDoorSide2.PNG", getDoc());
+		firstPage = PDImageXObject.createFromFile("C:\\Program Files\\DPM\\pdf-templates\\SingleDoorSide2.PNG", getDoc());
 		
 		setUpFirstPage();
 	}

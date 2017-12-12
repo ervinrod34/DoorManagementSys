@@ -85,7 +85,6 @@ public class OrderDetailController implements Initializable {
 		
 		if(this.order.getId() > 0) {
 			this.quoteNumber.setText(Integer.toString(this.order.getQuote().getId()));
-			this.blueprintNumber.setText(this.order.getBlueprint().toString());
 			this.customerPurchaseOrderNumber.setText(this.order.getCustomerPurchaseOrderNumber());
 			this.customerName.setText(this.order.getCustomerName());
 			this.productCode.setText(this.order.getProductCode());

@@ -53,6 +53,7 @@ public class BlueprintDoorController implements Initializable {
 		if(source == saveBlueprint) {
 			this.updateBlueprint();
 			this.blueprint.save();
+			System.out.println("Saved blueprint: " + this.blueprint.toString() + "\n" + this.product.getId());
 		} else if(source == createReport) {
 			try {
 				this.updateBlueprint();
@@ -130,5 +131,6 @@ public class BlueprintDoorController implements Initializable {
 				this.hingeGapOne.getText() + "," + this.hingeGapTwo.getText());
 		saveBlueprint.setNotes(this.notes.getText());
 		saveBlueprint.setInventoryNotes(this.inventoryNotes.getText());
+		this.blueprint = saveBlueprint;
 	}
 }

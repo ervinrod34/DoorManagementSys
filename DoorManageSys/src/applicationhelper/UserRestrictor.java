@@ -99,10 +99,10 @@ public class UserRestrictor {
 	}
 	
 	public void applyOrderDeleteRestriction(Button button) {
-		if((this.userType != UserTypes.ACCOUNTING) ||
-				(this.userType != UserTypes.ENGINEER) ||
-				(this.userType != UserTypes.INVENTORYMANAGER) ||
-				(this.userType != UserTypes.PURCHASING)) {
+		if((this.userType == UserTypes.ACCOUNTING) ||
+				(this.userType == UserTypes.ENGINEER) ||
+				(this.userType == UserTypes.INVENTORYMANAGER) ||
+				(this.userType == UserTypes.PURCHASING)) {
 			button.setVisible(false);
 		}
 	}

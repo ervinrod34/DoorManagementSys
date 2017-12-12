@@ -55,8 +55,8 @@ public class QuoteReport {
 		doc = new PDDocument ();
 		date = new Date ();
 		tempPage = new PDPage ();
-		firstPage = PDImageXObject.createFromFile("QuoteFirstPage.PNG", doc);
-		nextPage = PDImageXObject.createFromFile("QuoteNextPage.PNG", doc);	
+		firstPage = PDImageXObject.createFromFile("C:\\Program Files\\DPM\\pdf-templates\\QuoteFirstPage.PNG", doc);
+		nextPage = PDImageXObject.createFromFile("C:\\Program Files\\DPM\\pdf-templates\\QuoteNextPage.PNG", doc);	
 		quote = order.getQuote();
 		orderNumber = order.getId();
 		poNumber = order.getCustomerPurchaseOrderNumber();

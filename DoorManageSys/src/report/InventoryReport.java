@@ -40,7 +40,7 @@ public class InventoryReport {
 		this.inventory = inventory;
 		
 		try {
-			doc = PDDocument.load(new File ("BlankInventoryPage.pdf"));
+			doc = PDDocument.load(new File ("C:\\Program Files\\DPM\\pdf-templates\\BlankInventoryPage.pdf"));
 		} catch (InvalidPasswordException e) {e.printStackTrace();}
 		
 		page = doc.getPages();
@@ -180,7 +180,7 @@ public class InventoryReport {
 		PDPage tempPage = null;
 		
 		try {
-			tempDoc = PDDocument.load(new File ("BlankInventoryPage.pdf"));
+			tempDoc = PDDocument.load(new File ("C:\\Program Files\\DPM\\pdf-templates\\BlankInventoryPage.pdf"));
 		} catch (InvalidPasswordException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
