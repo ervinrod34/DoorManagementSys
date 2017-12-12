@@ -38,11 +38,11 @@ public class TestBlueprintReport {
 		quote.getProducts().add(new Product (1, list, 45));
 
 		
-		BlueprintReport report = new BlueprintReport (order);
+		//BlueprintReport report = new BlueprintReport (order);
 		
-		report.populateReport();
-		report.save();
-		report.close();
+		//report.populateReport();
+		//report.save();
+		//report.close();
 
 	}
 

@@ -1,8 +1,10 @@
 package blueprint;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.MasterController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import quoteproduct.Product;
+import report.BlueprintReport;
 
 public class BlueprintDoorController implements Initializable {
 	
@@ -48,9 +51,20 @@ public class BlueprintDoorController implements Initializable {
 		Object source = ae.getSource();
 		
 		if(source == saveBlueprint) {
-			this.saveBlueprintRecord();
+			this.updateBlueprint();
+			this.blueprint.save();
 		} else if(source == createReport) {
-			
+			try {
+				this.updateBlueprint();
+				this.blueprint.save();
+				BlueprintReport blueprintReport = new BlueprintReport(this.product);
+				blueprintReport.assignFileName("Blueprint_Product" + this.product.getId());
+				blueprintReport.populateReport();
+				blueprintReport.save();
+				blueprintReport.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -65,7 +79,6 @@ public class BlueprintDoorController implements Initializable {
 		
 		this.notes.setText(this.blueprint.getNotes());
 		this.inventoryNotes.setText(this.blueprint.getInventoryNotes());
-		this.createReport.setVisible(false);
 	}
 	
 	private void setDimensionToFields() {
@@ -106,7 +119,7 @@ public class BlueprintDoorController implements Initializable {
 		this.frameThree.setText(this.frame.getText());
 	}
 	
-	public void saveBlueprintRecord() {
+	public void updateBlueprint() {
 		Blueprint saveBlueprint = new Blueprint(this.blueprint.getId());
 		
 		saveBlueprint.setProductID(this.product.getId());
@@ -117,6 +130,5 @@ public class BlueprintDoorController implements Initializable {
 				this.hingeGapOne.getText() + "," + this.hingeGapTwo.getText());
 		saveBlueprint.setNotes(this.notes.getText());
 		saveBlueprint.setInventoryNotes(this.inventoryNotes.getText());
-		saveBlueprint.save();
 	}
 }

@@ -75,8 +75,11 @@ public class ReportsExportController implements Initializable{
 	public void exportBlueprintReport () {
 
 		try {
-			BlueprintReport blueprintReport = new BlueprintReport (MasterController.getInstance().getSelectedOrder());
-			blueprintReport.assignFileName(fileName);
+			System.out.println("Blueprint " + MasterController.getInstance().getSelectedProductForBlueprint());
+			
+			BlueprintReport blueprintReport = new BlueprintReport (MasterController.getInstance().getSelectedProductForBlueprint());
+			
+			blueprintReport.assignFileName(fileName + ".pdf");
 			blueprintReport.populateReport();
 			blueprintReport.save();
 			blueprintReport.close();

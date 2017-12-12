@@ -70,7 +70,7 @@ public class BlueprintGateway extends MasterGateway{
 			preparedStatement = this.connection.prepareStatement(
 					"UPDATE Blueprint SET productID=?, dimension=?, "
 					+ "strikeheight=?, frame=?, hingespaces=?, notes=?,"
-					+ "inventorynotes=? WHERE blueprintID=?");
+					+ "inventorynotes=? WHERE id=?");
 			
 			preparedStatement.setInt(1, blueprint.getProductID());
 			preparedStatement.setString(2, blueprint.getDimension());

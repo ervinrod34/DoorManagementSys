@@ -56,6 +56,8 @@ public class MasterController {
 	protected Object editObj;
 	protected Object prevEditObj;
 	
+	protected Product selectedProductForBlueprint;
+	
 	protected Product productToDisplay;
 	protected List<Inventory> inventoryToDisplay;
 	protected List<Order> orderToDisplay;
@@ -229,5 +231,13 @@ public class MasterController {
 
 	public void setSelectedOrder(Order selectedOrder) {
 		this.selectedOrder = selectedOrder;
+	}
+	
+	public void setSelectedProductForBlueprint(Product product) {
+		this.selectedProductForBlueprint = product;
+	}
+	
+	public Product getSelectedProductForBlueprint() {
+		return this.selectedProductForBlueprint;
 	}
 }

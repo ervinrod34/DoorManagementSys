@@ -318,10 +318,11 @@ public class MasterViewController extends MasterController{
 				break;
 				
 			case BLUEPRINT_REPORT_PAGE:
-				unfinishedOrders = MasterController.getInstance().orderGateway.searchOrders("Unfinished");
+				//unfinishedOrders = MasterController.getInstance().orderGateway.searchOrders("Unfinished");
+				List<Product> allProductsBlueprint = MasterController.getInstance().productGateway.importListOfProductsFromDB();
 				
-				loader = new FXMLLoader(getClass().getResource("/quoteproduct/QOrderList_Page.fxml"));
-				loader.setController(new QOrderListController(unfinishedOrders));
+				loader = new FXMLLoader(getClass().getResource("/quoteproduct/ProductList_Blueprint.fxml"));
+				loader.setController(new ProductListBlueprintController(allProductsBlueprint));
 				break;
 				
 			default:

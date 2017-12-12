@@ -127,6 +127,7 @@ public class Blueprint {
 	}
 
 	public String toString() {
-		return Integer.toString(this.id);
+		return Integer.toString(this.id) + "\nDimension: " + this.dimension
+				+ "\nFrame: " + this.frame + "\nHinges: " + this.hingeSpaces;
 	}
 }

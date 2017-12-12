@@ -9,12 +9,15 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.util.Matrix;
+
+import application.MasterController;
 import blueprint.Blueprint;
 import order.Order;
+import quoteproduct.*;
 
 public class BlueprintReport extends PDFReport {
 
-	private Order order;
+	private Product product;
 	private Date date;
 	private PDImageXObject firstPage;
 	private PDPageContentStream stream;
@@ -25,9 +28,9 @@ public class BlueprintReport extends PDFReport {
 	private int numHinges;
 	private HashMap <String, XYCoordinate> coordinate;
 	
-	public BlueprintReport (Order order) throws IOException {
+	public BlueprintReport (Product product) throws IOException {
 		
-		this.order = order;
+		this.product = product;
 		date = new Date ();
 		
 		setDoc(new PDDocument ());
@@ -68,17 +71,19 @@ public class BlueprintReport extends PDFReport {
 	
 	public void getValues () {
 		
-		Blueprint blueprint = order.getBlueprint();
+		Blueprint blueprint = MasterController.getInstance().getBlueprintGateway().getBlueprintByProductID(this.product.getId());
+		System.out.println("Blueprint: " + blueprint);
+		
+		
 		String[] sliced;
 		
-		sliced = blueprint.getDimension().split(",");
+		sliced = blueprint.getDimension().split("x");
 		width = sliced[0];
 		height = sliced[1];
 		
-		sliced = blueprint.getFrame().split(",");
-		frameLeft = sliced[0];
-		frameRight = sliced[1];
-		frameTop = sliced[2];
+		frameLeft = blueprint.getFrame();
+		frameRight = blueprint.getFrame();
+		frameTop = blueprint.getFrame();
 		
 		sliced = blueprint.getHingeSpaces().split(",");
 		hingeSpaceTop = sliced[0];
@@ -185,7 +190,7 @@ public class BlueprintReport extends PDFReport {
 		stream.beginText();		
 		stream.setTextMatrix(Matrix.getRotateInstance(Math.PI/2, PDRectangle.A4.getWidth(), 0));		
 		stream.newLineAtOffset(coordinate.get("customerName").getX(), coordinate.get("customerName").getY());
-		stream.showText(order.getCustomerName());
+		stream.showText("");
 		stream.endText();
 		
 		getStream().close();

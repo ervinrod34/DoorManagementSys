@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="10.0" layoutY="8.0" text="Products">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      
+      <TableView fx:id="productTable" layoutY="35.0" onMouseClicked="#handleProductTable" prefHeight="545.0" prefWidth="700.0">
+        <columns>
+          <TableColumn fx:id="productIDCol" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Product ID" />
+          <TableColumn fx:id="productTotalCol" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Total Amount" />
+            <TableColumn fx:id="productItemsCol" minWidth="-Infinity" prefWidth="480.0" resizable="false" text="Product Item List" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
