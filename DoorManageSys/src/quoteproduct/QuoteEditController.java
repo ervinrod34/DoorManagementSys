@@ -24,7 +24,6 @@ import order.Order;
 
 public class QuoteEditController implements Initializable {
 	
-	@FXML private TextField quoteNumber;
 	@FXML private TextField quoteStatus;
 	@FXML private TextField purchaseOrderNumber;
 	@FXML private TextField customerName;
@@ -130,11 +129,11 @@ public class QuoteEditController implements Initializable {
 		updatedOrder.setId(order.getId());
 		updatedOrder.getQuote().setId(quote.getId());
 		
-		if (quoteNumber.getText().length() == 0) {
+		/*if (quoteNumber.getText().length() == 0) {
 			updatedOrder.getQuote().setId(0);
 		} else {
 			updatedOrder.getQuote().setId(Integer.parseInt(quoteNumber.getText()));
-		}
+		}*/
 		
 		if (quoteStatus.getText().length() == 0) {
 			updatedOrder.setStatus("Unfinished");
@@ -177,7 +176,7 @@ public class QuoteEditController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		 
 		if (order.getId() > 0) {
-			quoteNumber.setText(Integer.toString(order.getQuote().getId()));
+			//quoteNumber.setText(Integer.toString(order.getQuote().getId()));
 			quoteStatus.setText(order.getStatus());
 			purchaseOrderNumber.setText(order.getCustomerPurchaseOrderNumber());
 			customerName.setText(order.getCustomerName());

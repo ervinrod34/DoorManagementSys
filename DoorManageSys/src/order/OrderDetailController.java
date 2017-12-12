@@ -23,16 +23,12 @@ import javafx.scene.control.Label;
 
 public class OrderDetailController implements Initializable {
 
-	@FXML private Label orderNumber;
 	@FXML private Label quoteNumber;
 	@FXML private Label blueprintNumber;
 	@FXML private Label customerPurchaseOrderNumber;
 	@FXML private Label customerName;
 	@FXML private Label productCode;
 	@FXML private Label status;
-	//@FXML private DatePicker dateOrdered;
-	//@FXML private DatePicker targetShipping;
-	//@FXML private DatePicker actualShipping;
 	@FXML private Label dateOrdered;
 	@FXML private Label targetShipping;
 	@FXML private Label actualShipping;
@@ -88,7 +84,6 @@ public class OrderDetailController implements Initializable {
 		MasterController.getInstance().getRestriction().applyOrderDeleteRestriction(this.deleteButton);
 		
 		if(this.order.getId() > 0) {
-			this.orderNumber.setText(Integer.toString(this.order.getId()));
 			this.quoteNumber.setText(Integer.toString(this.order.getQuote().getId()));
 			this.blueprintNumber.setText(this.order.getBlueprint().toString());
 			this.customerPurchaseOrderNumber.setText(this.order.getCustomerPurchaseOrderNumber());

@@ -14,11 +14,6 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="580.0" stroke="#32000f" strokeType="INSIDE" strokeWidth="3.0" width="466.0" />
       <Button fx:id="saveButton" layoutX="166.0" layoutY="480.0" mnemonicParsing="false" onAction="#handleOrderEdit" text="Save " />
       <Button fx:id="cancelButton" layoutX="235.0" layoutY="480.0" mnemonicParsing="false" onAction="#handleOrderEdit" text="Cancel" />
-      <Label layoutX="28.0" layoutY="15.0" text="Order #">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
       <Label layoutX="19.0" layoutY="90.0" text="Customer Purchase Order Number:">
          <font>
             <Font name="System Bold" size="15.0" />
@@ -69,11 +64,6 @@
       	 	<Font name="System Bold" size="15.0" />
       	 </font>
       </Label>
-      <TextField fx:id="orderNumberField" layoutX="120.0" layoutY="15.0" onAction="#handleOrderEdit">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </TextField>
       <TextField fx:id="customerPurchaseOrderNumberField" layoutX="300.0" layoutY="90.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />
       <TextField fx:id="customerNameField" layoutX="200.0" layoutY="50.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />
       <TextField fx:id="productCodeField" layoutX="200.0" layoutY="130.0" onAction="#handleOrderEdit" prefHeight="10.0" prefWidth="91.0" />

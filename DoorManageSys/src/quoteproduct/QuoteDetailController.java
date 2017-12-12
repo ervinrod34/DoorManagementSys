@@ -23,9 +23,7 @@ import report.QuoteReport;
 public class QuoteDetailController implements Initializable {
 	
 	@FXML private Label dbID;
-	
-	@FXML private Label quoteNumber;
-	
+		
 	@FXML private Label quoteStatus;
 	
 	@FXML private Label purchaseOrderNumber;
@@ -108,8 +106,8 @@ public class QuoteDetailController implements Initializable {
 		MasterController.getInstance().getRestriction().applyOrderDeleteRestriction(this.deleteButton);
 		
 		if (order.getId() > 0) {
-			dbID.setText(Integer.toString(quote.getId()));
-			quoteNumber.setText(Integer.toString(order.getQuote().getId()));
+			//dbID.setText(Integer.toString(quote.getId()));
+			//quoteNumber.setText(Integer.toString(order.getQuote().getId()));
 			quoteStatus.setText(order.getStatus());
 			purchaseOrderNumber.setText(order.getCustomerPurchaseOrderNumber());
 			customerName.setText(order.getCustomerName());
