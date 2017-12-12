@@ -6,11 +6,15 @@ import java.util.ResourceBundle;
 
 import application.MasterController;
 import application.MasterViewController;
+import applicationdialogs.InfoDialogs;
 import applicationhelper.PageTypes;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -55,6 +59,14 @@ public class BlueprintRightController implements Initializable {
 			MasterViewController.getInstance().switchTemplateIsPressed();
 			MasterViewController.getInstance().changeView(PageTypes.BLUEPRINT_CENTER_PAGE);
 		} else if(source == openBlueprint) {
+			InfoDialogs dialog = new InfoDialogs();
+			dialog.setAlertType(AlertType.INFORMATION);
+			
+			if(MasterController.getInstance().getBlueprintGateway().checkIfBlueprintIsAssignedToProduct(product)) {
+				dialog.displayInformationDialog("This product has an existing blueprint.");
+			} else {
+				dialog.displayInformationDialog("This product currently has no blueprint.");
+			}
 			MasterViewController.getInstance().changeView(PageTypes.BLUEPRINT_CENTER_PAGE);
 		}
 	}

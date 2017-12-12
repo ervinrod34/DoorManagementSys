@@ -2,6 +2,7 @@ package blueprint;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import application.*;
 import quoteproduct.Product;
@@ -96,6 +97,16 @@ public class BlueprintGateway extends MasterGateway{
 			preparedStatement.execute();
 		} catch(SQLException sqlException) {
 			sqlException.printStackTrace();
+		}
+	}
+	
+	public boolean checkIfBlueprintIsAssignedToProduct(Product product) {
+		Blueprint blueprintResult = this.getBlueprintByProductID(product.getId());
+		
+		if(blueprintResult.getId() == 0) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 }

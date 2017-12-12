@@ -230,8 +230,4 @@ public class MasterController {
 	public void setSelectedOrder(Order selectedOrder) {
 		this.selectedOrder = selectedOrder;
 	}
-	
-	
-	
-	
 }

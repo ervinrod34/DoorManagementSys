@@ -289,6 +289,7 @@ public class MasterViewController extends MasterController{
 				
 			case BLUEPRINT_CENTER_PAGE:
 				Blueprint editBlueprint = new Blueprint();
+				Product product = new Product();
 				
 				if(MasterController.getInstance().editObj instanceof Order) {
 					Order order = (Order)MasterController.getInstance().editObj;
@@ -296,7 +297,7 @@ public class MasterViewController extends MasterController{
 					editBlueprint = MasterController.getInstance().getBlueprintGateway()
 							.getBlueprintByProductID(productID);
 				} else if(MasterController.getInstance().editObj instanceof Product) {
-					Product product = (Product)MasterController.getInstance().editObj;
+					product = (Product)MasterController.getInstance().editObj;
 					editBlueprint = MasterController.getInstance().getBlueprintGateway()
 							.getBlueprintByProductID(product.getId());
 				}
@@ -306,7 +307,7 @@ public class MasterViewController extends MasterController{
 				} else {
 					loader = new FXMLLoader(getClass().getResource("/blueprint/BlueprintTwoDoor_Page.fxml"));
 				}
-				loader.setController(new BlueprintDoorController(editBlueprint));
+				loader.setController(new BlueprintDoorController(editBlueprint, product));
 				break;
 				
 			case QUOTE_REPORT_PAGE:

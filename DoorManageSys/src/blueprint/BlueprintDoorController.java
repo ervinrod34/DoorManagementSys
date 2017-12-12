@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import quoteproduct.Product;
 
 public class BlueprintDoorController implements Initializable {
 	
@@ -36,9 +37,11 @@ public class BlueprintDoorController implements Initializable {
 	@FXML private Button createReport;
 	
 	private Blueprint blueprint;
+	private Product product;
 	
-	public BlueprintDoorController(Blueprint blueprint) {
+	public BlueprintDoorController(Blueprint blueprint, Product product) {
 		this.blueprint = blueprint;
+		this.product = product;
 	}
 	
 	@FXML private void handleBlueprint(ActionEvent ae) {
@@ -62,6 +65,7 @@ public class BlueprintDoorController implements Initializable {
 		
 		this.notes.setText(this.blueprint.getNotes());
 		this.inventoryNotes.setText(this.blueprint.getInventoryNotes());
+		this.createReport.setVisible(false);
 	}
 	
 	private void setDimensionToFields() {
@@ -105,7 +109,7 @@ public class BlueprintDoorController implements Initializable {
 	public void saveBlueprintRecord() {
 		Blueprint saveBlueprint = new Blueprint(this.blueprint.getId());
 		
-		saveBlueprint.setProductID(this.blueprint.getProductID());
+		saveBlueprint.setProductID(this.product.getId());
 		saveBlueprint.setDimension(this.width.getText() + "x" + this.height.getText());
 		saveBlueprint.setStrikeHeight(this.strikeHeight.getText());
 		saveBlueprint.setFrame(this.frame.getText());
